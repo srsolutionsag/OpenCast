@@ -1,5 +1,25 @@
 # Change Log
 
+## [5.6.0]
+- Introduced Dynamic Workflows
+
+## [5.5.0]
+- Updated to Opencast API 1.5.0
+- Introduced Publication Usages and solved issue #182
+
+## [5.4.1]
+- Fixed a compatibility issue in the new caching service.
+
+## [5.4.0]
+- Implemented improved Caching Service which fixes #194
+
+## [5.3.2]
+- Fix #220: Upload of large files lead to a memory limit error.
+- Fixed the Overlay when creating a new Event.
+
+## [5.3.1]
+- Fix #11 and #113: Introducing new Paella 7 Player
+
 ## [5.3.0]
 - Implemented #193: The Chunk Size for Uploads is now configurable. The default value is 20MB, this can be changes in the plugin configuration.
 - Fix #176: Fixed a static timeout in fileuploads, this now uses max_execution_time of the server. 

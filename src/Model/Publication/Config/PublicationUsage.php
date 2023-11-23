@@ -30,6 +30,9 @@ class PublicationUsage extends ActiveRecord
     public const MD_TYPE_PUBLICATION_ITSELF = 0;
     public const SEARCH_KEY_FLAVOR = 'flavor';
     public const SEARCH_KEY_TAG = 'tag';
+    public const DISPLAY_NAME_LANG_MODULE = 'pu_display_name';
+    public const USAGE_TYPE_ORG = 'org';
+    public const USAGE_TYPE_SUB = 'sub';
     public const USAGE_CAPTIONS = 'captions';
     public const USAGE_CAPTIONS_FALLBACK = 'captions_fallback';
     /**
@@ -52,6 +55,16 @@ class PublicationUsage extends ActiveRecord
             self::USAGE_CAPTIONS,
             self::USAGE_CAPTIONS_FALLBACK,
         ];
+
+    /**
+     * INFO: the capability can be used for other usages, but it needs to be implemented when needed.
+     * @var array
+     */
+    public static $sub_allowed_usage_ids
+        = [
+            self::USAGE_DOWNLOAD
+        ];
+
 
     /**
      * @return string
@@ -93,9 +106,25 @@ class PublicationUsage extends ActiveRecord
      *
      * @con_has_field  true
      * @con_fieldtype  text
+     * @con_length     512
+     */
+    protected $display_name;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
      * @con_length     4000
      */
     protected $description;
+    /**
+     * @var int
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     8
+     */
+    protected $group_id;
     /**
      * @var string
      *
@@ -152,6 +181,42 @@ class PublicationUsage extends ActiveRecord
      * @con_length     1
      */
     protected $allow_multiple = false;
+    /**
+     * @var string
+     *
+     * @con_has_field  true
+     * @con_fieldtype  text
+     * @con_length     512
+     */
+    protected $mediatype;
+    /**
+     * @var bool
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     1
+     */
+    protected $ignore_object_setting = false;
+    /**
+     * @var bool
+     *
+     * @con_has_field  true
+     * @con_fieldtype  integer
+     * @con_length     1
+     */
+    protected $ext_dl_source = false;
+
+    /**
+     * An indicator flag to determine if the usage is a sub-usage or not.
+     * @var bool
+     */
+    protected $is_sub = false;
+
+    /**
+     * A variable that works as an id holder, for when the usage is a sub-usage.
+     * @var int
+     */
+    protected $sub_id = 0;
 
     public function getUsageId(): string
     {
@@ -179,6 +244,28 @@ class PublicationUsage extends ActiveRecord
         $this->title = $title;
     }
 
+
+    /**
+     * @return string
+     */
+    public function getDisplayName(): string
+    {
+        return $this->display_name ?? '';
+    }
+
+
+    /**
+     * @param string $description
+     */
+    public function setDisplayName($display_name)
+    {
+        $this->display_name = $display_name;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description ?? '';
@@ -192,6 +279,26 @@ class PublicationUsage extends ActiveRecord
         $this->description = $description;
     }
 
+    /**
+     * @return ?int
+     */
+    public function getGroupId(): ?int
+    {
+        return (!is_null($this->group_id) ? intval($this->group_id) : null);
+    }
+
+
+    /**
+     * @param $group_id
+     */
+    public function setGroupId($group_id)
+    {
+        $this->group_id = ($group_id == '' || is_null($group_id) ? null : intval($group_id));
+    }
+
+    /**
+     * @return string
+     */
     public function getChannel(): string
     {
         return $this->channel ?? '';
@@ -272,5 +379,97 @@ class PublicationUsage extends ActiveRecord
     public function setMdType($md_type): void
     {
         $this->md_type = $md_type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMediaType(): string
+    {
+        return $this->mediatype ?? '';
+    }
+
+    /**
+     * @return array
+     */
+    public function getArrayMediaTypes(): array
+    {
+        $mediatype = $this->getMediaType();
+        $mediatypes = $mediatype ? explode(',', $mediatype) : [];
+        $mediatypes = array_map('trim', $mediatypes);
+        return $mediatypes;
+    }
+
+
+    /**
+     * @param string $mediatype
+     */
+    public function setMediaType(string $mediatype)
+    {
+        $this->mediatype = $mediatype;
+    }
+
+    /**
+     * @return bool
+     */
+    public function ignoreObjectSettings(): bool
+    {
+        return (bool) $this->ignore_object_setting;
+    }
+
+    /**
+     * @param bool $ignore_object_setting
+     */
+    public function setIgnoreObjectSettings(bool $ignore_object_setting)
+    {
+        $this->ignore_object_setting = $ignore_object_setting;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isExternalDownloadSource(): bool
+    {
+        return (bool) $this->ext_dl_source;
+    }
+
+    /**
+     * @param bool $ext_dl_source
+     */
+    public function setExternalDownloadSource(bool $ext_dl_source)
+    {
+        $this->ext_dl_source = $ext_dl_source;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSub(): bool
+    {
+        return (bool) $this->is_sub;
+    }
+
+    /**
+     * @param bool $is_sub
+     */
+    public function setAsSub(bool $is_sub)
+    {
+        $this->is_sub = $is_sub;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubId(): int
+    {
+        return (int) $this->sub_id;
+    }
+
+    /**
+     * @param int $sub_id
+     */
+    public function setSubId(int $sub_id): void
+    {
+        $this->sub_id = $sub_id;
     }
 }

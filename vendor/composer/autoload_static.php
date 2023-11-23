@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
+class ComposerStaticInit3ec6035552927b2808b955c9ba4217c5
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -123,6 +123,7 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
         'OpencastApi\\Rest\\OcSysinfo' => __DIR__ . '/..' . '/elan-ev/opencast-api/src/OpencastApi/Rest/OcSysinfo.php',
         'OpencastApi\\Rest\\OcWorkflow' => __DIR__ . '/..' . '/elan-ev/opencast-api/src/OpencastApi/Rest/OcWorkflow.php',
         'OpencastApi\\Rest\\OcWorkflowsApi' => __DIR__ . '/..' . '/elan-ev/opencast-api/src/OpencastApi/Rest/OcWorkflowsApi.php',
+        'WaitOverlay' => __DIR__ . '/../..' . '/src/UI/WaitOverlay.php',
         'ilObjOpenCast' => __DIR__ . '/../..' . '/classes/class.ilObjOpenCast.php',
         'ilObjOpenCastAccess' => __DIR__ . '/../..' . '/classes/class.ilObjOpenCastAccess.php',
         'ilObjOpenCastGUI' => __DIR__ . '/../..' . '/classes/class.ilObjOpenCastGUI.php',
@@ -299,10 +300,23 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
         'srag\\Plugins\\Opencast\\Model\\Agent\\AgentApiRepository' => __DIR__ . '/../..' . '/src/Model/Agent/AgentApiRepository.php',
         'srag\\Plugins\\Opencast\\Model\\Agent\\AgentParser' => __DIR__ . '/../..' . '/src/Model/Agent/AgentParser.php',
         'srag\\Plugins\\Opencast\\Model\\Agent\\AgentRepository' => __DIR__ . '/../..' . '/src/Model/Agent/AgentRepository.php',
-        'srag\\Plugins\\Opencast\\Model\\Cache\\Cache' => __DIR__ . '/../..' . '/src/Model/Cache/Cache.php',
-        'srag\\Plugins\\Opencast\\Model\\Cache\\CacheFactory' => __DIR__ . '/../..' . '/src/Model/Cache/CacheFactory.php',
-        'srag\\Plugins\\Opencast\\Model\\Cache\\Service\\DB\\DBCacheAR' => __DIR__ . '/../..' . '/src/Model/Cache/Service/DB/DBCacheAR.php',
-        'srag\\Plugins\\Opencast\\Model\\Cache\\Service\\DB\\DBCacheService' => __DIR__ . '/../..' . '/src/Model/Cache/Service/DB/DBCacheService.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Adaptor\\APCu' => __DIR__ . '/../..' . '/src/Model/Cache/Adaptor/APCu.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Adaptor\\Adaptor' => __DIR__ . '/../..' . '/src/Model/Cache/Adaptor/Adaptor.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Adaptor\\BaseAdaptor' => __DIR__ . '/../..' . '/src/Model/Cache/Adaptor/BaseAdaptor.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Adaptor\\Database' => __DIR__ . '/../..' . '/src/Model/Cache/Adaptor/Database.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Adaptor\\Factory' => __DIR__ . '/../..' . '/src/Model/Cache/Adaptor/Factory.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Adaptor\\PHPStatic' => __DIR__ . '/../..' . '/src/Model/Cache/Adaptor/PHPStatic.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Cacheable' => __DIR__ . '/../..' . '/src/Model/Cache/Cacheable.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Config' => __DIR__ . '/../..' . '/src/Model/Cache/Config.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Container\\ActiveContainer' => __DIR__ . '/../..' . '/src/Model/Cache/Container/ActiveContainer.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Container\\BaseRequest' => __DIR__ . '/../..' . '/src/Model/Cache/Container/BaseRequest.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Container\\Container' => __DIR__ . '/../..' . '/src/Model/Cache/Container/Container.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Container\\Request' => __DIR__ . '/../..' . '/src/Model/Cache/Container/Request.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Container\\VoidContainer' => __DIR__ . '/../..' . '/src/Model/Cache/Container/VoidContainer.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Nodes\\Node' => __DIR__ . '/../..' . '/src/Model/Cache/Nodes/Node.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Nodes\\NodeRepository' => __DIR__ . '/../..' . '/src/Model/Cache/Nodes/NodeRepository.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Nodes\\NullNodeRepository' => __DIR__ . '/../..' . '/src/Model/Cache/Nodes/NullNodeRepository.php',
+        'srag\\Plugins\\Opencast\\Model\\Cache\\Services' => __DIR__ . '/../..' . '/src/Model/Cache/Services.php',
         'srag\\Plugins\\Opencast\\Model\\Config\\PluginConfig' => __DIR__ . '/../..' . '/src/Model/Config/PluginConfig.php',
         'srag\\Plugins\\Opencast\\Model\\DTO\\DownloadDto' => __DIR__ . '/../..' . '/src/Model/DTO/DownloadDto.php',
         'srag\\Plugins\\Opencast\\Model\\Event\\Event' => __DIR__ . '/../..' . '/src/Model/Event/Event.php',
@@ -342,8 +356,12 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
         'srag\\Plugins\\Opencast\\Model\\PerVideoPermission\\PermissionGroupParticipant' => __DIR__ . '/../..' . '/src/Model/PerVideoPermission/PermissionGroupParticipant.php',
         'srag\\Plugins\\Opencast\\Model\\PermissionTemplate\\PermissionTemplate' => __DIR__ . '/../..' . '/src/Model/PermissionTemplate/PermissionTemplate.php',
         'srag\\Plugins\\Opencast\\Model\\Publication\\Attachment' => __DIR__ . '/../..' . '/src/Model/Publication/Attachment.php',
+        'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationSubUsage' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationSubUsage.php',
+        'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationSubUsageRepository' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationSubUsageRepository.php',
         'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationUsage' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationUsage.php',
         'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationUsageDefault' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationUsageDefault.php',
+        'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationUsageGroup' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationUsageGroup.php',
+        'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationUsageGroupRepository' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationUsageGroupRepository.php',
         'srag\\Plugins\\Opencast\\Model\\Publication\\Config\\PublicationUsageRepository' => __DIR__ . '/../..' . '/src/Model/Publication/Config/PublicationUsageRepository.php',
         'srag\\Plugins\\Opencast\\Model\\Publication\\Media' => __DIR__ . '/../..' . '/src/Model/Publication/Media.php',
         'srag\\Plugins\\Opencast\\Model\\Publication\\Publication' => __DIR__ . '/../..' . '/src/Model/Publication/Publication.php',
@@ -397,6 +415,7 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
         'srag\\Plugins\\Opencast\\Util\\FileTransfer\\OpencastIngestService' => __DIR__ . '/../..' . '/src/Util/FileTransfer/OpencastIngestService.php',
         'srag\\Plugins\\Opencast\\Util\\FileTransfer\\PaellaConfigStorageService' => __DIR__ . '/../..' . '/src/Util/FileTransfer/PaellaConfigStorageService.php',
         'srag\\Plugins\\Opencast\\Util\\FileTransfer\\UploadStorageService' => __DIR__ . '/../..' . '/src/Util/FileTransfer/UploadStorageService.php',
+        'srag\\Plugins\\Opencast\\Util\\Locale\\LocaleTrait' => __DIR__ . '/../..' . '/src/Util/Locale/LocaleTraits.php',
         'srag\\Plugins\\Opencast\\Util\\Player\\LivePlayerDataBuilder' => __DIR__ . '/../..' . '/src/Util/Player/LivePlayerDataBuilder.php',
         'srag\\Plugins\\Opencast\\Util\\Player\\PaellaConfigService' => __DIR__ . '/../..' . '/src/Util/Player/PaellaConfigService.php',
         'srag\\Plugins\\Opencast\\Util\\Player\\PaellaConfigServiceFactory' => __DIR__ . '/../..' . '/src/Util/Player/PaellaConfigServiceFactory.php',
@@ -438,6 +457,10 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
         'xoctPermissionTemplateGUI' => __DIR__ . '/../..' . '/classes/Conf/PermissionTemplates/class.xoctPermissionTemplateGUI.php',
         'xoctPermissionTemplateTableGUI' => __DIR__ . '/../..' . '/classes/Conf/PermissionTemplates/class.xoctPermissionTemplateTableGUI.php',
         'xoctPlayerGUI' => __DIR__ . '/../..' . '/classes/Player/class.xoctPlayerGUI.php',
+        'xoctPublicationGroupFormGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationGroupFormGUI.php',
+        'xoctPublicationGroupTableGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationGroupTableGUI.php',
+        'xoctPublicationSubUsageFormGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationSubUsageFormGUI.php',
+        'xoctPublicationSubUsageTableGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationSubUsageTableGUI.php',
         'xoctPublicationUsageFormGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationUsageFormGUI.php',
         'xoctPublicationUsageGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationUsageGUI.php',
         'xoctPublicationUsageTableGUI' => __DIR__ . '/../..' . '/classes/Conf/PublicationUsage/class.xoctPublicationUsageTableGUI.php',
@@ -453,7 +476,6 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
         'xoctSeriesWorkflowParameterTableGUI' => __DIR__ . '/../..' . '/classes/Series/WorkflowParameters/class.xoctSeriesWorkflowParameterTableGUI.php',
         'xoctUploadFile' => __DIR__ . '/../..' . '/classes/Request/class.xoctUploadFile.php',
         'xoctVideoPortalSettingsFormGUI' => __DIR__ . '/../..' . '/classes/Conf/PermissionTemplates/class.xoctVideoPortalSettingsFormGUI.php',
-        'xoctWaiterGUI' => __DIR__ . '/../..' . '/classes/class.xoctWaiterGUI.php',
         'xoctWorkflowGUI' => __DIR__ . '/../..' . '/classes/Conf/Workflows/class.xoctWorkflowGUI.php',
         'xoctWorkflowParameterFormGUI' => __DIR__ . '/../..' . '/classes/Conf/WorkflowParameters/class.xoctWorkflowParameterFormGUI.php',
         'xoctWorkflowParameterGUI' => __DIR__ . '/../..' . '/classes/Conf/WorkflowParameters/class.xoctWorkflowParameterGUI.php',
@@ -465,9 +487,9 @@ class ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf618280b835f1c6e99e4eb8d8a3e04f0::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3ec6035552927b2808b955c9ba4217c5::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3ec6035552927b2808b955c9ba4217c5::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit3ec6035552927b2808b955c9ba4217c5::$classMap;
 
         }, null, ClassLoader::class);
     }

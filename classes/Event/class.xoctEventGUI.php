@@ -4,7 +4,6 @@ use ILIAS\DI\Container;
 use ILIAS\UI\Component\Input\Field\UploadHandler;
 use ILIAS\UI\Renderer;
 use srag\Plugins\Opencast\Model\ACL\ACLUtils;
-use srag\Plugins\Opencast\Model\Cache\CacheFactory;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Event\Event;
 use srag\Plugins\Opencast\Model\Event\EventRepository;
@@ -38,6 +37,7 @@ use srag\Plugins\Opencast\Util\Player\PaellaConfigServiceFactory;
 use srag\Plugins\OpenCast\UI\Component\Input\Field\Loader;
 use srag\CustomInputGUIs\OneDrive\Waiter\Waiter;
 use srag\Plugins\Opencast\API\OpencastAPI;
+use srag\Plugins\Opencast\Model\Cache\Services;
 
 /**
  * Class xoctEventGUI
@@ -73,6 +73,14 @@ class xoctEventGUI extends xoctGUI
      * @var ilObjOpenCastGUI
      */
     private $parent_gui;
+    /**
+     * @var WaitOverlay
+     */
+    private $wait_overlay;
+    /**
+     * @var Services
+     */
+    private $cache;
     /**
      * @var \ILIAS\UI\Implementation\DefaultRenderer
      */
@@ -169,7 +177,7 @@ class xoctEventGUI extends xoctGUI
         PaellaConfigServiceFactory $paellaConfigServiceFactory,
         Container $dic
     ) {
-        global $DIC;
+        global $DIC, $opencastContainer;
         parent::__construct();
 
         $this->user = $DIC->user();
@@ -193,6 +201,8 @@ class xoctEventGUI extends xoctGUI
         $this->ui_renderer = new \ILIAS\UI\Implementation\DefaultRenderer(
             new Loader($DIC, ilOpenCastPlugin::getInstance())
         );
+        $this->wait_overlay  = new WaitOverlay($this->main_tpl);
+        $this->cache = $opencastContainer->get(Services::class);
     }
 
     /**
@@ -284,8 +294,7 @@ class xoctEventGUI extends xoctGUI
      */
     protected function prepareContent()
     {
-        xoctWaiterGUI::initJS();
-        xoctWaiterGUI::addLinkOverlay('#rep_robj_xoct_event_clear_cache');
+        $this->wait_overlay->onLinkClick('#rep_robj_xoct_event_clear_cache');
         $this->main_tpl->addJavascript("./src/UI/templates/js/Modal/modal.js");
         $this->main_tpl->addOnLoadCode(
             'xoctEvent.init(\'' . json_encode([
@@ -514,11 +523,11 @@ class xoctEventGUI extends xoctGUI
 				    url: '{$ajax_link}',
 				    dataType: 'html',
 				    success: function(data){
-				        xoctWaiter.hide();
+				        il.Opencast.UI.waitOverlay.hide();
 				        $('div#xoct_table_placeholder').replaceWith($(data));
 				    }
 				});";
-        $this->main_tpl->addOnLoadCode('xoctWaiter.show();');
+        $this->main_tpl->addOnLoadCode('il.Opencast.UI.waitOverlay.show();');
         $this->main_tpl->addOnLoadCode($ajax);
     }
 
@@ -534,11 +543,11 @@ class xoctEventGUI extends xoctGUI
 				    url: '{$ajax_link}',
 				    dataType: 'html',
 				    success: function(data){
-				        xoctWaiter.hide();
+				        il.Opencast.UI.waitOverlay.hide();
 				        $('div#xoct_tiles_placeholder').replaceWith($(data));
 				    }
 				});";
-        $this->main_tpl->addOnLoadCode('xoctWaiter.show();');
+        $this->main_tpl->addOnLoadCode('il.Opencast.UI.waitOverlay.show();');
         $this->main_tpl->addOnLoadCode($ajax);
     }
 
@@ -625,12 +634,8 @@ class xoctEventGUI extends xoctGUI
             $this->objectSettings->getObjId(),
             ilObjOpenCastAccess::hasPermission('edit_videos')
         );
-        xoctWaiterGUI::initJS();
-        $this->main_tpl->addOnLoadCode(
-            'window.onbeforeunload = function(){
-                        xoctWaiter.show();
-                    };'
-        );
+        $this->wait_overlay->onUnload();
+
         $this->main_tpl->setContent($this->ui_renderer->render($form));
     }
 
@@ -674,7 +679,7 @@ class xoctEventGUI extends xoctGUI
                     $this->ACLUtils->getBaseACLForUser(xoctUser::getInstance($this->user)),
                     new Processing(
                         PluginConfig::getConfig(PluginConfig::F_WORKFLOW),
-                        $this->getDefaultWorkflowParameters($data['workflow_configuration']['object'])
+                        $this->getDefaultWorkflowParameters($data['workflow_configuration']['object'] ?? null)
                     ),
                     xoctUploadFile::getInstanceFromFileArray($data['file']['file'])
                 )
@@ -906,21 +911,43 @@ class xoctEventGUI extends xoctGUI
     {
         $event_id = filter_input(INPUT_GET, 'event_id', FILTER_SANITIZE_STRING);
         $publication_id = filter_input(INPUT_GET, 'pub_id', FILTER_SANITIZE_STRING);
+        $usage_type = filter_input(INPUT_GET, 'usage_type', FILTER_SANITIZE_STRING);
+        $usage_id = filter_input(INPUT_GET, 'usage_id', FILTER_SANITIZE_STRING);
         $event = $this->event_repository->find($event_id);
         $download_publications = $event->publications()->getDownloadPublications();
+        // Now that we have multiple sub-usages, we first check for publication_id which is passed by the multi-dropdowns.
         if ($publication_id) {
             $publication = array_filter($download_publications, function ($publication) use ($publication_id): bool {
                 return $publication->getId() === $publication_id;
             });
-            $publication = array_shift($publication);
+            $publication = reset($publication);
         } else {
-            $publication = array_shift($download_publications);
+            // If this is not multi-download dropdown, then it has to have the usage_type and usage_id parameters identified.
+            if (!empty($usage_type) && !empty($usage_id)) {
+                $publication = array_filter(
+                    $download_publications,
+                    function ($publication) use ($usage_type, $usage_id): bool {
+                        return $publication->usage_id == $usage_id && $publication->usage_type === $usage_type;
+                    }
+                );
+                $publication = reset($publication);
+            } else {
+                // As a fallback we take out the last publication, if non of the above has been met!
+                $publication = reset($download_publications);
+            }
         }
+
+        if (empty($publication)) {
+            ilUtil::sendFailure($this->txt('msg_no_download_publication'), true);
+            $this->ctrl->redirect($this, self::CMD_STANDARD);
+        }
+
         $url = $publication->getUrl();
         $extension = pathinfo($url)['extension'];
         $url = PluginConfig::getConfig(PluginConfig::F_SIGN_DOWNLOAD_LINKS) ? xoctSecureLink::signDownload($url) : $url;
 
-        if (PluginConfig::getConfig(PluginConfig::F_EXT_DL_SOURCE)) {
+        // if (PluginConfig::getConfig(PluginConfig::F_EXT_DL_SOURCE)) {
+        if (property_exists($publication, 'ext_dl_source') && $publication->ext_dl_source == true) {
             // Open external source page
             header('Location: ' . $url);
         } else {
@@ -1222,12 +1249,9 @@ class xoctEventGUI extends xoctGUI
         return true;
     }
 
-    /**
-     *
-     */
-    protected function clearCache()
+    protected function clearCache(): void
     {
-        CacheFactory::getInstance()->flush();
+        $this->cache->flushAdapter();
         $this->ctrl->redirect($this, self::CMD_STANDARD);
     }
 
