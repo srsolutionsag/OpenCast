@@ -11,7 +11,6 @@ use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Event\Event;
 use srag\Plugins\Opencast\Model\Event\EventRepository;
 use srag\Plugins\Opencast\Model\Object\ObjectSettings;
-use srag\Plugins\Opencast\Model\Publication\Config\PublicationUsageRepository;
 use srag\Plugins\Opencast\Util\Player\PaellaConfigService;
 use srag\Plugins\Opencast\Util\Player\PaellaConfigServiceFactory;
 use srag\Plugins\Opencast\Util\Player\PlayerDataBuilderFactory;
@@ -37,17 +36,10 @@ class xoctPlayerGUI extends xoctGUI
     public const ROLE_MASTER = "presenter";
     public const ROLE_SLAVE = "presentation";
     private bool $force_no_chat;
-    /**
-     * @var string|null
-     */
-    private $identifier;
-    protected ObjectSettings $object_settings;
-    protected PublicationUsageRepository $publication_usage_repository;
+    private ?string $identifier;
+    private ObjectSettings $object_settings;
     private PaellaConfigService $paellaConfigService;
-    /**
-     * @var \ilObjUser
-     */
-    private $user;
+    private \ilObjUser $user;
 
     public function __construct(
         private EventRepository $event_repository,
@@ -58,7 +50,6 @@ class xoctPlayerGUI extends xoctGUI
         global $DIC;
         parent::__construct();
         $this->user = $DIC->user();
-        $this->publication_usage_repository = new PublicationUsageRepository();
         $this->object_settings = $object_settings instanceof ObjectSettings ? $object_settings : new ObjectSettings();
         $this->paellaConfigService = $paellaConfigServiceFactory->get();
         $this->identifier = $this->http->request()->getQueryParams()[self::IDENTIFIER] ?? null;
@@ -115,12 +106,11 @@ class xoctPlayerGUI extends xoctGUI
 
         if ($this->isChatVisible()) {
             $this->initChat($event, $tpl);
-        } else {
-            $tpl->setVariable(
-                "STYLE_SHEET_LOCATION",
-                $this->plugin->getDirectory() . "/templates/default/player.css"
-            );
         }
+        $tpl->setVariable(
+            "STYLE_SHEET_LOCATION",
+            $this->plugin->getDirectory() . "/templates/default/player.css"
+        );
 
         setcookie('lastProfile', '', ['expires' => -1]);
         $this->sendReponse($tpl->get());
