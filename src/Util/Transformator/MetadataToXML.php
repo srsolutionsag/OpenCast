@@ -54,7 +54,7 @@ class MetadataToXML
             ),
             IL_CAL_UNIX
         )
-        )->get(IL_CAL_FKT_DATE, 'Y-m-d\TH:i:s.u\Z');
+        )->get(IL_CAL_FKT_DATE, 'Y-m-d\TH:i:s.u\Z', 'GMT');
         $xml_writer->xmlElement('dcterms:temporal', [
             'xsi:type' => 'dcterms:Period'
         ], 'start=' . $start_end_string_iso . '; ' . 'end=' . $start_end_string_iso . '; scheme=W3C-DTF;');
@@ -63,7 +63,7 @@ class MetadataToXML
             'dcterms:created',
             [],
             (new ilDateTime(time(), IL_CAL_UNIX))
-                ->get(IL_CAL_FKT_DATE, 'Y-m-d\TH:i:s.u\Z', 'UTC')
+                ->get(IL_CAL_FKT_DATE, 'Y-m-d\TH:i:s.u\Z', 'GMT')
         );
 
         $xml_writer->xmlEndTag('dublincore');
