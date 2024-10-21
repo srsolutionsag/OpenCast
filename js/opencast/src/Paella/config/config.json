@@ -40,7 +40,7 @@
       "global": true
     },
     "restoreLastTime": {
-      "enabled": false,
+      "enabled": true,
       "remainingSeconds": 5
     }
   },
