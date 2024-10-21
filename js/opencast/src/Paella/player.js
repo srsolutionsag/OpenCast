@@ -2,11 +2,14 @@
 import $ from "jquery";
 import { Paella } from 'paella-core';
 import { Events } from 'paella-core';
+import { utils } from 'paella-core';
 import getBasicPluginContext from 'paella-basic-plugins';
 import getSlidePluginContext from 'paella-slide-plugins';
 import getZoomPluginContext from 'paella-zoom-plugin';
 import getUserTrackingPluginsContext from 'paella-user-tracking';
 import localDictionaries from "./lang/registery";
+
+const { getUrlParameter } = utils;
 
 const loadVideoManifestFunction = () => {
     if (typeof il !== 'undefined') {
@@ -16,6 +19,12 @@ const loadVideoManifestFunction = () => {
 };
 
 const noop = () => {};
+
+const getVideoIdFunction = (config, player) => {
+    player.log.info("Using ILIAS custom getVideoIdFunction to get the videoId.");
+    return il?.Opencast?.Paella?.player?.data?.metadata?.videoid || getUrlParameter("eid") ||
+        window?.PaellaPlayer?.default?.data?.metadata?.videoid;
+}
 
 
 /**
@@ -150,7 +159,8 @@ export default {
                 getSlidePluginContext(),
                 getZoomPluginContext(),
                 getUserTrackingPluginsContext()
-            ]
+            ],
+            getVideoId: getVideoIdFunction
         });
         this.loadTheme();
         this.bindPaellaEvents();
