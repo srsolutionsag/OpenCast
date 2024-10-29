@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 9.0.0
+- [FEATURE] Support for ILIAS 9
+- Fix of #341, fix order field when $sort_field is startDate
+- [FIX] fix broken ACL xml and startDate xml metadata when using ingest upload
+- [FIX] controlling chat visibility: only when event is/was live!
+- [FIX] player not shown if chat enabled
+- [FIX] missing Init import, fixes #357
+- [FIX] removed no longer used update check 
+- Fix of #341
+- [FIX] An error occurred while communicating with the OpenCast-Server: OcEventsApi -> getAll
+
 ## Version 8.2.1
 - [FIX] caching issue with new container
 - [FIX] installation issues using cli setup
