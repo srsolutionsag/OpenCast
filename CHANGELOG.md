@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 8.2.5
+- Fix of #341, fix order field when $sort_field is startDate
+
 ## Version 8.2.4
 - [FIX] fix broken ACL xml and startDate xml metadata when using ingest upload
 - [FIX] controlling chat visibility: only when event is/was live!
@@ -9,7 +12,6 @@
 ## Version 8.2.3
 - [FIX] removed no longer used update check
 - Fix of #341
-
 
 ## Version 8.2.2
 - [FIX] An error occurred while communicating with the OpenCast-Server: OcEventsApi -> getAll
