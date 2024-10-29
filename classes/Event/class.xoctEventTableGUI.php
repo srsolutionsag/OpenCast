@@ -206,13 +206,16 @@ class xoctEventTableGUI extends ilTable2GUI
 
         foreach ($this->md_fields as $md_field) {
             $field_id = $md_field->getFieldId();
+            $sort_field = $field_id;
+            if ($field_id == 'startDate') {
+                $sort_field = $field_id . '_s';
+            }
             $columns[$field_id] = [
                 'selectable' => true,
-                'sort_field' => $field_id,
+                'sort_field' => $sort_field,
                 'text' => $md_field->getTitle($this->lang_key)
             ];
         }
-
         $columns += [
             'event_owner' => [
                 'selectable' => true,
