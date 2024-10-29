@@ -142,13 +142,13 @@ class PermissionTemplate extends ActiveRecord
      */
     protected $additional_actions_annotate;
     /**
-     * @var String
+     * @var int
      *
      * @db_has_field        true
      * @db_fieldtype        integer
      * @db_length           1
      */
-    protected $added_role;
+    protected ?int $added_role = null;
 
     /**
      * @var String
@@ -466,12 +466,12 @@ class PermissionTemplate extends ActiveRecord
         $this->additional_actions_annotate = $additional_actions_annotate;
     }
 
-    public function getAddedRole(): ?string
+    public function getAddedRole(): ?int
     {
         return $this->added_role;
     }
 
-    public function setAddedRole(?string $added_role): void
+    public function setAddedRole(?int $added_role): void
     {
         $this->added_role = $added_role;
     }
