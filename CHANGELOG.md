@@ -10,6 +10,7 @@
 - [FIX] removed no longer used update check 
 - Fix of #341
 - [FIX] An error occurred while communicating with the OpenCast-Server: OcEventsApi -> getAll
+- [FIX] Memorization of last position in video is not per video #289
 
 ## Version 8.2.1
 - [FIX] caching issue with new container
