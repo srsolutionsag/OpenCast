@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 8.2.6
+- [FIX] Memorization of last position in video is not per video #289
+
 ## Version 8.2.5
 - Fix of #341, fix order field when $sort_field is startDate
 
