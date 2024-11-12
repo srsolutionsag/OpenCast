@@ -3,7 +3,6 @@
 declare(strict_types=1);
 use ILIAS\UI\Implementation\DefaultRenderer;
 use ILIAS\DI\UIServices;
-
 use ILIAS\DI\Container;
 use ILIAS\UI\Component\Input\Field\UploadHandler;
 use ILIAS\UI\Renderer;
@@ -40,7 +39,6 @@ use srag\Plugins\Opencast\Util\FileTransfer\PaellaConfigStorageService;
 use srag\Plugins\Opencast\Util\Player\PaellaConfigServiceFactory;
 use srag\Plugins\OpenCast\UI\Component\Input\Field\Loader;
 use srag\Plugins\Opencast\Model\Cache\Services;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Util\OutputResponse;
 use srag\Plugins\Opencast\Container\Init;
 
@@ -700,10 +698,13 @@ class xoctEventGUI extends xoctGUI
         foreach ($WorkflowParameter::get() as $param) {
             $id = $param->getId();
             $defaultValue = $admin ? $param->getDefaultValueAdmin() : $param->getDefaultValueMember();
-
-            if (!isset($fromData->{$id}) && $defaultValue == WorkflowParameter::VALUE_ALWAYS_ACTIVE) {
-                $defaultParameter->{$id} = "true";
+            if (isset($fromData->{$id})) {
+                continue;
             }
+            if ($defaultValue != WorkflowParameter::VALUE_ALWAYS_ACTIVE) {
+                continue;
+            }
+            $defaultParameter->{$id} = "true";
         }
 
         // Append extra parameters.
@@ -919,24 +920,18 @@ class xoctEventGUI extends xoctGUI
         $download_publications = $event->publications()->getDownloadPublications();
         // Now that we have multiple sub-usages, we first check for publication_id which is passed by the multi-dropdowns.
         if ($publication_id) {
-            $publication = array_filter($download_publications, function ($publication) use ($publication_id): bool {
-                return $publication->getId() === $publication_id;
-            });
+            $publication = array_filter($download_publications, fn ($publication): bool => $publication->getId() === $publication_id);
+            $publication = reset($publication);
+        } elseif (!empty($usage_type) && !empty($usage_id)) {
+            // If this is not multi-download dropdown, then it has to have the usage_type and usage_id parameters identified.
+            $publication = array_filter(
+                $download_publications,
+                fn ($publication): bool => $publication->usage_id == $usage_id && $publication->usage_type === $usage_type
+            );
             $publication = reset($publication);
         } else {
-            // If this is not multi-download dropdown, then it has to have the usage_type and usage_id parameters identified.
-            if (!empty($usage_type) && !empty($usage_id)) {
-                $publication = array_filter(
-                    $download_publications,
-                    function ($publication) use ($usage_type, $usage_id): bool {
-                        return $publication->usage_id == $usage_id && $publication->usage_type === $usage_type;
-                    }
-                );
-                $publication = reset($publication);
-            } else {
-                // As a fallback we take out the last publication, if non of the above has been met!
-                $publication = reset($download_publications);
-            }
+            // As a fallback we take out the last publication, if non of the above has been met!
+            $publication = reset($download_publications);
         }
 
         if (empty($publication)) {
@@ -1120,25 +1115,28 @@ class xoctEventGUI extends xoctGUI
             foreach ($default_configs as $key => $config_data) {
                 $value = $config_data['value'];
                 $type = $config_data['type'];
-                if (in_array($key, array_keys($received_configs), true)) {
-                    $received_value = $received_configs[$key];
-                    // Take care of datetime conversion.
-                    if (strpos($type, 'datetime') !== false) {
+                $received_value = $received_configs[$key] ?? null;
+
+                switch (true) {
+                    case (strpos($type, 'datetime') !== false):
                         $datetime = new DateTimeImmutable($received_value);
                         $received_value = $datetime->format('Y-m-d\TH:i:s\Z');
                         $value = $received_value;
-                    } elseif ($type == 'text') {
+                        break;
+                    case ($type === 'text'):
                         $value = strip_tags($received_value);
-                    } elseif ($type == 'number') {
-                        $value = intval($received_value);
-                    } else {
+                        break;
+                    case ($type === 'number'):
+                        $value = (int) $received_value;
+                        break;
+                    case ($type === 'checkbox'):
+                        $value = $received_value === null ? 'false' : 'true';
+                        break;
+                    default:
                         $value = $received_value;
-                    }
+                        break;
                 }
-                // Take care of boolean conversion.
-                if (is_bool($value)) {
-                    $value = $value ? 'true' : 'false';
-                }
+
                 $configurations[$key] = (string) $value;
             }
 
