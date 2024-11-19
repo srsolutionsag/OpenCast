@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 8.2.8
+- [FIX] array access, see #369
+- [FIX] introduce "title" as mandatory MD for series and events
+
 ## Version 8.2.7
 - [FIX] make the straightToPublishing title dynamic, #367
 
