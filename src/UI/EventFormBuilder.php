@@ -287,12 +287,14 @@ class EventFormBuilder
         // - First considering the straightToPublishing as a required wf param for this feature to work (by default).
         $wf_id = 'straightToPublishing';
         $stp_wf_value = WorkflowParameter::VALUE_ALWAYS_ACTIVE; // as default value in workflows are always true.
+        $wf_title = 'Straight to publishing'; // We set a default value here to avoid confusion in lang string replacements.
         if (WorkflowParameter::where(['id' => $wf_id])->hasSets()) {
             $workflow_parameter = WorkflowParameter::find($wf_id);
             $stp_wf_value =
                 $as_admin ?
                 $workflow_parameter->getDefaultValueAdmin() :
                 $workflow_parameter->getDefaultValueMember();
+                $wf_title = $workflow_parameter->getTitle();
         }
         $thumbnail_upload_enabled = PluginConfig::getConfig(PluginConfig::F_THUMBNAIL_UPLOAD_ENABLED) ?? false;
         $accepted_thumbnail_mimetypes = PluginConfig::getConfig(PluginConfig::F_THUMBNAIL_ACCEPTED_MIMETYPES) ?? [];
@@ -447,9 +449,15 @@ class EventFormBuilder
                 $thumbnail_section_info = '';
                 if ($stp_wf_value == WorkflowParameter::VALUE_SHOW_IN_FORM
                     || $stp_wf_value == WorkflowParameter::VALUE_SHOW_IN_FORM_PRESET) {
-                    $thumbnail_section_info = $this->plugin->txt('upload_ui_thumbnail_section_stp_info');
+                    $thumbnail_section_info = sprintf(
+                        $this->plugin->txt('upload_ui_thumbnail_section_stp_info'),
+                        $wf_title
+                    );
                 } elseif ($stp_wf_value == WorkflowParameter::VALUE_ALWAYS_INACTIVE) {
-                    $thumbnail_section_info = $this->plugin->txt('upload_ui_thumbnail_section_stp_disabled_info');
+                    $thumbnail_section_info = sprintf(
+                        $this->plugin->txt('upload_ui_thumbnail_section_stp_disabled_info'),
+                        $wf_title
+                    );
                 }
 
                 $thumbnail_section = $factory->section(
