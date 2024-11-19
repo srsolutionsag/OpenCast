@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 8.2.7
+- [FIX] make the straightToPublishing title dynamic, #367
+
 ## Version 8.2.6
 - [FIX] Memorization of last position in video is not per video #289
 
