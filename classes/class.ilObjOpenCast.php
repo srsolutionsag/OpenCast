@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Metadata\Definition\MDFieldDefinition;
 use srag\Plugins\Opencast\Model\Metadata\Metadata;
@@ -58,9 +56,17 @@ class ilObjOpenCast extends ilObjectPlugin
 
         $title = $metadata->getField(MDFieldDefinition::F_TITLE)->getValue();
         $description = $metadata->getField(MDFieldDefinition::F_DESCRIPTION)->getValue();
-        if ($title != $this->getTitle() || $description != $this->getDescription()) {
-            $this->setTitle((string) $title);
-            $this->setDescription((string) $description);
+        $update = false;
+        if ($title !== $this->getTitle()) {
+            $this->setTitle($title);
+            $update = true;
+        }
+
+        if ($description !== $this->getDescription()) {
+            $this->setDescription($description);
+            $update = true;
+        }
+        if ($update) {
             $this->update();
         }
     }

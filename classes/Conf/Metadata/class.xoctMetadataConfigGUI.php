@@ -17,7 +17,6 @@ use srag\Plugins\Opencast\Model\Metadata\Definition\MDDataType;
 use srag\Plugins\Opencast\Model\ListProvider\ListProvider;
 use srag\Plugins\Opencast\LegacyHelpers\TranslatorTrait;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
-use ILIAS\DI\HTTPServices;
 use ILIAS\DI\UIServices;
 
 abstract class xoctMetadataConfigGUI extends xoctGUI
@@ -50,7 +49,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     protected UIFactory $ui_factory;
     protected Renderer $renderer;
     private ilToolbarGUI $toolbar;
-    private UIServices  $ui;
+    private UIServices $ui;
     private ListProvider $listprovider;
     private array $post_ids = [];
 
@@ -69,7 +68,6 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
         $this->post_ids = $this->http->request()->getParsedBody()['ids'] ?? [];
     }
 
-
     public function executeCommand(): void
     {
         $cmd = $this->ctrl->getCmd(self::CMD_STANDARD);
@@ -78,7 +76,6 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
         }
         $this->$cmd();
     }
-
 
     protected function index(): void
     {
@@ -106,6 +103,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     {
         return new MDConfigTable(
             $this,
+            $this->getMetadataCatalogue(),
             $this->getTableTitle(),
             $this->dic,
             $this->plugin,
@@ -187,13 +185,21 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                 $digested_list = $this->digestList($this->listprovider->getList($source), $field_id);
                 if (!empty($digested_list)) {
                     $separator = MDFieldConfigAR::VALUE_SEPERATOR;
-                    $converted_list = array_map(fn($key, $value): string => "$key$separator$value", array_keys($digested_list), array_values($digested_list));
+                    $converted_list = array_map(fn ($key, $value): string => "$key$separator$value", array_keys($digested_list), array_values($digested_list));
                     if (!empty($converted_list)) {
                         $encoded_list = base64_encode(json_encode($converted_list));
                         $this->ctrl->setParameter($this, 'possible_values_list', $encoded_list);
-                        $this->main_tpl->setOnScreenMessage('success', $this->plugin->txt('msg_md_listproviders_load_success'), true);
+                        $this->main_tpl->setOnScreenMessage(
+                            'success',
+                            $this->plugin->txt('msg_md_listproviders_load_success'),
+                            true
+                        );
                     } else {
-                        $this->main_tpl->setOnScreenMessage('failure', $this->plugin->txt('msg_md_listproviders_load_invalid'), true);
+                        $this->main_tpl->setOnScreenMessage(
+                            'failure',
+                            $this->plugin->txt('msg_md_listproviders_load_invalid'),
+                            true
+                        );
                     }
                 }
             } else {
@@ -213,7 +219,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     /**
      * Converts or better say digest the loaded list and replaces the translation to be processed by the plugin.
      *
-     * @param array  $raw_list the raw list that comes from the listprovider endpoints
+     * @param array $raw_list the raw list that comes from the listprovider endpoints
      * @param string $field_id the field id to differentiate between the list type
      *
      * @return array of digested list.
@@ -278,19 +284,25 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     protected function delete(): void
     {
         $field_id = $this->dic->http()->request()->getQueryParams()['field_id'];
+
+        $definition = $this->getMetadataCatalogue()->getFieldById($field_id);
+        if ($definition->isMandatory()) {
+            $this->main_tpl->setOnScreenMessage('failure', $this->plugin->txt('msg_md_delete_mandatory'), true);
+            $this->ctrl->redirect($this, self::CMD_STANDARD);
+        }
+
         $this->repository->delete($field_id);
         $this->dic->ctrl()->redirect($this, self::CMD_STANDARD);
     }
 
     protected function getAvailableMetadataFields(): array
     {
-        $already_configured = array_map(fn(MDFieldConfigAR $md_config): string => $md_config->getFieldId(), $this->repository->getAll(false));
-        $available_total = array_map(fn(MDFieldDefinition $md_field_def): string => $md_field_def->getId(), $this->getMetadataCatalogue()->getFieldDefinitions());
+        $already_configured = array_map(fn (MDFieldConfigAR $md_config): string => $md_config->getFieldId(), $this->repository->getAll(false));
+        $available_total = array_map(fn (MDFieldDefinition $md_field_def): string => $md_field_def->getId(), $this->getMetadataCatalogue()->getFieldDefinitions());
         return array_diff($available_total, $already_configured);
     }
 
     abstract protected function getMetadataCatalogue(): MDCatalogue;
-
 
     protected function buildForm(string $field_id): Standard
     {

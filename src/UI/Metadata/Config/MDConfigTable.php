@@ -9,6 +9,8 @@ use ilPlugin;
 use ilTable2GUI;
 use xoctGUI;
 use WaitOverlay;
+use ILIAS\UI\Factory;
+use srag\Plugins\Opencast\Model\Metadata\Definition\MDCatalogue;
 
 /**
  * Table for Plugin config -> Metadata
@@ -16,13 +18,20 @@ use WaitOverlay;
  */
 class MDConfigTable extends ilTable2GUI
 {
+    /**
+     * @readonly
+     */
+    private Factory $ui_factory;
+
     public function __construct(
-        private readonly \xoctGUI $parent,
+        private xoctGUI $parent,
+        private MDCatalogue $catalogue,
         string $title,
-        private readonly Container $dic,
-        private readonly \ilPlugin $plugin,
+        private Container $dic,
+        private ilPlugin $plugin,
         array $data
     ) {
+        $this->ui_factory = $this->dic->ui()->factory();
         new WaitOverlay($this->dic->ui()->mainTemplate());
         $this->setId('xoct_md_config');
         $this->setDescription($this->plugin->txt('msg_md_config_info'));
@@ -72,31 +81,55 @@ class MDConfigTable extends ilTable2GUI
     protected function buildActions(array $a_set): string
     {
         $this->dic->ctrl()->setParameter($this->parent_obj, 'field_id', $a_set['field_id']);
+
+        $definitions = $this->catalogue->getFieldById($a_set['field_id']);
+
         $actions = [
-            $this->dic->ui()->factory()->button()->shy(
-                $this->dic->language()->txt('edit'),
-                $this->dic->ctrl()->getLinkTarget($this->parent, xoctGUI::CMD_EDIT)
-            )
+            $this->ui_factory
+                ->button()
+                ->shy(
+                    $this->dic->language()->txt('edit'),
+                    $this->dic->ctrl()->getLinkTarget($this->parent, xoctGUI::CMD_EDIT)
+                )
         ];
-        $delete_modal = $this->dic->ui()->factory()->modal()->interruptive(
-            $this->plugin->txt('delete_modal_title'),
-            $this->plugin->txt('msg_confirm_delete'),
-            $this->dic->ctrl()->getFormAction($this->parent_obj, 'delete')
-        )->withAffectedItems([
-            $this->dic->ui()->factory()->modal()->interruptiveItem()->keyValue(
-                $a_set['field_id'],
-                $a_set['field_id'],
-                $a_set['title_de']
+        $delete_modal = $this->ui_factory
+            ->modal()
+            ->interruptive(
+                $this->plugin->txt('delete_modal_title'),
+                $this->plugin->txt('msg_confirm_delete'),
+                $this->dic->ctrl()->getFormAction($this->parent_obj, 'delete')
             )
-        ]);
-        $actions[] = $this->dic->ui()->factory()->button()->shy(
-            $this->dic->language()->txt('delete'),
-            '#'
-        )->withOnClick($delete_modal->getShowSignal());
-        return $this->dic->ui()->renderer()->render(
-            $this->dic->ui()->factory()->dropdown()->standard([
-                    $actions
-                ])->withLabel($this->dic->language()->txt('actions'))
-        ) . (isset($delete_modal) ? $this->dic->ui()->renderer()->render($delete_modal) : '');
+            ->withAffectedItems([
+                $this->ui_factory->modal()->interruptiveItem(
+                    $a_set['field_id'],
+                    $a_set['title_de']
+                )
+            ]);
+
+        $delete_button = $this->ui_factory
+            ->button()
+            ->shy(
+                $this->dic->language()->txt('delete'),
+                '#'
+            )
+            ->withOnClick($delete_modal->getShowSignal());
+
+
+        if ($definitions->isMandatory()) {
+            $delete_button = $delete_button->withUnavailableAction();
+        }
+
+        $actions[] = $delete_button;
+
+        return $this->dic->ui()
+                         ->renderer()
+                         ->render(
+                             $this->ui_factory
+                                 ->dropdown()
+                                 ->standard(
+                                     $actions
+                                 )
+                                 ->withLabel($this->dic->language()->txt('actions'))
+                         ) . (isset($delete_modal) ? $this->dic->ui()->renderer()->render($delete_modal) : '');
     }
 }

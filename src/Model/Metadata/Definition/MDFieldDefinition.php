@@ -25,8 +25,13 @@ class MDFieldDefinition
     public const F_CREATED_BY = 'createdBy';
     public const F_LOCATION = 'location';
 
-    public function __construct(private readonly string $id, private readonly MDDataType $type, private readonly bool $read_only, private readonly bool $required)
-    {
+    public function __construct(
+        private string $id,
+        private MDDataType $type,
+        private bool $read_only,
+        private bool $required,
+        private bool $mandatory
+    ) {
     }
 
     public function getId(): string
@@ -47,5 +52,10 @@ class MDFieldDefinition
     public function isRequired(): bool
     {
         return $this->required;
+    }
+
+    public function isMandatory(): bool
+    {
+        return $this->mandatory;
     }
 }
