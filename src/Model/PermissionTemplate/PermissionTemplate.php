@@ -244,7 +244,7 @@ class PermissionTemplate extends ActiveRecord
 
             // if (($perm_read === $entry_read) && ($perm_write === $entry_write)) {
             foreach (array_filter(explode(',', $perm_tpl->getAdditionalAclActions())) as $action) {
-                if (!$entry[trim($action)]) {
+                if (!array_key_exists(trim($action), $entry)) {
                     continue 2;
                 }
             }
