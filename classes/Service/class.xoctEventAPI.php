@@ -80,17 +80,7 @@ class xoctEventAPI
             )
         );
 
-        $workflow_parameters = $this->workflow_param_repository->getGeneralAutomaticallySetParameters();
-        if (array_key_exists('workflow_parameters', $additional_data) && is_array($additional_data['workflow_parameters'])) {
-            $workflow_parameters += $additional_data['workflow_parameters'];
-        }
-        $workflow_parameters = array_map(function ($value): string {
-            return $value == 1 ? 'true' : 'false';
-        }, $workflow_parameters);
-        $processing = new Processing(
-            PluginConfig::getConfig(PluginConfig::F_WORKFLOW),
-            (object) $workflow_parameters
-        );
+        $processing = $this->getProcessing($additional_data);
 
         $acl = $this->acl_utils->getStandardRolesACL();
 
@@ -166,6 +156,7 @@ class xoctEventAPI
                 $scheduling->setAgentId($data['location']);
             }
         }
+        $processing = $this->getProcessing($data);
 
         if ($data !== []) { // this prevents an update, if only 'online' has changed
             $this->event_repository->update(
@@ -174,7 +165,8 @@ class xoctEventAPI
                     new UpdateEventRequestPayload(
                         $metadata,
                         null,
-                        $scheduling
+                        $scheduling,
+                        $processing
                     )
                 )
             );
@@ -193,6 +185,22 @@ class xoctEventAPI
         } else {
             return new DateTimeImmutable($date_time_of_unknown_format);
         }
+    }
+
+    protected function getProcessing(array $data): Processing
+    {
+        $workflow_parameters = $this->workflow_param_repository->getGeneralAutomaticallySetParameters();
+        if (array_key_exists('workflow_parameters', $data) && is_array($data['workflow_parameters'])) {
+            $workflow_parameters += $data['workflow_parameters'];
+        }
+        $workflow_parameters = array_map(function ($value): string {
+            return $value == 1 ? 'true' : 'false';
+        }, $workflow_parameters);
+        $processing = new Processing(
+            PluginConfig::getConfig(PluginConfig::F_WORKFLOW),
+            (object) $workflow_parameters
+        );
+        return $processing;
     }
 
     public function delete(string $event_id): bool
