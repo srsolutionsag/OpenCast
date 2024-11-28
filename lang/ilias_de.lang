@@ -690,6 +690,7 @@ publication_usage_delete_sub#:#Unternutzung löschen
 publication_usage_edit_sub#:#Unternutzung bearbeiten
 publication_usage_add_new_sub#:#Unternutzung hinzufügen
 publication_usage_confirm_delete_text_sub#:#Sind Sie sicher, dass Sie diese Unternutzung löschen möchten?
+publication_usage_confirm_delete_text#:#Sind Sie sicher, dass Sie diese Nutzung löschen möchten?
 publication_usage_table_title_sub_usage#:#Unternutzungen
 publication_usage_table_title_usage#:#Nutzungen
 publication_usage_table_title_usage_group#:#Unternutzungsgruppe

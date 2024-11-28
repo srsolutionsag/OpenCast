@@ -168,18 +168,12 @@ class PublicationSubUsage extends ActiveRecord
      */
     protected $ext_dl_source = false;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
-        return intval($this->id);
+        return (int) $this->id;
     }
 
-    /**
-     * @param int $id
-     */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }

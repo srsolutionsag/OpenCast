@@ -232,6 +232,7 @@ class xoctPublicationUsageGUI extends xoctGUI
          */
         $xoctPublicationUsage = $this->repository->getUsage($this->identifier);
         $confirm = new ilConfirmationGUI();
+        $confirm->setHeaderText($this->getLocaleString('confirm_delete_text'));
         $confirm->addItem(self::IDENTIFIER, $xoctPublicationUsage->getUsageId(), $xoctPublicationUsage->getTitle());
         $confirm->setFormAction($this->ctrl->getFormAction($this));
         $confirm->setCancel($this->getLocaleString(self::CMD_CANCEL), self::CMD_CANCEL);
@@ -348,7 +349,7 @@ class xoctPublicationUsageGUI extends xoctGUI
         $xoctPublicationSubUsage = PublicationSubUsage::find($this->get_id);
         $confirm = new ilConfirmationGUI();
         $confirm->setHeaderText($this->getLocaleString('confirm_delete_text_sub'));
-        $confirm->addItem('id', $this->get_id, $xoctPublicationSubUsage->getTitle());
+        $confirm->addItem('id', (string) $this->get_id, $xoctPublicationSubUsage->getTitle());
         $confirm->setFormAction($this->ctrl->getFormAction($this));
         $confirm->setCancel($this->getLocaleString(self::CMD_CANCEL), self::CMD_CANCEL);
         $confirm->setConfirm($this->getLocaleString(self::CMD_DELETE), self::CMD_DELETE_SUB);
