@@ -30,7 +30,7 @@ class MDFieldDefinition
         private MDDataType $type,
         private bool $read_only,
         private bool $required,
-        private bool $mandatory
+        private bool $mandatory = false
     ) {
     }
 
