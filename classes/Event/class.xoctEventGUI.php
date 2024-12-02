@@ -1,9 +1,9 @@
 <?php
 
 declare(strict_types=1);
+
 use ILIAS\UI\Implementation\DefaultRenderer;
 use ILIAS\DI\UIServices;
-
 use ILIAS\DI\Container;
 use ILIAS\UI\Component\Input\Field\UploadHandler;
 use ILIAS\UI\Renderer;
@@ -40,7 +40,6 @@ use srag\Plugins\Opencast\Util\FileTransfer\PaellaConfigStorageService;
 use srag\Plugins\Opencast\Util\Player\PaellaConfigServiceFactory;
 use srag\Plugins\OpenCast\UI\Component\Input\Field\Loader;
 use srag\Plugins\Opencast\Model\Cache\Services;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Util\OutputResponse;
 use srag\Plugins\Opencast\Container\Init;
 
@@ -871,13 +870,18 @@ class xoctEventGUI extends xoctGUI
         $this->ctrl->redirectToURL($cutting_link);
     }
 
+    private function retrieveQuery(string $q): ?string
+    {
+        return $this->http->request()->getQueryParams()[$q] ?? null;
+    }
+
 
     public function download(): void
     {
-        $event_id = filter_input(INPUT_GET, 'event_id', FILTER_SANITIZE_STRING);
-        $publication_id = filter_input(INPUT_GET, 'pub_id', FILTER_SANITIZE_STRING);
-        $usage_type = filter_input(INPUT_GET, 'usage_type', FILTER_SANITIZE_STRING);
-        $usage_id = filter_input(INPUT_GET, 'usage_id', FILTER_SANITIZE_STRING);
+        $event_id = $this->retrieveQuery('event_id');
+        $publication_id = $this->retrieveQuery('pub_id');
+        $usage_type = $this->retrieveQuery('usage_type');
+        $usage_id = $this->retrieveQuery('usage_id');
         $event = $this->event_repository->find($event_id);
         // Check permission to download before anything else.
         $xoctUser = xoctUser::getInstance($this->user);
@@ -980,7 +984,7 @@ class xoctEventGUI extends xoctGUI
 
     protected function update(): void
     {
-        $event = $this->event_repository->find(filter_input(INPUT_GET, self::IDENTIFIER, FILTER_SANITIZE_STRING));
+        $event = $this->event_repository->find($this->retrieveQuery(self::IDENTIFIER));
         $this->ctrl->setParameter($this, self::IDENTIFIER, $event->getIdentifier());
         $form = $this->formBuilder->update(
             $this->ctrl->getFormAction($this, self::CMD_UPDATE),
@@ -1016,7 +1020,7 @@ class xoctEventGUI extends xoctGUI
 
     protected function updateScheduled(): void
     {
-        $event = $this->event_repository->find(filter_input(INPUT_GET, self::IDENTIFIER, FILTER_SANITIZE_STRING));
+        $event = $this->event_repository->find($this->retrieveQuery(self::IDENTIFIER));
         $this->ctrl->setParameter($this, self::IDENTIFIER, $event->getIdentifier());
         // TODO: metadata/scheduling should not be necessary here
         $form = $this->formBuilder->update_scheduled(

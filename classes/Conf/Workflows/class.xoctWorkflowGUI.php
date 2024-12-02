@@ -1,14 +1,13 @@
 <?php
 
 declare(strict_types=1);
-use ILIAS\UI\Renderer;
 
+use ILIAS\UI\Renderer;
 use ILIAS\UI\Component\Input\Container\Form\Standard;
 use ILIAS\UI\Factory;
 use srag\Plugins\Opencast\Model\Workflow\WorkflowAR;
 use srag\Plugins\Opencast\Model\Workflow\WorkflowRepository;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
 
 /**
@@ -265,7 +264,7 @@ class xoctWorkflowGUI extends xoctGUI
 
     protected function edit(): void
     {
-        $workflow_id = filter_input(INPUT_GET, 'workflow_id', FILTER_SANITIZE_STRING);
+        $workflow_id = $this->retrieveWorkflowId();
         $this->main_tpl->setContent(
             $this->ui_renderer->render(
                 $this->getForm(WorkflowAR::find($workflow_id))
@@ -275,7 +274,7 @@ class xoctWorkflowGUI extends xoctGUI
 
     protected function update(): void
     {
-        $id = filter_input(INPUT_GET, 'workflow_id', FILTER_SANITIZE_STRING);
+        $id = $this->retrieveWorkflowId();
         $form = $this->getForm(WorkflowAR::find($id))->withRequest($this->http->request());
         if ($data = $form->getData()) {
             $wf = reset($data);
@@ -310,5 +309,10 @@ class xoctWorkflowGUI extends xoctGUI
     public function txt(string $key): string
     {
         return $this->getLocaleString($key, self::LANG_MODULE);
+    }
+
+    protected function retrieveWorkflowId(): ?string
+    {
+        return $this->http->request()->getQueryParams()['workflow_id'] ?? null;
     }
 }

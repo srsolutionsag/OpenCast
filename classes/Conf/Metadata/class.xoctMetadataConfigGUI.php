@@ -68,6 +68,11 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
         $this->post_ids = $this->http->request()->getParsedBody()['ids'] ?? [];
     }
 
+    protected function retrieveFieldId(): ?string
+    {
+        return $this->http->request()->getQueryParams()['field_id'] ?? null;
+    }
+
     public function executeCommand(): void
     {
         $cmd = $this->ctrl->getCmd(self::CMD_STANDARD);
@@ -113,7 +118,9 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
 
     protected function add(): void
     {
-        $field_id = filter_input(INPUT_GET, 'field_id', FILTER_SANITIZE_STRING);
+        $field_id = $this->retrieveFieldId();
+
+
         $this->initLoadValuesToolbar($field_id, self::CMD_ADD);
         $form = $this->buildForm($field_id);
         $this->main_tpl->setContent($this->renderer->render($form));
@@ -125,7 +132,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
      */
     protected function edit(): void
     {
-        $field_id = filter_input(INPUT_GET, 'field_id', FILTER_SANITIZE_STRING);
+        $field_id = $this->retrieveFieldId();
         $this->initLoadValuesToolbar($field_id, self::CMD_EDIT);
         $form = $this->buildForm($field_id);
         $this->main_tpl->setContent($this->renderer->render($form));
@@ -157,9 +164,9 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
      */
     protected function confirmLoadList(): void
     {
-        $field_id = filter_input(INPUT_GET, 'field_id', FILTER_SANITIZE_STRING);
+        $field_id = $this->retrieveFieldId();
         $this->ctrl->setParameter($this, 'field_id', $field_id);
-        $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_STRING);
+        $redirect = $this->http->request()->getQueryParams()['redirect'] ?? null;
         $this->ctrl->setParameter($this, 'redirect', $redirect);
         $ilConfirmationGUI = new ilConfirmationGUI();
         $ilConfirmationGUI->setFormAction($this->ctrl->getFormAction($this));
@@ -175,9 +182,9 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     protected function loadList(): void
     {
         $this->ctrl->clearParameters($this);
-        $field_id = filter_input(INPUT_GET, 'field_id', FILTER_SANITIZE_STRING);
+        $field_id = $this->retrieveFieldId();
         $this->ctrl->setParameter($this, 'field_id', $field_id);
-        $redirect = filter_input(INPUT_GET, 'redirect', FILTER_SANITIZE_STRING);
+        $redirect = $this->http->request()->getQueryParams()['redirect'] ?? null;
         try {
             if ($this->listprovider->hasList($field_id) && array_key_exists($field_id, self::$listprovider_sources)) {
                 $md_field_config = $this->repository->findByFieldId($field_id);
@@ -372,12 +379,10 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                 array_fill(0, 3, MDFieldConfigAR::VALUE_SEPERATOR)
             );
             $values = $md_field_config instanceof MDFieldConfigAR ? $md_field_config->getValuesAsEditableString() : '';
-            if ($encoded_possible_values_list = filter_input(
-                INPUT_GET,
-                'possible_values_list',
-                FILTER_SANITIZE_STRING
-            )) {
-                $decoded_list = base64_decode($encoded_possible_values_list);
+            if (
+                $encoded_possible_values_list = $this->http->request()->getQueryParams()['possible_values_list'] ?? null
+            ) {
+                $decoded_list = base64_decode((string) $encoded_possible_values_list);
                 $possible_values_list = implode("\n", json_decode($decoded_list, true));
                 $values = $possible_values_list;
             }
