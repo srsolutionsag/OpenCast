@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
+use srag\Plugins\Opencast\LegacyHelpers\TableGUI;
 use ILIAS\UI\Component\Modal\Modal;
 use ILIAS\UI\Factory;
 use ILIAS\UI\Renderer;
-use srag\CustomInputGUIs\OpenCast\TableGUI\TableGUI;
 use srag\Plugins\Opencast\Model\Workflow\WorkflowAR;
 use srag\Plugins\Opencast\Model\Workflow\WorkflowRepository;
-use srag\Plugins\Opencast\LegacyHelpers\TranslatorTrait;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
 use srag\Plugins\Opencast\LegacyHelpers\TableGUIConstants;
 use srag\Plugins\Opencast\Container\Init;
@@ -23,7 +22,7 @@ class xoctWorkflowTableGUI extends ilTable2GUI
     use LocaleTrait {
         LocaleTrait::getLocaleString as _getLocaleString;
     }
-    use \srag\Plugins\Opencast\LegacyHelpers\TableGUI;
+    use TableGUI;
 
     public function getLocaleString(string $string, ?string $module = '', ?string $fallback = null): string
     {
@@ -70,13 +69,13 @@ class xoctWorkflowTableGUI extends ilTable2GUI
             $width = '';
             switch ($id) {
                 case 'description':
-                    $width = '250px';
+                    // width = '250px';
                     break;
                 case 'id':
-                    $width = '200px';
+                    // $width = '200px';
                     break;
                 case 'config_panel':
-                    $width = '24px';
+                    // $width = '24px';
                     break;
             }
             $action = ($id === 'action');
@@ -134,8 +133,9 @@ class xoctWorkflowTableGUI extends ilTable2GUI
                     $this->ctrl->getFormAction($this->parent_obj, xoctGUI::CMD_DELETE)
                 )->withAffectedItems(
                     [
-                        $this->factory->modal()->interruptiveItem(
+                        $this->factory->modal()->interruptiveItem()->keyValue(
                             (string) $row->getId(),
+                            $this->getLocaleString('title'),
                             $row->getTitle()
                         )
                     ]
