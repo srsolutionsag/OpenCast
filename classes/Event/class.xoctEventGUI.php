@@ -945,7 +945,7 @@ class xoctEventGUI extends xoctGUI
         }
 
         $url = $publication->getUrl();
-        $extension = pathinfo($url)['extension'];
+        $extension = pathinfo($url)['extension'] ?? '';
         $url = PluginConfig::getConfig(PluginConfig::F_SIGN_DOWNLOAD_LINKS) ? xoctSecureLink::signDownload($url) : $url;
 
         // if (PluginConfig::getConfig(PluginConfig::F_EXT_DL_SOURCE)) {
@@ -966,7 +966,8 @@ class xoctEventGUI extends xoctGUI
             // deliver file
             header('Content-Description: File Transfer');
             header('Content-Type: ' . $publication->getMediatype());
-            header('Content-Disposition: attachment; filename="' . $event->getTitle() . '.' . $extension . '"');
+            $filename = $event->getTitle() . (empty($extension) ? '' : '.' . $extension);
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
             header('Content-Length: ' . $size);
             readfile($url);
         }
