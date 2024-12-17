@@ -4,15 +4,14 @@
 }
 
 :root {
-    --main-fg-color: #F9FAFB;
-    --main-bg-color: #1F2937;
-    --main-bg-color-hover: #1F2937;
-
-    --secondary-bg-color-hover: #1F2937;
+    --main-bg-color: #1e1e1e;
+    --main-bg-gradient: color-mix(in srgb, #1e1e1e 50%, transparent);
+    --secondary-bg-color: #2e2e2e;
+    --secondary-bg-color-hover: color-mix(in srgb, #1e1e1e 90%, transparent);
     --highlight-bg-color: #3073B8;
     --highlight-bg-color-hover: #3a8bdd;
-    --main-bg-gradient: #1F2937;
-    --base-video-rect-background-color: #9CA3AF;
+    --video-container-background-color: #000;
+    --base-video-rect-background-color: #000;
 }
 
 .button-group-title,
