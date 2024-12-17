@@ -51,6 +51,7 @@ class PluginConfig extends ActiveRecord
     public const CACHE_DATABASE = 2;
     public const F_USER_MAPPING = 'user_mapping';
     public const F_GROUP_PRODUCERS = 'group_producers';
+    public const F_GROUP_STUDIO = 'group_studio';
     public const F_STD_ROLES = 'std_roles';
     public const F_ROLE_USER_PREFIX = 'role_user_prefix';
     public const F_ROLE_USER_ACTIONS = 'role_user_actions';
@@ -158,8 +159,9 @@ class PluginConfig extends ActiveRecord
     /**
      * @var array
      */
-    public static $groups = [
+    public static array $groups = [
         self::F_GROUP_PRODUCERS,
+        self::F_GROUP_STUDIO,
     ];
 
     /**
