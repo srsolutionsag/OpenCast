@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 8.3.0
+- [FIX] Paella player playbar optimisations, see PR #380
+- [FIX] Response from OC-16 changed, fixes #374, see PR #375
+- [FEATURE] Studio Group, see PR #340
+- [FIX] small issue with non existing suffixes
+- [FIX] When updating an Event over the OC-Plugin-API, I can't switch from 
+  podcast to a livestream, fixes #371
+
 ## Version 8.2.8
 - [FIX] array access, see #369
 - [FIX] introduce "title" as mandatory MD for series and events
