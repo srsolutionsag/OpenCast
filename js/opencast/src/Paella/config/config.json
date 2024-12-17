@@ -11,6 +11,11 @@
 
   "defaultAudioStream": "presenter",
 
+  "ui": {
+    "hideUITimer": 1000,
+    "hideOnMouseLeave": true
+  },
+
   "progressIndicator": {
     "inlineMode": false,
     "showTotal": true,
