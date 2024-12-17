@@ -11,6 +11,12 @@
 - Fix of #341
 - [FIX] An error occurred while communicating with the OpenCast-Server: OcEventsApi -> getAll
 - [FIX] Memorization of last position in video is not per video #289
+- [FIX] Paella player playbar optimisations, see PR #380
+- [FIX] Response from OC-16 changed, fixes #374, see PR #375
+- [FEATURE] Studio Group, see PR #340
+- [FIX] small issue with non existing suffixes
+- [FIX] When updating an Event over the OC-Plugin-API, I can't switch from
+  podcast to a livestream, fixes #371
 
 ## Version 8.2.1
 - [FIX] caching issue with new container
