@@ -26,7 +26,13 @@ class LivePlayerDataBuilder extends PlayerDataBuilder
             OpencastAPI::RETURN_ARRAY
         );
 
-        $media_package = $episode_data['search-results']['result']['mediapackage'];
+        //Temporary fix until this issue is fixed in the opencast-php-library:
+        //https://github.com/elan-ev/opencast-php-library/issues/33
+        if (array_key_exists('search-results', $episode_data)) {
+            $media_package = $episode_data['search-results']['result']['mediapackage'];
+        } else {
+            $media_package = $episode_data['result'][0]['mediapackage'];
+        }
 
         $source_format = PluginConfig::getConfig(PluginConfig::F_LIVESTREAM_BUFFERED) ? 'hls' : 'hlsLive';
         $streams = [];
