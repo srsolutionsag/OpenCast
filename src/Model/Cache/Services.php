@@ -44,7 +44,7 @@ class Services
     private Factory $adaptor_factory;
     private Config $config;
 
-    public function __construct(Config $config, \ilDBInterface $db)
+    public function __construct(Config $config)
     {
         $this->config = $config;
         $this->adaptor_factory = new Factory();

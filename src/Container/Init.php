@@ -122,10 +122,7 @@ final class Init
                 $activated
             );
 
-            return new Services(
-                $config,
-                $opencast_container[\ILIAS\DI\Container::class]->database()
-            );
+            return new Services($config);
         });
 
         $opencast_container->glue(EventAPIRepository::class, fn(): EventAPIRepository => new EventAPIRepository(
