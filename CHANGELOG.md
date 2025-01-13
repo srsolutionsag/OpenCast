@@ -17,6 +17,7 @@
 - [FIX] small issue with non existing suffixes
 - [FIX] When updating an Event over the OC-Plugin-API, I can't switch from
   podcast to a livestream, fixes #371
+- [FIX] #384: remove parameter not needed
 
 ## Version 8.2.1
 - [FIX] caching issue with new container

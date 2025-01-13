@@ -161,7 +161,6 @@ trait ilObjShowDuplicates
         $il_access_handler = $this->ilias_dic->access();
 
         // process
-
         /** @var ObjectSettings $objectSettings */
         $objectSettings = ObjectSettings::find($a_obj_id) ?? new ObjectSettings();
         if ($all_refs = $objectSettings->getDuplicatesOnSystem()) {
