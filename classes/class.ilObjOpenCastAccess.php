@@ -110,32 +110,28 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
     ];
 
 
-    /**
-     * @param string $a_cmd
-     * @param string $a_permission
-     * @param int    $a_ref_id
-     * @param int    $a_obj_id
-     * @param string $a_user_id
-     */
-    public function _checkAccess($a_cmd, $a_permission, $a_ref_id, $a_obj_id = null, $a_user_id = ''): bool
+
+    public function _checkAccess(string $cmd, string $permission, int $ref_id, int $obj_id, ?int $user_id = null): bool
     {
-        if (empty($a_user_id)) {
-            $a_user_id = $this->user->getId();
+        if ($user_id === null) {
+            $user_id = $this->user->getId();
         }
-        if ($a_obj_id === null) {
-            $a_obj_id = ilObject2::_lookupObjId($a_ref_id);
+        if ($obj_id === 0) {
+            $obj_id = ilObject2::_lookupObjId($ref_id);
         }
 
-        $a_obj_id = (int) $a_obj_id;
+        $obj_id = (int) $obj_id;
 
-        switch ($a_permission) {
+        switch ($permission) {
+            case 'copy':
+                return false;
             case 'read':
             case 'visible':
-                if (!ilObjOpenCastAccess::checkOnline($a_obj_id) && !$this->access->checkAccessOfUser(
-                    $a_user_id,
+                if (!self::checkOnline($obj_id) && !$this->access->checkAccessOfUser(
+                    $user_id,
                     'write',
                     '',
-                    $a_ref_id
+                    $ref_id
                 )) {
                     return false;
                 }

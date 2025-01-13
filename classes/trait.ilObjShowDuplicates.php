@@ -15,7 +15,6 @@ use srag\Plugins\Opencast\Model\Object\ObjectSettings;
  */
 trait ilObjShowDuplicates
 {
-
     private $items_to_delete = [];
 
     /**
@@ -139,9 +138,9 @@ trait ilObjShowDuplicates
                     $path .= $data['title'];
                 } else {
                     $path .= ('<a target="_top" href="' . ilLink::_getLink(
-                            (int) $data['ref_id'],
-                            $data['type']
-                        ) . '">' . $data['title'] . '</a>');
+                        (int) $data['ref_id'],
+                        $data['type']
+                    ) . '">' . $data['title'] . '</a>');
                 }
             }
 
@@ -162,10 +161,9 @@ trait ilObjShowDuplicates
         $il_access_handler = $this->ilias_dic->access();
 
         // process
-
         /** @var ObjectSettings $objectSettings */
         $objectSettings = ObjectSettings::find($a_obj_id);
-        if ($all_refs = $objectSettings->getDuplicatesOnSystem()) {
+        if ($objectSettings && $all_refs = $objectSettings->getDuplicatesOnSystem()) {
             $il_language->loadLanguageModule("rep");
 
             $may_delete_any = 0;
@@ -197,7 +195,8 @@ trait ilObjShowDuplicates
             // render
             $tpl = new ilTemplate(
                 "./Customizing/global/plugins/Services/Repository/RepositoryObject/OpenCast/templates/default/tpl.rep_multi_ref.html",
-                true, true
+                true,
+                true
             );
 
             $tpl->setVariable("TXT_INTRO", $il_language->txt("rep_multiple_reference_deletion_intro"));
