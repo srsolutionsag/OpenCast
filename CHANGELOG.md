@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 8.3.1
+- [FIX] #384: remove parameter not needed
+
 ## Version 8.3.0
 - [FIX] Paella player playbar optimisations, see PR #380
 - [FIX] Response from OC-16 changed, fixes #374, see PR #375
