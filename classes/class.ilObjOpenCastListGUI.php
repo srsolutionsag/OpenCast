@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Object\ObjectSettings;
+use srag\Plugins\Opencast\Container\Init;
+use srag\Plugins\Opencast\API\API;
 
 /**
  * ListGUI implementation for OpenCast object plugin. This one
@@ -134,31 +136,52 @@ class ilObjOpenCastListGUI extends ilObjectPluginListGUI
     #[ReturnTypeWillChange]
     public function getCustomProperties(/*array*/ $prop): array
     {
-        $props = parent::getCustomProperties([]);
-        try {
-            $objectSettings = $this->getOpenCast(true);
-            if (!$objectSettings instanceof ObjectSettings) {
-                return $props;
-            }
+        static $ping, $message;
 
-            if (!$objectSettings->isOnline()) {
-                $props[] = [
-                    'alert' => true,
-                    'newline' => true,
-                    'property' => 'Status',
-                    'value' => 'Offline',
-                    'propertyNameVisible' => true
-                ];
+        // we prevent multiple pings to the API to avoid long loading times in ILIAS containers where
+        // multiple objects are displayed
+        if (!isset($ping)) {
+            $ping = true;
+            $message ='';
+            try {
+                // try api call
+                $dic = Init::init();
+                /** @var API $api */
+                $api = $dic[srag\Plugins\Opencast\API\API::class];
+                $api->routes()->baseApi->getVersion();
+            } catch (xoctException $e) {
+                $ping = false;
+                $message = $e->getGeneralMessage();
             }
-        } catch (xoctException $e) {
+        }
+
+        $props = parent::getCustomProperties([]);
+
+        $objectSettings = $this->getOpenCast(true);
+        if (!$objectSettings instanceof ObjectSettings) {
+            return $props;
+        }
+
+        if (!$objectSettings->isOnline()) {
+            $props[] = [
+                'alert' => true,
+                'newline' => true,
+                'property' => 'Status',
+                'value' => 'Offline',
+                'propertyNameVisible' => true
+            ];
+        }
+
+        if(!$ping) {
             $props[] = [
                 'alert' => true,
                 'newline' => true,
                 'property' => 'API',
-                'value' => $e->getMessage(),
+                'value' => $message,
                 'propertyNameVisible' => false
             ];
         }
+
 
         return $props;
     }

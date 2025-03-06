@@ -222,10 +222,10 @@ class xoctEventGUI extends xoctGUI
         );    // init waiter
         $this->main_tpl->addOnLoadCode(
             "$(document).on('shown.bs.dropdown', (e) => {
-					$(e.target).children('.dropdown-menu').each((i, el) => {
-						il.Util.fixPosition(el);
-					});
-				});"
+                    $(e.target).children('.dropdown-menu').each((i, el) => {
+                        il.Util.fixPosition(el);
+                    });
+                });"
         );    // fix action menu position bug
         $this->main_tpl->addCss(
             $this->plugin->getDirectory() . '/templates/default/reporting_modal.css'
@@ -447,13 +447,16 @@ class xoctEventGUI extends xoctGUI
         $ajax_link .= '&async=true';
 
         $ajax = "$.ajax({
-				    url: '$ajax_link',
-				    dataType: 'html',
-				    success: function(data){
-				        il.Opencast.UI.waitOverlay.hide();
-				        $('div#xoct_table_placeholder').replaceWith($(data));
-				    }
-				});";
+                    url: '$ajax_link',
+                    dataType: 'html',
+                    success: function(data){
+                        il.Opencast.UI.waitOverlay.hide();
+                        $('div#xoct_table_placeholder').replaceWith($(data));
+                    },
+                    error: function(data){
+                        il.Opencast.UI.waitOverlay.error(data.responseText);
+                    }
+                });";
         $this->main_tpl->addOnLoadCode('il.Opencast.UI.waitOverlay.show();');
         $this->main_tpl->addOnLoadCode($ajax);
     }
@@ -464,14 +467,17 @@ class xoctEventGUI extends xoctGUI
         $ajax_link .= '&async=true';
 
         $ajax = "$.ajax({
-				    url: '$ajax_link',
-				    dataType: 'html',
-				    success: function(data){
-				        il.Opencast.UI.waitOverlay.hide();
-				        $('div#xoct_tiles_placeholder').replaceWith($(data));
-				        il.Opencast.UI.Tiles.init();
-				    }
-				});";
+                    url: '$ajax_link',
+                    dataType: 'html',
+                    success: function(data){
+                        il.Opencast.UI.waitOverlay.hide();
+                        $('div#xoct_tiles_placeholder').replaceWith($(data));
+                        il.Opencast.UI.Tiles.init();
+                    },
+                    error: function(data){
+                        il.Opencast.UI.waitOverlay.error(data.responseText);
+                    }
+                });";
         $this->main_tpl->addOnLoadCode('il.Opencast.UI.waitOverlay.show();');
         $this->main_tpl->addOnLoadCode($ajax);
     }
@@ -481,7 +487,11 @@ class xoctEventGUI extends xoctGUI
      */
     public function asyncGetTableGUI(): void
     {
-        $this->sendReponse($this->getTableGUI());
+        try {
+            $this->sendReponse($this->getTableGUI());
+        } catch (Exception $e) {
+            $this->sendErrorReponse($e->getMessage());
+        }
     }
 
     public function getTableGUI(): string
@@ -497,7 +507,11 @@ class xoctEventGUI extends xoctGUI
      */
     public function asyncGetTilesGUI(): void
     {
-        $this->sendReponse($this->getTilesGUI());
+        try {
+            $this->sendReponse($this->getTilesGUI());
+        } catch (Exception $e) {
+            $this->sendErrorReponse($e->getMessage());
+        }
     }
 
     protected function getTilesGUI(): string

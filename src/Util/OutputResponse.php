@@ -11,6 +11,21 @@ trait OutputResponse
     /**
      * @return never
      */
+    protected function sendErrorReponse(string $data): void {
+        global $DIC;
+
+        $DIC->http()->saveResponse(
+            $DIC->http()->response()->withBody(
+                Streams::ofString($data)
+            )->withStatus(500)
+        );
+        $DIC->http()->sendResponse();
+        $this->closeResponse();
+    }
+
+    /**
+     * @return never
+     */
     protected function sendReponse(string $data): void
     {
         global $DIC;

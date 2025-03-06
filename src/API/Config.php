@@ -32,8 +32,8 @@ final class Config
             'username' => $api_username,
             'password' => $api_password,
             'version' => $api_version,
-            'timeout' => ($timeout > 0 ? (intval($timeout) / 1000) : $timeout),
-            'connect_timeout' => ($connect_timeout > 0 ? (intval($connect_timeout) / 1000) : $connect_timeout),
+            'timeout' => 5000,
+            'connect_timeout' => 5000,
             'handler' => $handler_stack
         ];
 

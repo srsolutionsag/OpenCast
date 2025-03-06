@@ -20,7 +20,7 @@ final class Container extends \ILIAS\DI\Container
 {
     public function glue(string $fqdn, \Closure $factory): void
     {
-        $this[$fqdn] = $this->factory($factory);
+        $this[$fqdn] = $factory;
     }
 
     public function get(string $fqdn): object

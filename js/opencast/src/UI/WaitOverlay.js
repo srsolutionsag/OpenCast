@@ -17,7 +17,12 @@ export default class WaitOverlay {
     }
 
     init(type) {
-        $('body').append('<div id="xoct_waiter" class="xoct_waiter"></div>')
+        $('body').append(
+            '<div id="xoct_waiter">' +
+                '<div class="xoct_error"</div>' +
+                '<div class="xoct_spinner"</div>' +
+            '</div>'
+        )
     }
 
 
@@ -38,6 +43,14 @@ export default class WaitOverlay {
             window.clearTimeout(this.timer);
             $('#xoct_waiter').fadeOut(200);
         }
+    }
+
+    error(text) {
+        let error = $('#xoct_waiter').find('.xoct_error');
+        let spinner = $('#xoct_waiter').find('.xoct_spinner');
+        spinner.hide();
+        error.text(text);
+        error.show();
     }
 
     addListener(dom_selector_string) {

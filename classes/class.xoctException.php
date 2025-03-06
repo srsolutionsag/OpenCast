@@ -54,5 +54,12 @@ class xoctException extends Exception
             $message .= ': ' . $additional_message;
         }
         parent::__construct($message, $code);
+        $this->general_message = self::$messages[$code] ?? $message;
     }
+
+    public function getGeneralMessage(): string
+    {
+        return $this->general_message;
+    }
+
 }
