@@ -43,6 +43,7 @@ use srag\Plugins\OpenCast\UI\Component\Input\Field\Loader;
 use srag\Plugins\Opencast\Model\Cache\Services;
 use srag\Plugins\Opencast\Util\OutputResponse;
 use srag\Plugins\Opencast\Container\Init;
+use srag\Plugins\Opencast\UI\Integration\Integration;
 
 /**
  * Class xoctEventGUI
@@ -290,6 +291,17 @@ class xoctEventGUI extends xoctGUI
      */
     protected function index(): void
     {
+        $container = Init::init();
+        /**
+         * @var Integration $ui
+         */
+        $ui = $container[Integration::class];
+
+        $entity_list = $ui->series()->asEntityList($this->objectSettings->getSeriesIdentifier());
+
+        $this->main_tpl->setContent($this->getTableGUI() . $this->ui_renderer->render($entity_list)); // just to avoid empty content
+
+        return;
         $filter_html = null;
         ilChangeEvent::_recordReadEvent(
             $this->parent_gui->getObject()->getType(),

@@ -11,12 +11,16 @@ use ILIAS\UI\Component\Item\Item;
 use srag\Plugins\Opencast\Model\Series\SeriesAPIRepository;
 use ILIAS\UI\Component\Panel\Panel;
 use ILIAS\UI\Component\Button\Standard;
+use ILIAS\UI\Component\Listing\Entity\RecordToEntity;
+use ILIAS\UI\Component\Entity\Entity;
+use ILIAS\UI\Factory as UIFactory;
+use ILIAS\UI\Component\Button\Tag;
 
 /**
  * @author Fabian Schmid <fabian@sr.solutions>
  * @internal
  */
-class Events
+class Events implements RecordToEntity
 {
     use Commons;
 
@@ -29,6 +33,47 @@ class Events
     ) {
         $this->event_repository = $this->container->get(EventAPIRepository::class);
         $this->series_repository = $this->container->get(SeriesAPIRepository::class);
+    }
+
+    public function map(UIFactory $ui_factory, mixed $record): Entity
+    {
+        $record = $this->event_repository->find($record['identifier'] ?? '');
+        if (!$record instanceof Event) {
+            throw new \InvalidArgumentException(
+                "Record must be an instance of " . Event::class . ", " . get_class($record) . " given."
+            );
+        }
+
+        return $this->ui_factory->entity()->standard(
+            $record->getTitle(),
+            $this->ui_factory->image()->responsive(
+                $record->publications()->getThumbnailUrl(),
+                'src'
+            )
+        )->withMainDetails(
+            $this->ui_factory->listing()->property()->withProperty('Description', $record->getDescription()),
+            $this->ui_factory->listing()->property()->withProperty('Speaker', implode(", ", $record->getPresenter())),
+        )->withReactions(
+            $this->ui_factory->button()->tag(
+                'Play',
+                "#"
+            )->withRelevance(Tag::REL_VERYHIGH),
+            $this->ui_factory->button()->tag(
+                'Download',
+                "#"
+            )->withRelevance(Tag::REL_VERYLOW),
+        )->withActions(
+            $this->ui_factory->button()->shy(
+                'Play',
+                "#"
+            ),
+            $this->ui_factory->button()->shy(
+                'Download',
+                "#"
+            ),
+        )->withFeaturedProperties(
+            $this->ui_factory->listing()->property()->withProperty('Date', $record->getStart()->format('d.m.Y H:i')),
+        );
     }
 
     public function asItemFromEventId(
