@@ -299,7 +299,9 @@ class xoctEventGUI extends xoctGUI
 
         $entity_list = $ui->series()->asEntityList($this->objectSettings->getSeriesIdentifier());
 
-        $this->main_tpl->setContent($this->getTableGUI() . $this->ui_renderer->render($entity_list)); // just to avoid empty content
+        $this->main_tpl->setContent(
+            $this->getTableGUI() . $this->ui_renderer->render($entity_list)
+        ); // just to avoid empty content
 
         return;
         $filter_html = null;

@@ -10,6 +10,7 @@ use srag\Plugins\Opencast\Model\Series\SeriesAPIRepository;
 use ILIAS\UI\Component\Listing\Entity\DataRetrieval;
 use ILIAS\UI\Component\Listing\Entity\Mapping;
 use ILIAS\Data\Range;
+use ILIAS\Data\URI;
 
 /**
  * @author Fabian Schmid <fabian@sr.solutions>
@@ -43,6 +44,14 @@ class Series implements DataRetrieval
         $this->series = $series;
 
         return $this->ui_factory->listing()->entity()->standard($this->events)->withData($this);
+    }
+
+    public function asDataTableWithFilters(
+        URI $calling_url
+    ): array {
+        return [
+            
+        ];
     }
 
     public function getEntities(Mapping $mapping, ?Range $range, ?array $additional_parameters): \Generator
