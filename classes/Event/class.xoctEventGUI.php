@@ -44,6 +44,7 @@ use srag\Plugins\Opencast\Model\Cache\Services;
 use srag\Plugins\Opencast\Util\OutputResponse;
 use srag\Plugins\Opencast\Container\Init;
 use srag\Plugins\Opencast\UI\Integration\Integration;
+use ILIAS\Data\URI;
 
 /**
  * Class xoctEventGUI
@@ -291,16 +292,29 @@ class xoctEventGUI extends xoctGUI
      */
     protected function index(): void
     {
+        global $DIC;
+
         $container = Init::init();
         /**
          * @var Integration $ui
          */
         $ui = $container[Integration::class];
 
-        $entity_list = $ui->series()->asEntityList($this->objectSettings->getSeriesIdentifier());
+        $uri = new URI(
+            (string) $DIC->http()->request()->getUri()
+        );
 
+
+        $component = $ui->series()->asEntityList($this->objectSettings->getSeriesIdentifier());
+       /* $component = $ui->mine()->asDataTableWithFilters(
+            $uri,
+            $uri,
+        );*/
+
+        $old_tble = $this->getTableGUI();
+        $old_tble = '';
         $this->main_tpl->setContent(
-            $this->getTableGUI() . $this->ui_renderer->render($entity_list)
+            $old_tble . $this->ui_renderer->render($component)
         ); // just to avoid empty content
 
         return;
