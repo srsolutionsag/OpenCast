@@ -140,7 +140,7 @@ class MyEvents implements DataRetrieval
                 ),
             ];
             $items[] = $this->events->asItem($event, $this->ui_factory->button()->standard(
-                $t("select"),
+                $this->translate("select"),
                 $action
             ), $actions);
         }
