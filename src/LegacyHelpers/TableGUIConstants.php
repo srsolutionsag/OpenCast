@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 namespace srag\Plugins\Opencast\LegacyHelpers;
 
-use srag\CustomInputGUIs\OpenCast\Template\Template;
-use srag\CustomInputGUIs\OpenCast\TableGUI\Exception\TableGUIException;
-use srag\CustomInputGUIs\OpenCast\PropertyFormGUI\PropertyFormGUI;
-use srag\CustomInputGUIs\OpenCast\PropertyFormGUI\Items\Items;
-use srag\CustomInputGUIs\OpenCast\MultiLineNewInputGUI\MultiLineNewInputGUI;
-
 /**
  * @author     Fabian Schmid <fabian@sr.solutions>
  * @deprecated Do not use this interface anymore, it's only to make old tables run which used the srag/custominputguis library

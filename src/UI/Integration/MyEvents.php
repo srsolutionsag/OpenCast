@@ -87,7 +87,7 @@ class MyEvents implements DataRetrieval
         foreach ($this->series_repository->getAllForUser($this->user->getUserRoleName()) as $item) {
             $series[$item->getIdentifier()] = $item->getMetadata()->getField('title')->getValue();
         }
-        uasort($series, 'strnatcasecmp');
+        uasort($series, strnatcasecmp(...));
 
         $inputs = [
             'textFilter' => $this->ui_factory->input()->field()->text(
@@ -214,6 +214,7 @@ class MyEvents implements DataRetrieval
             ->ui_factory
             ->table()
             ->data(
+                $this,
                 $this->container->translator()->translate("config_events"),
                 [
                     'preview' => $this
@@ -265,8 +266,7 @@ class MyEvents implements DataRetrieval
                             $this->container->translator()->translate("select")
                         )
                         ->withIsSortable(false),
-                ],
-                $this
+                ]
             )
             ->withRequest($this->container->ilias()->http()->request())
             ->withRange(new Range(0, $this->default_page_size));
@@ -277,8 +277,9 @@ class MyEvents implements DataRetrieval
         array $visible_column_ids,
         Range $range,
         Order $order,
-        ?array $filter_data,
-        ?array $additional_parameters
+        mixed $additional_viewcontrol_data,
+        mixed $filter_data,
+        mixed $additional_parameters
     ): Generator {
         $sorting = $order->get();
 
@@ -339,8 +340,11 @@ class MyEvents implements DataRetrieval
         }
     }
 
-    public function getTotalRowCount(?array $filter_data, ?array $additional_parameters): ?int
-    {
+    public function getTotalRowCount(
+        mixed $additional_viewcontrol_data,
+        mixed $filter_data,
+        mixed $additional_parameters
+    ): ?int {
         return count($this->getEvents());
     }
 

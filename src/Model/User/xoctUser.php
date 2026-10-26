@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace srag\Plugins\Opencast\Model\User;
 
 use ilObjUser;
-use ilOpenCastPlugin;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use xoctException;
 
@@ -106,9 +105,7 @@ class xoctUser
     public static function getInstance($ilUser): self
     {
         $key = (is_numeric($ilUser)) ? (int) $ilUser : $ilUser->getId();
-        if (!isset(self::$instances[$key])) {
-            self::$instances[$key] = new self($key);
-        }
+        self::$instances[$key] ??= new self($key);
 
         return self::$instances[$key];
     }
@@ -310,7 +307,6 @@ class xoctUser
 
     /**
      * Gets the JWT Specific user roles for Studio to be added in the claims.
-     * @return array
      */
     public function getStudioAccessRoles(): array
     {
@@ -323,7 +319,6 @@ class xoctUser
 
     /**
      * Gets the JWT Specific user roles for Editor to be added in the claims.
-     * @return array
      */
     public function getEditorAccessRoles(): array
     {
@@ -336,7 +331,6 @@ class xoctUser
 
     /**
      * Gets the JWT Specific user roles for Annotation-Tool to be added in the claims.
-     * @return array
      */
     public function getAnnotationToolAccessRoles(): array
     {
@@ -349,11 +343,9 @@ class xoctUser
 
     /**
      * Generates a list of user roles to access events, series or playlist.
-     * @return array
      */
     public function getBasicAccessRoles(): array
     {
-        $user_basic_access_roles = PluginConfig::getConfig(PluginConfig::F_JWT_SECURITY_BASIC_ROLES) ?? [];
-        return $user_basic_access_roles;
+        return PluginConfig::getConfig(PluginConfig::F_JWT_SECURITY_BASIC_ROLES) ?? [];
     }
 }

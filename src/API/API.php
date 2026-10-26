@@ -73,7 +73,6 @@ interface API
 
     /**
      * Checks if the JWT mechanism is activated.
-     * @return bool
      */
     public function isJWTActivated(): bool;
 

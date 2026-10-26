@@ -28,7 +28,7 @@ class ilOpenCastConfigGUI extends ilPluginConfigGUI
      */
     private $tabs;
     /**
-     * @var \ILIAS\DI\HTTPServices
+     * @var \ILIAS\HTTP\Services
      */
     protected $http;
 

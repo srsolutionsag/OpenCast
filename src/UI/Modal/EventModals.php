@@ -156,7 +156,7 @@ class EventModals
 
             $modal_startworkflow = $this->dic->ui()->factory()->modal()->roundtrip(
                 $this->plugin->txt('event_startworkflow'),
-                $this->dic->ui()->factory()->legacy($tpl->get())
+                $this->dic->ui()->factory()->legacy()->content($tpl->get())
             )->withActionButtons([$submit_btn]);
             $this->setStartworkflowModal($modal_startworkflow);
         }
@@ -224,7 +224,7 @@ class EventModals
 
         return $this->dic->ui()->factory()->modal()->roundtrip(
             $title,
-            $this->dic->ui()->factory()->legacy($tpl->get())
+            $this->dic->ui()->factory()->legacy()->content($tpl->get())
         )->withActionButtons([$submit_btn]);
     }
 

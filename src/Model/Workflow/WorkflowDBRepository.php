@@ -62,12 +62,11 @@ class WorkflowDBRepository implements WorkflowRepository
         string $config_panel_json,
         int $id = 0
     ): void {
-        /** @var WorkflowAR $workflow */
-        $workflow = new WorkflowAR($id == 0 ? null : $id);
+        $workflow = new WorkflowAR($id === 0 ? null : $id);
         $workflow->setWorkflowId($workflow_id);
         $workflow->setTitle($title);
         $workflow->setDescription($description);
-        if ($id == 0) {
+        if ($id === 0) {
             $workflow->setTags($tags);
             $workflow->setConfigPanel($config_panel);
             $workflow->setConfigPanelJson($config_panel_json);
@@ -204,7 +203,7 @@ class WorkflowDBRepository implements WorkflowRepository
                     continue;
                 }
 
-                foreach ($config_panel['fieldset'] as $index => $field) {
+                foreach ($config_panel['fieldset'] as $field) {
                     if (empty($field['id'])) {
                         $field['id'] = $field['name'];
                     }
@@ -345,7 +344,6 @@ class WorkflowDBRepository implements WorkflowRepository
         $filtered_oc_workflows = $this->getFilteredWorkflowsArray($oc_workflows_all);
         $filtered_oc_workflows_ids = array_keys($filtered_oc_workflows);
         $current_workflows = $this->getAllWorkflowsAsArray('workflow_id');
-        $current_workflows_ids = array_keys($current_workflows);
 
         // Flushing everything first.
         WorkflowAR::flushDB();
@@ -407,15 +405,13 @@ class WorkflowDBRepository implements WorkflowRepository
     /**
      * Helper function to convert comma separated list string to array
      * @param string $comma_separated_str
-     *
-     * @return array
      */
     private function commaToArray($comma_separated_str): array
     {
         $converted_list = [];
         if (!empty($comma_separated_str)) {
             $converted_list = explode(',', $comma_separated_str);
-            $converted_list = array_map('trim', $converted_list);
+            $converted_list = array_map(trim(...), $converted_list);
         }
         return $converted_list;
     }
@@ -423,19 +419,12 @@ class WorkflowDBRepository implements WorkflowRepository
     /**
      * Helper function to check if an array contains an item
      *
-     * @param array $base
      * @param string|int $check
      *
-     * @return bool
      */
-    private function hasItem(array $base, $check): bool
+    private function hasItem(array $base, array $check): bool
     {
-        foreach ($base as $item) {
-            if (in_array($item, $check, false)) {
-                return true;
-            }
-        }
-        return false;
+        return array_any($base, fn($item): bool => in_array($item, $check, false));
     }
 
 
@@ -594,7 +583,7 @@ class WorkflowDBRepository implements WorkflowRepository
             if (!$group_div->hasAttribute('id')) {
                 $group_div->setAttribute('id', "{$unique_id_prefix}_group_div");
             }
-            foreach ($config_panel_item['fieldset'] as $key => $field) {
+            foreach ($config_panel_item['fieldset'] as $field) {
                 $element = $field['type'] === 'select' ? 'select' : 'input';
                 $input_dom = $dom->createElement($element);
                 if (empty($field['id'])) {
@@ -659,10 +648,7 @@ class WorkflowDBRepository implements WorkflowRepository
     /**
      * Helper function to extract, map and generate configuration panel elements received from opencast.
      *
-     * @param string $workflow_id
-     * @param string $configuration_panel_html
      *
-     * @return string
      */
     private function mapConfigPanelElements(int $workflow_id, string $configuration_panel_html): string
     {

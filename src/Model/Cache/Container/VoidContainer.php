@@ -23,9 +23,9 @@ namespace srag\Plugins\Opencast\Model\Cache\Container;
 /**
  * @author Fabian Schmid <fabian@sr.solutions>
  */
-final class VoidContainer implements Container
+final readonly class VoidContainer implements Container
 {
-    public function __construct(private readonly Request $request)
+    public function __construct(private Request $request)
     {
     }
 
@@ -43,7 +43,7 @@ final class VoidContainer implements Container
         return false;
     }
 
-    public function get(string $key)
+    public function get(string $key): null
     {
         return null;
     }

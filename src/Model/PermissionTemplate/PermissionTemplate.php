@@ -142,7 +142,6 @@ class PermissionTemplate extends ActiveRecord
      */
     protected $additional_actions_annotate;
     /**
-     * @var int
      *
      * @db_has_field        true
      * @db_fieldtype        integer
@@ -217,9 +216,7 @@ class PermissionTemplate extends ActiveRecord
     {
         $acls_formatted = [];
         foreach ($ACL->getEntries() as $entry) {
-            if (!isset($acls_formatted[$entry->getRole()])) {
-                $acls_formatted[$entry->getRole()] = [];
-            }
+            $acls_formatted[$entry->getRole()] ??= [];
             $acls_formatted[$entry->getRole()][$entry->getAction()] = $entry->isAllow();
         }
 

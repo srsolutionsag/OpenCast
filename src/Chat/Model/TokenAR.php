@@ -143,9 +143,6 @@ class TokenAR extends ActiveRecord
         };
     }
 
-    /**
-     * @return Token|null
-     */
     public function wakeUp($field_name, $field_value): ?Token
     {
         return match ($field_name) {

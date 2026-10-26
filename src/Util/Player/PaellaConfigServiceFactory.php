@@ -17,6 +17,6 @@ class PaellaConfigServiceFactory
 
     public function get(): PaellaConfigService
     {
-        return new PaellaConfigService($this->storageService);
+        return new PaellaConfigService();
     }
 }

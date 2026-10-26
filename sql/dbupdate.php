@@ -1383,7 +1383,7 @@ if (\srag\Plugins\Opencast\Model\Config\PluginConfig::count() > 0) {
 // course, this does not give any special security to make sure that other versions
 // do not try to update to this version. But another puzzle piece we can use.
 /** @var $ilDB ilDBInterface */
-if($ilDB->queryF('SELECT value FROM xoct_config WHERE name = %s', ['text'], ['version_check'])->rowCount() > 0) {
+if ($ilDB->queryF('SELECT value FROM xoct_config WHERE name = %s', ['text'], ['version_check'])->rowCount() > 0) {
     $ilDB->manipulateF('DELETE FROM xoct_config WHERE name = %s', ['text'], ['version_check']);
 }
 
@@ -1499,7 +1499,7 @@ if (!$ilDB->tableExists('xoct_pub_sub_usage')) {
 }
 
 // Add new columns to PublicationUsage.
-if(!$ilDB->tableColumnExists('xoct_publication_usage', 'display_name')) {
+if (!$ilDB->tableColumnExists('xoct_publication_usage', 'display_name')) {
     $ilDB->addTableColumn('xoct_publication_usage', 'display_name', [
         'type' => 'text',
         'length' => 512,
@@ -1507,7 +1507,7 @@ if(!$ilDB->tableColumnExists('xoct_publication_usage', 'display_name')) {
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_publication_usage', 'group_id')) {
+if (!$ilDB->tableColumnExists('xoct_publication_usage', 'group_id')) {
     $ilDB->addTableColumn('xoct_publication_usage', 'group_id', [
         'type' => 'integer',
         'length' => 8,
@@ -1515,7 +1515,7 @@ if(!$ilDB->tableColumnExists('xoct_publication_usage', 'group_id')) {
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_publication_usage', 'mediatype')) {
+if (!$ilDB->tableColumnExists('xoct_publication_usage', 'mediatype')) {
     $ilDB->addTableColumn('xoct_publication_usage', 'mediatype', [
         'type' => 'text',
         'length' => 512,
@@ -1525,7 +1525,7 @@ if(!$ilDB->tableColumnExists('xoct_publication_usage', 'mediatype')) {
 
 // "ignore_object_setting" field has been renamed to "overwrite_download_perm",
 // the update step is in: ilOpenCastDBUpdateSteps => step_2
-if(!$ilDB->tableColumnExists('xoct_publication_usage', 'overwrite_download_perm')) {
+if (!$ilDB->tableColumnExists('xoct_publication_usage', 'overwrite_download_perm')) {
     $ilDB->addTableColumn('xoct_publication_usage', 'overwrite_download_perm', [
         'type' => 'integer',
         'length' => 1,
@@ -1533,7 +1533,7 @@ if(!$ilDB->tableColumnExists('xoct_publication_usage', 'overwrite_download_perm'
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_publication_usage', 'ext_dl_source')) {
+if (!$ilDB->tableColumnExists('xoct_publication_usage', 'ext_dl_source')) {
     $ilDB->addTableColumn('xoct_publication_usage', 'ext_dl_source', [
         'type' => 'integer',
         'length' => 1,
@@ -1568,26 +1568,26 @@ foreach (\srag\Plugins\Opencast\Model\Publication\Config\PublicationSubUsage::ge
 <#44>
 <?php
 // Re remove the column parameters from xoct_workflow if it's existent.
-if($ilDB->tableColumnExists('xoct_workflow', 'parameters')) {
+if ($ilDB->tableColumnExists('xoct_workflow', 'parameters')) {
     $ilDB->dropTableColumn('xoct_workflow', 'parameters');
 }
 
 // we need to add the new columns to the xoct_workflow table if they are not existent.
-if(!$ilDB->tableColumnExists('xoct_workflow', 'description')) {
+if (!$ilDB->tableColumnExists('xoct_workflow', 'description')) {
     $ilDB->addTableColumn('xoct_workflow', 'description', [
         'type' => 'text',
         'length' => '512',
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_workflow', 'tags')) {
+if (!$ilDB->tableColumnExists('xoct_workflow', 'tags')) {
     $ilDB->addTableColumn('xoct_workflow', 'tags', [
         'type' => 'text',
         'length' => '512',
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_workflow', 'config_panel')) {
+if (!$ilDB->tableColumnExists('xoct_workflow', 'config_panel')) {
     $ilDB->addTableColumn('xoct_workflow', 'config_panel', [
         'type' => 'clob',
     ]);
@@ -1659,26 +1659,26 @@ foreach ($mapping as $old => $new) {
 // Since there can be cases where step 44 was not executed the right way, we must ensure that the changes to the xoct_workflow table are applied.
 
 // Re remove the column parameter from xoct_workflow if it's existent.
-if($ilDB->tableColumnExists('xoct_workflow', 'parameters')) {
+if ($ilDB->tableColumnExists('xoct_workflow', 'parameters')) {
     $ilDB->dropTableColumn('xoct_workflow', 'parameters');
 }
 
 // we need to add the new columns to the xoct_workflow table if they are not existent.
-if(!$ilDB->tableColumnExists('xoct_workflow', 'description')) {
+if (!$ilDB->tableColumnExists('xoct_workflow', 'description')) {
     $ilDB->addTableColumn('xoct_workflow', 'description', [
         'type' => 'text',
         'length' => '512',
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_workflow', 'tags')) {
+if (!$ilDB->tableColumnExists('xoct_workflow', 'tags')) {
     $ilDB->addTableColumn('xoct_workflow', 'tags', [
         'type' => 'text',
         'length' => '512',
     ]);
 }
 
-if(!$ilDB->tableColumnExists('xoct_workflow', 'config_panel')) {
+if (!$ilDB->tableColumnExists('xoct_workflow', 'config_panel')) {
     $ilDB->addTableColumn('xoct_workflow', 'config_panel', [
         'type' => 'clob',
     ]);

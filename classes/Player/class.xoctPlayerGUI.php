@@ -83,15 +83,13 @@ class xoctPlayerGUI extends xoctGUI
                     )
             ])
             ->withAdditionalOnLoadCode( // we make the modal fullscreen and reset the iframe src on close to stop the video
-                function ($id): string {
-                    return "var modal = document.getElementById('$id');
+                fn($id): string => "var modal = document.getElementById('$id');
                         modal.querySelector('.modal-dialog').style.width = '95svw';
                         modal.addEventListener('close', function (event) {
                             var iframe = modal.querySelector('iframe');
                             iframe.src = 'about:blank';
                         });
-                    ";
-                }
+                    "
             );
 
         echo $this->ui->renderer()->renderAsync($modal);
@@ -133,8 +131,10 @@ class xoctPlayerGUI extends xoctGUI
         if ($this->api->isJWTActivated() && $jwt_iframe_capable) {
             $tpl = $this->plugin->getTemplate("jwt_iframe_player.html", true, true);
             $jwt_data = $data['jwt'] ?? [];
-            $tpl->setVariable("JWT_MODULE_CONFIG",
-                json_encode($this->buildJwtModuleConfig($event, $jwt_data)));
+            $tpl->setVariable(
+                "JWT_MODULE_CONFIG",
+                json_encode($this->buildJwtModuleConfig($event, $jwt_data))
+            );
         } else {
             // The normal paella player.
             $tpl = $this->plugin->getTemplate("paella_player.html", true, true);
@@ -194,7 +194,7 @@ class xoctPlayerGUI extends xoctGUI
     private function eventHasChatRecord(Event $event): ?int
     {
         $ChatroomAR = ChatroomAR::findBy($event->getIdentifier(), $this->object_settings->getObjId());
-        $has_chat_history = $ChatroomAR && MessageAR::where(["chat_room_id" => $ChatroomAR->getId()])->hasSets();
+        $has_chat_history = $ChatroomAR instanceof \srag\Plugins\Opencast\Chat\Model\ChatroomAR && MessageAR::where(["chat_room_id" => $ChatroomAR->getId()])->hasSets();
         return $has_chat_history ? $ChatroomAR->getId() : null;
     }
 

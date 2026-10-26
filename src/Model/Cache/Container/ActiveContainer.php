@@ -26,7 +26,7 @@ use srag\Plugins\Opencast\Model\Cache\Config;
 /**
  * @author Fabian Schmid <fabian@sr.solutions>
  */
-final class ActiveContainer implements Container
+final readonly class ActiveContainer implements Container
 {
     private const LOCK_UNTIL = '_lock_until';
     private const GLUE = '_|||_';
@@ -41,7 +41,7 @@ final class ActiveContainer implements Container
     private const TRUE = 'true';
     private const FALSE = 'false';
 
-    public function __construct(private readonly Request $request, private readonly Adaptor $adaptor, private readonly Config $config)
+    public function __construct(private Request $request, private Adaptor $adaptor, private Config $config)
     {
     }
 

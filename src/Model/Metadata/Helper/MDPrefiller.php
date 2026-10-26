@@ -61,14 +61,12 @@ class MDPrefiller
 
     /**
      * Extracts and returns the defined metadata values to be used by placeholders
-     *
-     * @return array
      */
     public function getMetadataArray(): array
     {
         $metadata = [];
         $ref_id = (int) ($this->dic->http()->request()->getQueryParams()['ref_id'] ?? 0);
-        if($ref_id === 0) {
+        if ($ref_id === 0) {
             return [];
         }
         try {
@@ -96,14 +94,12 @@ class MDPrefiller
 
     /**
      * Extracts and returns the defined course values to be used by placeholders
-     *
-     * @return array
      */
     public function getCourseArray(): array
     {
         $course = [];
         $ref_id = (int) ($this->dic->http()->request()->getQueryParams()['ref_id'] ?? 0);
-        if($ref_id === 0) {
+        if ($ref_id === 0) {
             return [];
         }
         try {
@@ -128,8 +124,6 @@ class MDPrefiller
 
     /**
      * Extracts and returns the defined user values to be used by placeholders
-     *
-     * @return array
      */
     public function getUserArray(): array
     {

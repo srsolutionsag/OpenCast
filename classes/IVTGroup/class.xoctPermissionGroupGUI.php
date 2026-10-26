@@ -44,9 +44,6 @@ class xoctPermissionGroupGUI extends xoctGUI
         $this->main_tpl->addJavaScript($this->plugin->getStyleSheetLocation('default/groups.js'));
     }
 
-    /**
-     * @param string $cmd
-     */
     protected function performCommand(string $cmd): void
     {
         if (in_array($cmd, self::$admin_commands, true)) {
@@ -130,7 +127,7 @@ class xoctPermissionGroupGUI extends xoctGUI
             $stdClass = $group->asStdClass();
             $stdClass->user_count = count($users);
             $stdClass->name = $stdClass->title;
-            $stdClass->users = array_values(array_filter(array_map('intval', $users), fn($user_id): bool => $user_id > 0));
+            $stdClass->users = array_values(array_filter(array_map(intval(...), $users), fn(int $user_id): bool => $user_id > 0));
             $arr[] = $stdClass;
         }
         usort($arr, ['xoctGUI', 'compareStdClassByName']);
@@ -144,7 +141,7 @@ class xoctPermissionGroupGUI extends xoctGUI
          * @var $group_participant PermissionGroupParticipant
          */
         $ref_id = $this->http->request()->getQueryParams()['ref_id'] ?? null;
-        if($ref_id === null) {
+        if ($ref_id === null) {
             $this->outJson([]);
         }
         $ref_id = (int) $ref_id;
@@ -160,9 +157,6 @@ class xoctPermissionGroupGUI extends xoctGUI
         $this->outJson($data);
     }
 
-    /**
-     * @return void
-     */
     protected function create(): void
     {
         $obj = new PermissionGroup();

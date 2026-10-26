@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 use ILIAS\DI\UIServices;
-
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Metadata\Metadata;
 use srag\Plugins\Opencast\Model\Object\ObjectSettings;
@@ -16,7 +15,6 @@ use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameter;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameterRepository;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Series\SeriesWorkflowParameterRepository;
 use srag\Plugins\Opencast\UI\SeriesFormBuilder;
-use ILIAS\DI\HTTPServices;
 
 /**
  * Class xoctSeriesGUI
@@ -172,7 +170,6 @@ class xoctSeriesGUI extends xoctGUI
                     $objectSettings->getUseAnnotations()
                 )
             );
-        } else {
         }
 
         /** @var Metadata $metadata */

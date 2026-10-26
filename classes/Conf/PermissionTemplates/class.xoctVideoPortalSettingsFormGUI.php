@@ -144,8 +144,6 @@ class xoctVideoPortalSettingsFormGUI extends ilPropertyFormGUI
 
     /**
      * @param $item
-     *
-     * @return bool
      */
     public static function checkItem($item): bool
     {

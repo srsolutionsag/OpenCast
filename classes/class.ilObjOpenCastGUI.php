@@ -15,12 +15,9 @@ use srag\Plugins\Opencast\Model\PermissionTemplate\PermissionTemplate;
 use srag\Plugins\Opencast\Model\Series\Request\CreateSeriesRequest;
 use srag\Plugins\Opencast\Model\Series\Request\CreateSeriesRequestPayload;
 use srag\Plugins\Opencast\Model\User\xoctUser;
-use srag\Plugins\Opencast\UI\LegacyFormWrapper;
 use srag\Plugins\Opencast\Model\Event\EventAPIRepository;
 use srag\Plugins\Opencast\Model\Series\SeriesAPIRepository;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Container\Init;
-use ILIAS\HTTP\Services;
 use srag\Plugins\Opencast\Container\Container as PluginContainer;
 use ILIAS\UI\Component\Input\Container\Form\Standard as StandardForm;
 
@@ -48,7 +45,6 @@ class ilObjOpenCastGUI extends ilObjectPluginGUI
     public const TAB_EULA = "eula";
     private ?array $form_data = null;
 
-    protected Services $http;
     protected ?ilPropertyFormGUI $form = null;
 
     private OpencastDIC $legacy_container;
@@ -86,100 +82,89 @@ class ilObjOpenCastGUI extends ilObjectPluginGUI
     public function executeCommand(): void
     {
         $this->checkPermission('read');
-        try {
-            PluginConfig::setApiSettings();
-            $next_class = $this->ilias_dic->ctrl()->getNextClass();
-            $cmd = $this->ilias_dic->ctrl()->getCmd();
-            $this->ilias_dic->ui()->mainTemplate()->loadStandardTemplate();
-
-            switch (strtolower((string) $next_class)) {
-                case strtolower(xoctPermissionGroupParticipantGUI::class):
-                    $objectSettings = $this->initHeader();
-                    $this->setTabs();
-                    $xoctPermissionGroupParticipantGUI = new xoctPermissionGroupParticipantGUI($objectSettings);
-                    $this->ilias_dic->ctrl()->forwardCommand($xoctPermissionGroupParticipantGUI);
-                    $this->showMainTemplate();
-                    break;
-                case strtolower(xoctGrantPermissionGUI::class):
-                    $objectSettings = $this->initHeader();
-                    $this->setTabs();
-                    $xoctGrantPermissionGUI = new xoctGrantPermissionGUI(
-                        $objectSettings,
-                        $this->container[EventAPIRepository::class],
-                        $this->legacy_container->acl_utils()
-                    );
-                    $this->ilias_dic->ctrl()->forwardCommand($xoctGrantPermissionGUI);
-                    $this->showMainTemplate();
-                    break;
-                case strtolower(xoctChangeOwnerGUI::class):
-                    $objectSettings = $this->initHeader();
-                    $this->setTabs();
-                    $xoctChangeOwnerGUI = new xoctChangeOwnerGUI(
-                        $objectSettings,
-                        $this->container[EventAPIRepository::class],
-                        $this->legacy_container->acl_utils()
-                    );
-                    $this->ilias_dic->ctrl()->forwardCommand($xoctChangeOwnerGUI);
-                    $this->showMainTemplate();
-                    break;
-                case strtolower(xoctSeriesGUI::class):
-                    $objectSettings = $this->initHeader();
-                    $this->setTabs();
-                    $xoctSeriesGUI = new xoctSeriesGUI(
-                        $this,
-                        $this->object,
-                        $this->legacy_container->series_form_builder(),
-                        $this->container->get(SeriesAPIRepository::class),
-                        $this->legacy_container->workflow_parameter_series_repository(),
-                        $this->legacy_container->workflow_parameter_conf_repository()
-                    );
-                    $this->ilias_dic->ctrl()->forwardCommand($xoctSeriesGUI);
-                    $this->showMainTemplate();
-                    break;
-                case strtolower(xoctEventGUI::class):
-                    $objectSettings = $this->initHeader();
-                    $this->setTabs();
-                    $xoctEventGUI = new xoctEventGUI(
-                        $this,
-                        $objectSettings,
-                        $this->container[EventAPIRepository::class],
-                        $this->legacy_container->event_form_builder(),
-                        $this->legacy_container->event_table_builder(),
-                        $this->legacy_container->workflow_repository(),
-                        $this->legacy_container->acl_utils(),
-                        $this->container->get(SeriesAPIRepository::class),
-                        $this->legacy_container->upload_handler(),
-                        $this->legacy_container->paella_config_storage_service(),
-                        $this->legacy_container->paella_config_service_factory(),
-                        $this->ilias_dic
-                    );
-                    $this->ilias_dic->ctrl()->forwardCommand($xoctEventGUI);
-                    $this->showMainTemplate();
-                    break;
-                case strtolower(xoctPermissionGroupGUI::class):
-                    $objectSettings = $this->initHeader();
-                    $this->setTabs();
-                    $xoctPermissionGroupGUI = new xoctPermissionGroupGUI($objectSettings);
-                    $this->ilias_dic->ctrl()->forwardCommand($xoctPermissionGroupGUI);
-                    $this->showMainTemplate();
-                    break;
-                case strtolower(ilPermissionGUI::class):
-                    $this->initHeader(false);
-                    parent::executeCommand();
-                    break;
-                default:
-                    $this->ilias_dic->ctrl()->saveParameter($this, 'new_type');
-                    parent::executeCommand();
-                    break;
-            }
-        } catch (xoctException $e) {
-            throw $e; // DEBUG
-            $this->tpl->setOnScreenMessage('failure', $e->getMessage());
-            $this->ilias_dic->logger()->root()->error($e->getMessage());
-            $this->ilias_dic->logger()->root()->error($e->getTraceAsString());
-            if (!$this->creation_mode) {
+        PluginConfig::setApiSettings();
+        $next_class = $this->ilias_dic->ctrl()->getNextClass();
+        $this->ilias_dic->ctrl()->getCmd();
+        $this->ilias_dic->ui()->mainTemplate()->loadStandardTemplate();
+        switch (strtolower((string) $next_class)) {
+            case strtolower(xoctPermissionGroupParticipantGUI::class):
+                $objectSettings = $this->initHeader();
+                $this->setTabs();
+                $xoctPermissionGroupParticipantGUI = new xoctPermissionGroupParticipantGUI($objectSettings);
+                $this->ilias_dic->ctrl()->forwardCommand($xoctPermissionGroupParticipantGUI);
                 $this->showMainTemplate();
-            }
+                break;
+            case strtolower(xoctGrantPermissionGUI::class):
+                $objectSettings = $this->initHeader();
+                $this->setTabs();
+                $xoctGrantPermissionGUI = new xoctGrantPermissionGUI(
+                    $objectSettings,
+                    $this->container[EventAPIRepository::class],
+                    $this->legacy_container->acl_utils()
+                );
+                $this->ilias_dic->ctrl()->forwardCommand($xoctGrantPermissionGUI);
+                $this->showMainTemplate();
+                break;
+            case strtolower(xoctChangeOwnerGUI::class):
+                $objectSettings = $this->initHeader();
+                $this->setTabs();
+                $xoctChangeOwnerGUI = new xoctChangeOwnerGUI(
+                    $objectSettings,
+                    $this->container[EventAPIRepository::class],
+                    $this->legacy_container->acl_utils()
+                );
+                $this->ilias_dic->ctrl()->forwardCommand($xoctChangeOwnerGUI);
+                $this->showMainTemplate();
+                break;
+            case strtolower(xoctSeriesGUI::class):
+                $objectSettings = $this->initHeader();
+                $this->setTabs();
+                $xoctSeriesGUI = new xoctSeriesGUI(
+                    $this,
+                    $this->object,
+                    $this->legacy_container->series_form_builder(),
+                    $this->container->get(SeriesAPIRepository::class),
+                    $this->legacy_container->workflow_parameter_series_repository(),
+                    $this->legacy_container->workflow_parameter_conf_repository()
+                );
+                $this->ilias_dic->ctrl()->forwardCommand($xoctSeriesGUI);
+                $this->showMainTemplate();
+                break;
+            case strtolower(xoctEventGUI::class):
+                $objectSettings = $this->initHeader();
+                $this->setTabs();
+                $xoctEventGUI = new xoctEventGUI(
+                    $this,
+                    $objectSettings,
+                    $this->container[EventAPIRepository::class],
+                    $this->legacy_container->event_form_builder(),
+                    $this->legacy_container->event_table_builder(),
+                    $this->legacy_container->workflow_repository(),
+                    $this->legacy_container->acl_utils(),
+                    $this->container->get(SeriesAPIRepository::class),
+                    $this->legacy_container->upload_handler(),
+                    $this->legacy_container->paella_config_storage_service(),
+                    $this->legacy_container->paella_config_service_factory(),
+                    $this->ilias_dic
+                );
+                $this->ilias_dic->ctrl()->forwardCommand($xoctEventGUI);
+                $this->showMainTemplate();
+                break;
+            case strtolower(xoctPermissionGroupGUI::class):
+                $objectSettings = $this->initHeader();
+                $this->setTabs();
+                $xoctPermissionGroupGUI = new xoctPermissionGroupGUI($objectSettings);
+                $this->ilias_dic->ctrl()->forwardCommand($xoctPermissionGroupGUI);
+                $this->showMainTemplate();
+                break;
+            case strtolower(ilPermissionGUI::class):
+                $this->initHeader(false);
+                parent::executeCommand();
+                break;
+            default:
+                $this->ilias_dic->ctrl()->saveParameter($this, 'new_type');
+                parent::executeCommand();
+                break;
         }
     }
 
@@ -385,18 +370,15 @@ class ilObjOpenCastGUI extends ilObjectPluginGUI
             $metadata = $additional_args['series_type']['metadata'] ?? null;
             /** @var string|false $series_id */
             $series_id = $additional_args['series_type']['channel_id'] ?? null;
-            /** @var bool $is_memberupload_enabled */
             $is_memberupload_enabled = (bool) ($additional_args['member_rights']['member_upload'] ?? false);
-            /** @var bool $is_memberdownload_enabled */
             $is_memberdownload_enabled = (bool) ($additional_args['member_rights']['member_download'] ?? false);
-            /** @var bool $is_memberrecord_enabled */
             $is_memberrecord_enabled = (bool) ($additional_args['member_rights']['member_record'] ?? false);
             /** @var int $perm_tpl_id */
             $perm_tpl_id = $additional_args['settings']['permission_template'] ?? null;
         }
 
         // set current user & course/group roles with the perm 'edit_videos' in series' access policy and in group 'ilias_producers'
-        $producers = ilObjOpenCastAccess::getProducersForRefID((int) $newObj->getRefId());
+        $producers = ilObjOpenCastAccess::getProducersForRefID($newObj->getRefId());
         $producers[] = xoctUser::getInstance($this->ilias_dic->user());
 
         try {
@@ -499,7 +481,7 @@ class ilObjOpenCastGUI extends ilObjectPluginGUI
 
         $ref_id = $this->ref_id ?? (int) ($DIC->http()->request()->getQueryParams()['ref_id'] ?? 0);
 
-        if ($objectSettings instanceof ObjectSettings && $this->object) {
+        if ($objectSettings instanceof ObjectSettings && $this->object instanceof \ilObject) {
             $this->ilias_dic->ui()->mainTemplate()->setTitle($this->object->getTitle());
             $this->ilias_dic->ui()->mainTemplate()->setDescription($this->object->getDescription());
 

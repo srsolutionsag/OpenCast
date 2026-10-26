@@ -6,7 +6,6 @@ namespace srag\Plugins\Opencast\API;
 
 use xoctLog;
 use xoctException;
-use GuzzleHttp\Client;
 use OpencastApi\Rest\OcRest;
 
 /**
@@ -22,7 +21,7 @@ class DecorateProxy
     {
     }
 
-    public function __call($method, array $args)
+    public function __call(string $method, array $args)
     {
         // Prepare everything before calling the original method.
         $return_array = false;
@@ -62,7 +61,6 @@ class DecorateProxy
         $body = $response_array['body'];
         $code = $response_array['code'];
         $reason = $response_array['reason'];
-        $location = $response_array['location'];
         if ($code > 299 || $code === 0) {
             $req_origin = $origin['req_origin'] ?? [];
             xoctLog::getInstance()->write('ERROR ' . $code, xoctLog::DEBUG_LEVEL_1);
@@ -97,7 +95,7 @@ class DecorateProxy
         return $return_array ? $this->parseResponseBodyToArray($body) : $body;
     }
 
-    private function parseResponseBodyToArray($bodyObject)
+    private function parseResponseBodyToArray($bodyObject): mixed
     {
         return json_decode(json_encode($bodyObject), true);
     }

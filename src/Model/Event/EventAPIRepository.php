@@ -11,7 +11,6 @@ use srag\Plugins\Opencast\Model\Event\Request\UploadEventRequest;
 use srag\Plugins\Opencast\Model\PerVideoPermission\PermissionGrant;
 use srag\Plugins\Opencast\Util\FileTransfer\OpencastIngestService;
 use xoctException;
-use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\API\API;
 use srag\Plugins\Opencast\Model\Cache\Container\Request;
 use srag\Plugins\Opencast\Model\Cache\Services;
@@ -189,7 +188,7 @@ class EventAPIRepository implements EventRepository, Request
     {
         $payload = $request->getPayload()->jsonSerialize();
 
-        $response = $this->api->routes()->eventsApi->update(
+        $this->api->routes()->eventsApi->update(
             $request->getIdentifier(),
             $payload['acl'] ?? '',
             $payload['metadata'] ?? '',

@@ -15,7 +15,6 @@ use srag\Plugins\Opencast\Model\Publication\PublicationMetadata;
 use xoctException;
 use xoctSecureLink;
 use xoctLog;
-
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
 
 /**
@@ -92,14 +91,12 @@ class StandardPlayerDataBuilder extends PlayerDataBuilder
 
     /**
      * @param array $captions a mixture of Media or Attachment
-     * @return array
      * @throws xoctException
      */
     protected function buildCaptions(array $captions): array
     {
         $lang = 'unknown';
         $format = '';
-        $url = '';
         $paella_captions = [];
         foreach ($captions as $caption) {
             $tag_info_array = [];
@@ -159,8 +156,6 @@ class StandardPlayerDataBuilder extends PlayerDataBuilder
 
     /**
      * @param string $lang
-     * @param array  $tag_info_array
-     * @return string
      * @throws xoctException
      */
     private function buildCaptionText(array $tag_info_array): string
@@ -230,7 +225,7 @@ class StandardPlayerDataBuilder extends PlayerDataBuilder
                 $medium->getUrl(),
                 $this->event->getIdentifier()
             );
-            if (!in_array($jwt_iframe_friendly_url, $jwt_iframe_urls )) {
+            if (!in_array($jwt_iframe_friendly_url, $jwt_iframe_urls)) {
                 $jwt_iframe_urls[] = $jwt_iframe_friendly_url;
             }
         }
@@ -290,9 +285,7 @@ class StandardPlayerDataBuilder extends PlayerDataBuilder
         $segments = $event->publications()->getSegmentPublications();
         if ($segments !== []) {
             $segments = array_reduce($segments, function (array $segments, Attachment $segment): array {
-                if (!isset($segments[$segment->getRef()])) {
-                    $segments[$segment->getRef()] = [];
-                }
+                $segments[$segment->getRef()] ??= [];
                 $segments[$segment->getRef()][$segment->getFlavor()] = $segment;
 
                 return $segments;
@@ -331,9 +324,7 @@ class StandardPlayerDataBuilder extends PlayerDataBuilder
                     ];
                 }
                 $preview = $segment[Metadata::FLAVOR_PRESENTATION_SEGMENT_PREVIEW];
-                if ($preview === null) {
-                    $preview = $segment[Metadata::FLAVOR_PRESENTER_SEGMENT_PREVIEW];
-                }
+                $preview ??= $segment[Metadata::FLAVOR_PRESENTER_SEGMENT_PREVIEW];
                 $time = substr((string) $preview->getRef(), strpos((string) $preview->getRef(), ";time=") + 7, 8);
                 $time = new DateTime("1970-01-01 $time", new DateTimeZone("UTC"));
                 $time = $time->getTimestamp();

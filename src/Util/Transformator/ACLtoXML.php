@@ -131,15 +131,12 @@ class ACLtoXML
             $action = $entry->getAction();
             $allow = $entry->isAllow();
             if ($allow) {
-                if (!isset($acl_notation_array[$role])) {
-                    $acl_notation_array[$role] = [];
-                }
+                $acl_notation_array[$role] ??= [];
                 if (!in_array($action, $acl_notation_array[$role])) {
                     $acl_notation_array[$role][] = $action;
                 }
             }
         }
-        $acl_notation_string = !empty($acl_notation_array) ? json_encode($acl_notation_array) : '';
-        return $acl_notation_string;
+        return !empty($acl_notation_array) ? json_encode($acl_notation_array) : '';
     }
 }

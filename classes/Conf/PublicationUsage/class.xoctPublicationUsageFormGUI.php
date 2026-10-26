@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 use srag\Plugins\Opencast\Container\Container;
-
 use srag\Plugins\Opencast\Model\Publication\Config\PublicationUsage;
 use srag\Plugins\Opencast\Model\Publication\Config\PublicationUsageGroup;
 use srag\Plugins\Opencast\DI\OpencastDIC;
@@ -48,10 +47,6 @@ class xoctPublicationUsageFormGUI extends ilPropertyFormGUI
     protected ilOpenCastPlugin $plugin;
     protected OpencastDIC $legacy_container;
 
-    /**
-     * @param xoctPublicationUsageGUI $parent_gui
-     * @param PublicationUsage $object
-     */
     public function __construct(
         protected xoctPublicationUsageGUI $parent_gui,
         protected PublicationUsage $object

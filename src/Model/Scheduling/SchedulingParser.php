@@ -85,9 +85,7 @@ class SchedulingParser
             $data->agent_id,
             new DateTimeImmutable($data->start),
             new DateTimeImmutable($data->end),
-            $data->inputs ?? null,
-            null,
-            null
+            $data->inputs ?? null
         );
     }
 }

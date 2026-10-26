@@ -156,7 +156,6 @@ class PermissionGroup extends ActiveRecord
             'description' => (string) $field_value,
             default => null,
         };
-        return null;
     }
 
 
@@ -183,7 +182,7 @@ class PermissionGroup extends ActiveRecord
 
     public function getNamePresentation(): string
     {
-        return (string) $this->getTitle();
+        return $this->getTitle();
     }
 
     public function getTitle(): string

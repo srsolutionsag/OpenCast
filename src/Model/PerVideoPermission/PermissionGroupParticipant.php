@@ -64,7 +64,7 @@ class PermissionGroupParticipant extends ActiveRecord
     /**
      * @var xoctUser|null
      */
-    protected $xoct_user = null;
+    protected $xoct_user;
     /**
      * @var int
      *
@@ -110,7 +110,7 @@ class PermissionGroupParticipant extends ActiveRecord
     public static function getAllUserIdsForOpenCastObjId(int $obj_id): array
     {
         $all = PermissionGroup::where(['serie_id' => $obj_id])->getArray(null, 'id');
-        if (count($all) == 0) {
+        if (count($all) === 0) {
             return [];
         }
 

@@ -205,12 +205,10 @@ class xoctRequest
     //
     // EVENTS
     //
-
     /**
      * This method is just temporary and will hopefully be obsolete soon
      *
      * @param $identifier
-     * @return self
      * @throws xoctException
      */
     public function episodeJson($identifier): self
@@ -229,7 +227,6 @@ class xoctRequest
     /**
      * @param string $identifier
      *
-     * @return $this
      * @throws xoctException
      */
     public function events($identifier = ''): self
@@ -245,9 +242,6 @@ class xoctRequest
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function publications($publication_id = ''): self
     {
         $this->checkBranch([self::BRANCH_EVENTS]);
@@ -263,10 +257,8 @@ class xoctRequest
     //
     // SERIES
     //
-
     /**
      * @param string $series_id
-     * @return $this
      * @throws xoctException
      */
     public function series($series_id = ''): self
@@ -285,7 +277,6 @@ class xoctRequest
 
     /**
      * @param string $group_id
-     * @return $this
      * @throws xoctException
      */
     public function groups($group_id = ''): self
@@ -304,7 +295,6 @@ class xoctRequest
     /**
      * @param string $workflow_id
      *
-     * @return $this
      * @throws xoctException
      */
     public function workflows($workflow_id = ''): self
@@ -323,7 +313,6 @@ class xoctRequest
     /**
      * @param string $definition_id
      *
-     * @return $this
      * @throws xoctException
      */
     public function workflowDefinition($definition_id = ''): self
@@ -340,7 +329,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function members(): self
@@ -351,9 +339,6 @@ class xoctRequest
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function properties(): self
     {
         $this->checkBranch([
@@ -368,10 +353,6 @@ class xoctRequest
     //
     // BOTH
     //
-
-    /**
-     * @return $this
-     */
     public function metadata(): self
     {
         $this->checkBranch([
@@ -383,9 +364,6 @@ class xoctRequest
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function acl($action = null): self
     {
         $this->checkBranch([
@@ -403,9 +381,7 @@ class xoctRequest
     //
     // BASE
     //
-
     /**
-     * @return $this
      * @throws xoctException
      */
     public function base(): self
@@ -417,9 +393,6 @@ class xoctRequest
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function version(): self
     {
         $this->checkBranch([self::BRANCH_BASE]);
@@ -428,9 +401,6 @@ class xoctRequest
         return $this;
     }
 
-    /**
-     * @return $this
-     */
     public function organization(): self
     {
         $this->checkBranch([self::BRANCH_BASE]);
@@ -443,12 +413,10 @@ class xoctRequest
     //
     //
     //
-
     //
     // SECURITY
     //
     /**
-     * @return $this
      * @throws xoctException
      */
     public function security(): self
@@ -464,9 +432,7 @@ class xoctRequest
     /**
      * @param      $url
      *
-     * @param null $valid_until
      *
-     * @param null $ip
      *
      * @return string
      * @throws xoctException
@@ -489,7 +455,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function agents(): self
@@ -501,7 +466,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function scheduling(): self
@@ -518,7 +482,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function services(): self
@@ -533,7 +496,6 @@ class xoctRequest
 
     /**
      *
-     * @return $this
      * @throws xoctException
      */
     public function available(string $service_type): self
@@ -548,7 +510,6 @@ class xoctRequest
     /**
      * REST-Endpoint
      *
-     * @return $this
      * @throws xoctException
      */
     public function workflow(): self
@@ -565,7 +526,6 @@ class xoctRequest
      * Start a workflow
      * https://stable.opencast.org/docs.html?path=/workflow#start-4
      *
-     * @return $this
      * @throws xoctException
      */
     public function start(): self
@@ -578,7 +538,6 @@ class xoctRequest
 
     /**
      *
-     * @return $this
      * @throws xoctException
      */
     public function ingest(string $workflow_definition_id = ''): self
@@ -595,7 +554,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function addDCCatalog(): self
@@ -607,7 +565,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function addAttachment(): self
@@ -619,7 +576,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function addTrack(): self
@@ -631,7 +587,6 @@ class xoctRequest
     }
 
     /**
-     * @return $this
      * @throws xoctException
      */
     public function createMediaPackage(): self
@@ -701,8 +656,6 @@ class xoctRequest
     /**
      * @param $key
      * @param $value
-     *
-     * @return $this
      */
     public function parameter($key, $value): self
     {

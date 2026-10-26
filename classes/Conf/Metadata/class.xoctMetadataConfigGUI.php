@@ -51,7 +51,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     private ilToolbarGUI $toolbar;
     private UIServices $ui;
     private ListProvider $listprovider;
-    private array $post_ids = [];
+    private array $post_ids;
 
     public function __construct(
         protected MDFieldConfigRepository $repository,
@@ -147,7 +147,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
     protected function initLoadValuesToolbar(string $field_id, string $redirect): void
     {
         $md_field_def = $this->getMetadataCatalogue()->getFieldById($field_id);
-        $md_field_config = $this->repository->findByFieldId($field_id);
+        $this->repository->findByFieldId($field_id);
         if ($md_field_def->getType()->getTitle() === MDDataType::TYPE_TEXT_SELECTION) {
             $this->ctrl->setParameter($this, 'field_id', $field_id);
             $this->ctrl->setParameter($this, 'redirect', $redirect);
@@ -192,7 +192,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                 $digested_list = $this->digestList($this->listprovider->getList($source), $field_id);
                 if (!empty($digested_list)) {
                     $separator = MDFieldConfigAR::VALUE_SEPERATOR;
-                    $converted_list = array_map(fn ($key, $value): string => "$key$separator$value", array_keys($digested_list), array_values($digested_list));
+                    $converted_list = array_map(fn($key, $value): string => "$key$separator$value", array_keys($digested_list), array_values($digested_list));
                     if (!empty($converted_list)) {
                         $encoded_list = base64_encode(json_encode($converted_list));
                         $this->ctrl->setParameter($this, 'possible_values_list', $encoded_list);
@@ -304,8 +304,8 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
 
     protected function getAvailableMetadataFields(): array
     {
-        $already_configured = array_map(fn (MDFieldConfigAR $md_config): string => $md_config->getFieldId(), $this->repository->getAll(false));
-        $available_total = array_map(fn (MDFieldDefinition $md_field_def): string => $md_field_def->getId(), $this->getMetadataCatalogue()->getFieldDefinitions());
+        $already_configured = array_map(fn(MDFieldConfigAR $md_config): string => $md_config->getFieldId(), $this->repository->getAll(false));
+        $available_total = array_map(fn(MDFieldDefinition $md_field_def): string => $md_field_def->getId(), $this->getMetadataCatalogue()->getFieldDefinitions());
         return array_diff($available_total, $already_configured);
     }
 
@@ -360,7 +360,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                                            )
                                            ->withValue(
                                                $md_field_def->isRequired(
-                                               ) || ($md_field_config && $md_field_config->isRequired())
+                                               ) || ($md_field_config instanceof \srag\Plugins\Opencast\Model\Metadata\Config\MDFieldConfigAR && $md_field_config->isRequired())
                                            ),
             'read_only' => $this->ui_factory->input()->field()->checkbox(
                 $this->plugin->txt('md_read_only')
@@ -368,7 +368,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                                             ->withDisabled($md_field_def->isReadOnly())
                                             ->withValue(
                                                 $md_field_def->isReadOnly(
-                                                ) || ($md_field_config && $md_field_config->isReadOnly())
+                                                ) || ($md_field_config instanceof \srag\Plugins\Opencast\Model\Metadata\Config\MDFieldConfigAR && $md_field_config->isReadOnly())
                                             )
         ];
 
@@ -419,7 +419,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                                                           implode(
                                                               ', ',
                                                               array_map(
-                                                                  'strtoupper',
+                                                                  strtoupper(...),
                                                                   array_keys(MDPrefiller::$course_properties)
                                                               )
                                                           ),
@@ -427,7 +427,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                                                           implode(
                                                               ', ',
                                                               array_map(
-                                                                  'strtoupper',
+                                                                  strtoupper(...),
                                                                   array_keys(MDPrefiller::$user_properties)
                                                               )
                                                           ),
@@ -435,7 +435,7 @@ abstract class xoctMetadataConfigGUI extends xoctGUI
                                                           implode(
                                                               ', ',
                                                               array_map(
-                                                                  'strtoupper',
+                                                                  strtoupper(...),
                                                                   array_keys(MDPrefiller::$md_properties)
                                                               )
                                                           ),

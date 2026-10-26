@@ -36,8 +36,6 @@ abstract class PlayerDataBuilder
 
     /**
      * Make sure that the builder is capable of providing player with JWT Iframe.
-     *
-     * @return bool
      */
     abstract public function shouldPlayInJWTIframe(): bool;
 }

@@ -202,7 +202,7 @@ class xoctWorkflowGUI extends xoctGUI
         $this->ctrl->redirect($this, self::CMD_STANDARD);
     }
 
-    protected function getForm(WorkflowAR $workflow = null): Standard
+    protected function getForm(?WorkflowAR $workflow = null): Standard
     {
         $id = $this->factory->input()->field()->text($this->language->txt('id'))->withDisabled(true);
         $title = $this->factory->input()->field()->text($this->language->txt('title'));

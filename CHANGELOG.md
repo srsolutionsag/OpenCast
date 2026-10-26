@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 11.0.0
+- [FEATURE] Support for ILIAS 11
+- [FIX] Metadata prefill: read course keywords and languages via the LOM API
+
 ## Version 10.4.2
 - [FIX] Event download: honor Publication (Sub-)Usage display names and render publication usage groups in the download list #546
 - [FIX] Player: fit the preview image into the visible area #565

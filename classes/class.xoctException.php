@@ -42,10 +42,6 @@ class xoctException extends Exception
         self::JWT_TOKEN_ISSUE_FAILED => 'Opencast JWT: An error occurred while generating token',
     ];
 
-    /**
-     * @param string $code
-     * @param string $additional_message
-     */
     public function __construct(int $code, string $additional_message = '')
     {
         $message = '';

@@ -15,7 +15,7 @@ class Token
 {
     protected ?string $token;
 
-    public function __construct(string $token = null)
+    public function __construct(?string $token = null)
     {
         if (empty($token)) {
             $token = random_bytes(16);

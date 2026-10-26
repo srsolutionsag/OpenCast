@@ -119,7 +119,7 @@ class OpencastIngestService
         // Get workflow configuration params ready, make sure it is array!
         $workflow_configuration = (array) $payload->getProcessing()->getConfiguration();
         // ingest
-        $media_package = $this->api->routes()->ingest->ingest(
+        $this->api->routes()->ingest->ingest(
             $media_package,
             $payload->getProcessing()->getWorkflow(),
             '',

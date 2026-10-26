@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 use srag\Plugins\Opencast\Container\Container;
-
 use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\Container\Init;
 
@@ -16,15 +15,11 @@ class xoctMetadataConfigRouterGUI
     /**
      * @readonly
      */
-    private ilCtrlInterface  $ctrl;
+    private ilCtrlInterface $ctrl;
     /**
      * @readonly
      */
-    private ilTabsGUI  $tabs;
-    /**
-     * @readonly
-     */
-    private OpencastDIC $legacy_container;
+    private ilTabsGUI $tabs;
     /**
      * @readonly
      */
@@ -40,7 +35,6 @@ class xoctMetadataConfigRouterGUI
         $this->ctrl = $DIC->ctrl();
         $this->tabs = $DIC->tabs();
         $this->container = Init::init();
-        $this->legacy_container = $this->container->legacy();
         $this->plugin = $this->container->plugin();
     }
 

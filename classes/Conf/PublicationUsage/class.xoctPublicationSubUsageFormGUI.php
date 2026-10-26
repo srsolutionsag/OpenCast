@@ -20,7 +20,7 @@ class xoctPublicationSubUsageFormGUI extends ilPropertyFormGUI
         LocaleTrait::getLocaleString as _getLocaleString;
     }
 
-    private $container;
+    private \srag\Plugins\Opencast\Container\Container $container;
 
     public function getLocaleString(string $string, ?string $module = '', ?string $fallback = null): string
     {
@@ -42,14 +42,8 @@ class xoctPublicationSubUsageFormGUI extends ilPropertyFormGUI
     public const F_MEDIATYPE = 'mediatype';
     public const F_OVERWRITE_DOWNLOAD_PERM = 'overwrite_download_perm';
     public const F_EXT_DL_SOURCE = 'ext_dl_source';
-    /**
-     * @var ilOpenCastPlugin
-     */
-    protected $plugin;
-    /**
-     * @var OpencastDIC
-     */
-    protected $legacy_container;
+    protected \ilOpenCastPlugin $plugin;
+    protected \srag\Plugins\Opencast\DI\OpencastDIC $legacy_container;
 
     public function __construct(
         protected \xoctPublicationUsageGUI $parent_gui,
@@ -210,8 +204,6 @@ class xoctPublicationSubUsageFormGUI extends ilPropertyFormGUI
 
     /**
      * returns whether checkinput was successful or not.
-     *
-     * @return bool
      */
     public function fillObject(): bool
     {

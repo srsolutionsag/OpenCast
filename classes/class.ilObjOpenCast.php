@@ -23,9 +23,6 @@ class ilObjOpenCast extends ilObjectPlugin
     private ilCtrlInterface $ctrl;
     private SeriesAPIRepository $series_repository;
 
-    /**
-     * @param int $a_ref_id
-     */
     public function __construct(int $a_ref_id = 0)
     {
         global $DIC;
@@ -97,9 +94,7 @@ class ilObjOpenCast extends ilObjectPlugin
     /**
      * @param ilObjOpenCast $new_obj
      * @param               $a_target_id
-     * @param null          $a_copy_id
      *
-     * @return bool|void
      */
     #[ReturnTypeWillChange]
     protected function doCloneObject(/*ilObject2*/ $new_obj, /*int*/ $a_target_id, /*?int*/ $a_copy_id = null): void

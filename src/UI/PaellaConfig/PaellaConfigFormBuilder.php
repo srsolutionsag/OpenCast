@@ -8,7 +8,6 @@ use ILIAS\UI\Component\Input\Container\Form\Standard;
 use ILIAS\UI\Component\Input\Field\UploadHandler;
 use ilPlugin;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
-use srag\Plugins\Opencast\Util\FileTransfer\PaellaConfigStorageService;
 use ILIAS\UI\Factory;
 use ILIAS\UI\Renderer;
 use ILIAS\UI\Component\Input\Field\SwitchableGroup;
@@ -48,7 +47,7 @@ class PaellaConfigFormBuilder
     public const F_PAELLA_PLAYER_PREVIEW_PREVIEW = 'paella_player_section_preview';
     public const F_PAELLA_PLAYER_PREVIEW_CAPTION = 'paella_player_section_caption';
 
-    public function __construct(private readonly \ilPlugin $plugin, UploadHandler $fileUploadHandler, private readonly PaellaConfigStorageService $paellaStorageService, private readonly Factory $ui_factory, private readonly Renderer $ui_renderer)
+    public function __construct(private readonly \ilPlugin $plugin, UploadHandler $fileUploadHandler, private readonly Factory $ui_factory, private readonly Renderer $ui_renderer)
     {
     }
 
@@ -245,18 +244,6 @@ class PaellaConfigFormBuilder
                  ->withByline($this->txt($text . '_info'))
                  ->withValue($option)
                  ->withRequired($required);
-    }
-
-    private function buildInlineDownload(string $file_id): string
-    {
-        if (!$file_id || !$this->paellaStorageService->exists($file_id)) {
-            return '';
-        }
-        $fileAsBase64 = $this->paellaStorageService->getFileAsBase64($file_id);
-        $fileInfo = $this->paellaStorageService->getFileInfo($file_id);
-        return '<a href="data:text/vtt;base64,'
-            . $fileAsBase64
-            . '" target="blank" download="' . $fileInfo['name'] . '">Download</a>';
     }
 
     private function txt(string $string): string

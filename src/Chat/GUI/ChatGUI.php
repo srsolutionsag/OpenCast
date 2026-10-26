@@ -6,8 +6,6 @@ namespace srag\Plugins\Opencast\Chat\GUI;
 
 use ilOpenCastPlugin;
 use ilTemplate;
-use ilTemplateException;
-use srag\Plugins\Opencast\Chat\Model\ChatroomAR;
 use srag\Plugins\Opencast\Chat\Model\ConfigAR;
 use srag\Plugins\Opencast\Chat\Model\TokenAR;
 use srag\Plugins\Opencast\Container\Init;

@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\Container\Init;
 
 /**

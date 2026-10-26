@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
-use srag\Plugins\Opencast\DI\OpencastDIC;
+
 use srag\Plugins\Opencast\Model\ACL\ACLUtils;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Event\Event;
@@ -133,9 +133,6 @@ class xoctEventAPI
      *  description => text
      *  presenters => text
      *  online => bool
-     *
-     * @param String $event_id
-     * @param array  $data
      */
     public function update(string $event_id, array $data): Event
     {
@@ -192,7 +189,7 @@ class xoctEventAPI
      */
     protected function getImmutableDateTime($date_time_of_unknown_format): DateTimeImmutable
     {
-        if($date_time_of_unknown_format instanceof DateTime) {
+        if ($date_time_of_unknown_format instanceof DateTime) {
             return DateTimeImmutable::createFromMutable($date_time_of_unknown_format->setTimezone(new DateTimeZone('GMT')));
         }
         return new DateTimeImmutable($date_time_of_unknown_format);
@@ -204,14 +201,11 @@ class xoctEventAPI
         if (array_key_exists('workflow_parameters', $data) && is_array($data['workflow_parameters'])) {
             $workflow_parameters += $data['workflow_parameters'];
         }
-        $workflow_parameters = array_map(function ($value): string {
-            return $value == 1 ? 'true' : 'false';
-        }, $workflow_parameters);
-        $processing = new Processing(
+        $workflow_parameters = array_map(fn($value): string => $value == 1 ? 'true' : 'false', $workflow_parameters);
+        return new Processing(
             PluginConfig::getConfig(PluginConfig::F_WORKFLOW),
             (object) $workflow_parameters
         );
-        return $processing;
     }
 
     public function delete(string $event_id): bool

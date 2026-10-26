@@ -153,7 +153,7 @@ class LivePlayerDataBuilder extends PlayerDataBuilder
             "h" => '1080'
         ];
         $resolution_arr = explode('x', (string) $resolution);
-        if (count($resolution_arr) == 2) {
+        if (count($resolution_arr) === 2) {
             $video_res['w'] = $resolution_arr[0];
             $video_res['h'] = $resolution_arr[1];
         }

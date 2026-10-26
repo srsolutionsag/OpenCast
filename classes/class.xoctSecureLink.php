@@ -29,7 +29,7 @@ class xoctSecureLink
             return $url;
         }
         $opencastContainer = Init::init();
-        if (str_contains((string) $url, 'policy=') && str_contains((string) $url, 'signature=')) {
+        if (str_contains($url, 'policy=') && str_contains($url, 'signature=')) {
             // already signed, e.g. when presigning is active
             return $url;
         }
@@ -93,7 +93,7 @@ class xoctSecureLink
                 (int) $calculated_timestamp
             );
         }
-        $url_path = parse_url((string) $url, PHP_URL_PATH);
+        $url_path = parse_url($url, PHP_URL_PATH);
         $extension = pathinfo($url_path, PATHINFO_EXTENSION);
         if ($extension === 'mp4' && !PluginConfig::getConfig(PluginConfig::F_SIGN_PLAYER_LINKS_MP4)) {
             return $url;

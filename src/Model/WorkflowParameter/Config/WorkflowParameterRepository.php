@@ -8,13 +8,11 @@ use DOMDocument;
 use DOMElement;
 use ilException;
 use ilOpenCastPlugin;
-use ilUtil;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Series\SeriesWorkflowParameter;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Series\SeriesWorkflowParameterRepository;
 use xoctConfGUI;
 use xoctException;
-use srag\Plugins\Opencast\API\OpencastAPI;
 use xoctWorkflowParameterGUI;
 use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\API\API;
@@ -34,7 +32,7 @@ class WorkflowParameterRepository
     /**
      * @readonly
      */
-    private ilOpenCastPlugin$plugin;
+    private ilOpenCastPlugin $plugin;
     /**
      * @readonly
      */
@@ -80,8 +78,7 @@ class WorkflowParameterRepository
             $workflow_definition_id,
             true,
             true,
-            true,
-            OpencastAPI::RETURN_ARRAY
+            true
         );
 
         if ($response == false) {
@@ -137,7 +134,7 @@ class WorkflowParameterRepository
             $dom->strictErrorChecking = true;
             $main_div = $dom->createElement('div');
 
-            foreach ($configuration_panel_array as $key => $item) {
+            foreach ($configuration_panel_array as $item) {
                 if (empty($item['fieldset'])) {
                     continue;
                 }
@@ -168,7 +165,7 @@ class WorkflowParameterRepository
                         unset($field['options']);
                     }
                     foreach ($field as $field_attr => $attr_value) {
-                        $input_dom->setAttribute($field_attr, trim((string)$attr_value));
+                        $input_dom->setAttribute($field_attr, trim((string) $attr_value));
                     }
 
                     $field_unique_label = $dom->createElement('label');
@@ -198,7 +195,7 @@ class WorkflowParameterRepository
         $configuration_panel_html = trim(str_replace("\n", "", $configuration_panel_html));
         $workflow_parameters = [];
 
-        if (strlen($configuration_panel_html) > 0) {
+        if ($configuration_panel_html !== '') {
             $dom->loadHTML($configuration_panel_html, LIBXML_NOCDATA | LIBXML_NOWARNING | LIBXML_NOERROR);
             $inputs = $dom->getElementsByTagName('input');
             $labels = $dom->getElementsByTagName('label');

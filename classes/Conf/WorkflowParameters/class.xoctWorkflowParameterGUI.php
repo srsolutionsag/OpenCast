@@ -307,7 +307,7 @@ class xoctWorkflowParameterGUI extends xoctGUI
         $param_id = (string) ($this->http->request()->getQueryParams()[self::P_PARAM_ID] ?? '');
         $ilConfirmationGUI->addItem(
             self::P_PARAM_ID,
-            (string) $param_id,
+            $param_id,
             WorkflowParameter::find($param_id)->getTitle() ?? ''
         );
         $ilConfirmationGUI->setHeaderText($this->getLocaleString('confirm_delete_param', 'msg'));

@@ -103,9 +103,6 @@ class ObjectSettings extends ActiveRecord
         return [];
     }
 
-    /**
-     * @return mixed|string
-     */
     public function getVideoPortalLink(): string
     {
         if ($link_template = PluginConfig::getConfig(PluginConfig::F_VIDEO_PORTAL_LINK)) {

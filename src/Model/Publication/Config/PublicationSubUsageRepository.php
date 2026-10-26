@@ -17,8 +17,6 @@ class PublicationSubUsageRepository
 
     /**
      * Returns the display name of the sub-usage but by looking for a record also in localization.
-     * @param int $sub_id
-     * @return string
      */
     public function getDisplayName(int $sub_id): string
     {
@@ -37,9 +35,6 @@ class PublicationSubUsageRepository
 
     /**
      * Generates the title of th sub-usage by calculating the number of subs for the specified usage.
-     * @param string $parent_usage_id
-     * @param string $title_text
-     * @return string
      */
     public function generateTitle(string $parent_usage_id, string $title_text): string
     {
@@ -50,7 +45,6 @@ class PublicationSubUsageRepository
     /**
      * Return a list of sub usages based on the parent usage id.
      * @param string $parent_usage_id
-     * @return array
      */
     public function getSubUsages($parent_usage_id): array
     {
@@ -60,7 +54,6 @@ class PublicationSubUsageRepository
     /**
      * Return a list of sub usages based on the parent usage id.
      * @param string $parent_usage_id
-     * @return array
      */
     public function convertSubsToUsage($parent_usage_id): array
     {
@@ -80,7 +73,6 @@ class PublicationSubUsageRepository
      *  - is_sub
      *  - sub_id
      * @param int $sub_id
-     * @return PublicationUsage|null
      */
     public function convertSingleSubToUsage($sub_id): ?PublicationUsage
     {

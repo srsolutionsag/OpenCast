@@ -106,9 +106,6 @@ class ilObjOpenCastListGUI extends ilObjectPluginListGUI
         $props = parent::getCustomProperties([]);
         try {
             $objectSettings = $this->getOpenCast(true);
-            if (!$objectSettings instanceof ObjectSettings) {
-                return $props;
-            }
 
             if (!$objectSettings->isOnline()) {
                 $props[] = [

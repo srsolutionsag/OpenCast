@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace srag\Plugins\Opencast\Model\Publication;
 
 use ilObjOpenCastAccess;
-use ilOpenCastPlugin;
 use Opis\Closure\SerializableClosure;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\DTO\DownloadDto;
@@ -188,7 +187,7 @@ class PublicationSelector
                 $pubs = $this->getPublicationMetadataForUsage($download_fallback_usage);
             }
             // adding external download source option to the publications.
-            $pubs_mapped = array_map(function ($pub) use ($download_usages): Attachment|Media|Publication {
+            $pubs_mapped = array_map(function (\srag\Plugins\Opencast\Model\Publication\Publication|\srag\Plugins\Opencast\Model\Publication\Media|\srag\Plugins\Opencast\Model\Publication\Attachment $pub) use ($download_usages): Attachment|Media|Publication {
                 $ext_dl_source = false;
                 $usage_id = $pub->usage_id;
                 $usage_type = $pub->usage_type;
@@ -211,7 +210,6 @@ class PublicationSelector
     }
 
     /**
-     * @param bool $with_urls
      * @return array $categorized_dtos dtos array with format:
      *      $categorized_dtos[{USAGE TYPE: org/sub}][{usage id (string) or usage sub id (int)}][$downloadDto]
      * @throws xoctException
@@ -404,7 +402,7 @@ class PublicationSelector
 
                     // Sign the url and parse variables
                     $media_url_signed = xoctSecureLink::signPlayer($media_url, $duration);
-                    $media_url_query = parse_url((string) $media_url_signed, PHP_URL_QUERY);
+                    $media_url_query = parse_url($media_url_signed, PHP_URL_QUERY);
                     $media_url = $media_url . '&' . $media_url_query;
                 }
 
@@ -515,12 +513,12 @@ class PublicationSelector
             }
         }
         // Adding the usage and sub usage flags to both attachments, media and metadata.
-        $attachments = array_map(function ($attachment) use ($usage_type, $usage_id) {
+        $attachments = array_map(function (\srag\Plugins\Opencast\Model\Publication\Attachment $attachment) use ($usage_type, $usage_id): \srag\Plugins\Opencast\Model\Publication\Attachment {
             $attachment->usage_type = $usage_type;
             $attachment->usage_id = $usage_id;
             return $attachment;
         }, $attachments);
-        $media = array_map(function ($medium) use ($usage_type, $usage_id) {
+        $media = array_map(function (\srag\Plugins\Opencast\Model\Publication\Media $medium) use ($usage_type, $usage_id): \srag\Plugins\Opencast\Model\Publication\Media {
             $medium->usage_type = $usage_type;
             $medium->usage_id = $usage_id;
             return $medium;
@@ -650,7 +648,7 @@ class PublicationSelector
     protected function endsWith(string $haystack, string $needle): bool
     {
         $length = strlen($needle);
-        if ($length == 0) {
+        if ($length === 0) {
             return true;
         }
 
@@ -683,10 +681,7 @@ class PublicationSelector
 
     /**
      * Returns the publication if the media type matches the usage media type, null otherwise.
-     * @param PublicationMetadata $publicationType
-     * @param PublicationUsage    $publication_usage
      *
-     * @return PublicationMetadata|null
      */
     private function checkMediaTypes(
         PublicationMetadata $publicationType,
@@ -740,7 +735,6 @@ class PublicationSelector
 
     /**
      * Extracts the very first available MPEG7 Catalog url.
-     * @return string
      * @throws xoctException
      */
     public function getMpeg7CatalogUrl(): string

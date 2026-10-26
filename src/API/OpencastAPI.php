@@ -62,13 +62,7 @@ class OpencastAPI implements API
      * @var string the default jwt iframe src url path.
      */
     public const JWT_IFRAME_SRC_PATH_DEFAULT = '/paella7/ui/watch.html';
-    /**
-     * @var Opencast
-     */
     private Opencast $api;
-    /**
-     * @var OcRestClient
-     */
     public OcRestClient $rest;
     /**
      * @readonly
@@ -78,10 +72,7 @@ class OpencastAPI implements API
      * @readonly
      */
     private array $engage_config;
-    /**
-     * @var xoctUser
-     */
-    private $user;
+    private \srag\Plugins\Opencast\Model\User\xoctUser $user;
     /**
      * @var array Already generated JWTs for events
      */
@@ -98,9 +89,6 @@ class OpencastAPI implements API
      * @var array Already generated JWTs for annotation tool
      */
     protected static $already_generated_annotation_tool_jwts = [];
-    /**
-     * @var bool
-     */
     private bool $has_jwt = false;
 
     public function __construct(Config $config)
@@ -187,8 +175,7 @@ class OpencastAPI implements API
         string $identifier,
         array $actions = ['read'],
         int $duration = 0
-    ): string
-    {
+    ): string {
         // In case the configuration is off, then we return the url without injecting any jwt.
         if (!$this->has_jwt) {
             return $url;
@@ -315,8 +302,8 @@ class OpencastAPI implements API
 
         // Prepare the claim info.
         $claim_info = [
-            'sub'   => $this->user->getLogin(),
-            'name'  => $this->user->getNamePresentation(false),
+            'sub' => $this->user->getLogin(),
+            'name' => $this->user->getNamePresentation(false),
             'email' => $this->user->getEmail(),
         ];
 
@@ -399,32 +386,29 @@ class OpencastAPI implements API
      * Tries to put the generated JWT into a built-in temp cache for each service.
      * @param string $service the service name
      * @param string $access_token JWT
-     * @return void
      */
     private function cacheJwtForService(string $service, string $access_token): void
     {
         if ($service === self::JWT_SERVICE_STUDIO) {
             self::$already_generated_studio_jwts[$this->user->getIliasUserId()] = $access_token;
-        } else if ($service === self::JWT_SERVICE_EDITOR) {
+        } elseif ($service === self::JWT_SERVICE_EDITOR) {
             self::$already_generated_editor_jwts[$this->user->getIliasUserId()] = $access_token;
-        } else if ($service === self::JWT_SERVICE_ANNOTATION_TOOL) {
+        } elseif ($service === self::JWT_SERVICE_ANNOTATION_TOOL) {
             self::$already_generated_annotation_tool_jwts[$this->user->getIliasUserId()] = $access_token;
         }
     }
 
     /**
      * Returns the cached JWT for the service.
-     * @param string $service
-     * @return null|array
      */
     private function getCachedJwtForService(string $service): ?array
     {
         $cache_set = [];
         if ($service === self::JWT_SERVICE_STUDIO) {
             $cache_set = self::$already_generated_studio_jwts;
-        } else if ($service === self::JWT_SERVICE_EDITOR) {
+        } elseif ($service === self::JWT_SERVICE_EDITOR) {
             $cache_set = self::$already_generated_editor_jwts;
-        } else if ($service === self::JWT_SERVICE_ANNOTATION_TOOL) {
+        } elseif ($service === self::JWT_SERVICE_ANNOTATION_TOOL) {
             $cache_set = self::$already_generated_annotation_tool_jwts;
         }
         return $cache_set;
@@ -473,14 +457,14 @@ class OpencastAPI implements API
      */
     public function unparseUrl(array $parsed_url): string
     {
-        $scheme   = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
-        $host     = isset($parsed_url['host']) ? $parsed_url['host'] : '';
-        $port     = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
-        $user     = isset($parsed_url['user']) ? $parsed_url['user'] : '';
-        $pass     = isset($parsed_url['pass']) ? ':' . $parsed_url['pass']  : '';
-        $pass     = ($user || $pass) ? "$pass@" : '';
-        $path     = isset($parsed_url['path']) ? $parsed_url['path'] : '';
-        $query    = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
+        $scheme = isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '';
+        $host = $parsed_url['host'] ?? '';
+        $port = isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '';
+        $user = $parsed_url['user'] ?? '';
+        $pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
+        $pass = ($user || $pass) ? "$pass@" : '';
+        $path = $parsed_url['path'] ?? '';
+        $query = isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '';
         $fragment = isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '';
         return "$scheme$user$pass$host$port$path$query$fragment";
     }
@@ -503,8 +487,7 @@ class OpencastAPI implements API
             $duration = $this->config['jwt']['duration'] ?? 15;
         }
         $oc_jwt_claim->setExp(OcJwtClaim::generateFormattedDateTimeObject((int) $duration));
-        $access_token = $this->api->getRestJwtHandler()->issueToken($oc_jwt_claim);
-        return $access_token;
+        return $this->api->getRestJwtHandler()->issueToken($oc_jwt_claim);
     }
 
     /**
@@ -535,7 +518,6 @@ class OpencastAPI implements API
 
     /**
      * Checks if the JWT mechanism is activated.
-     * @return bool
      */
     public function isJWTActivated(): bool
     {

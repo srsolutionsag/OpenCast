@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use ILIAS\Data\DataSize;
-
 /**
  * Class xoctUploadFile
  *
@@ -14,8 +12,6 @@ class xoctUploadFile
 {
     /**
      * @param $fileinfo array{path: string, size: DataSize, name: string, mimeType: string}
-     *
-     * @return xoctUploadFile
      */
     public static function getInstanceFromFileArray(array $fileinfo): self
     {
@@ -133,10 +129,9 @@ class xoctUploadFile
      */
     public function getFileStream()
     {
-        $file_stream = null;
         if (file_exists($this->getPath())) {
-            $file_stream = fopen($this->getPath(), 'rb');
+            return fopen($this->getPath(), 'rb');
         }
-        return $file_stream;
+        return null;
     }
 }

@@ -6,7 +6,7 @@ namespace srag\Plugins\Opencast\Util;
 
 class UpdateCheck
 {
-    private string $last_update_version = '';
+    private string $last_update_version;
 
     public function __construct(\ilDBInterface $db)
     {

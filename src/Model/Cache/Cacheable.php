@@ -20,9 +20,6 @@ declare(strict_types=1);
 
 namespace srag\Plugins\Opencast\Model\Cache;
 
-use ILIAS\Cache\Nodes\NodeRepository;
-use ILIAS\Cache\Nodes\NullNodeRepository;
-
 /**
  * @author Fabian Schmid <fabian@sr.solutions>
  */

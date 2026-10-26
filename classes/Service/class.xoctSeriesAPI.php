@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\Model\ACL\ACLUtils;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Model\Group\Group;
@@ -85,14 +83,11 @@ class xoctSeriesAPI
      *  producers => int[]
      *
      *
-     * @param int    $parent_ref_id
-     * @param string $title
-     * @param array  $additional_data
      *
      * @throws xoctException
      * @throws xoctInternalApiException
      */
-    public function create(int $parent_ref_id, string $title, $additional_data = []): ObjectSettings
+    public function create(int $parent_ref_id, string $title, array $additional_data = []): ObjectSettings
     {
         if (!ilObjOpenCast::_getParentCourseOrGroup($parent_ref_id)) {
             throw new xoctInternalApiException(

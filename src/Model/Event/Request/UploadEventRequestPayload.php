@@ -78,19 +78,13 @@ class UploadEventRequestPayload
     public function hasVideoFile(): bool
     {
         $file_mimetype = $this->uploading_file->getMimeType();
-        if (in_array($file_mimetype, EventFormBuilder::$accepted_video_mimetypes)) {
-            return true;
-        }
-        return false;
+        return in_array($file_mimetype, EventFormBuilder::$accepted_video_mimetypes);
     }
 
     public function hasAudioFile(): bool
     {
         $file_mimetype = $this->uploading_file->getMimeType();
-        if (in_array($file_mimetype, EventFormBuilder::$accepted_audio_mimetypes)) {
-            return true;
-        }
-        return false;
+        return in_array($file_mimetype, EventFormBuilder::$accepted_audio_mimetypes);
     }
 
     /**

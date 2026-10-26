@@ -35,12 +35,6 @@ interface EventRepository
     public function upload(UploadEventRequest $request): void;
 
     /**
-     * @param string $for_user
-     * @param array  $roles
-     * @param int    $offset
-     * @param int    $limit
-     * @param string $sort
-     * @param bool   $as_object
      *
      * @return Event[] | array
      * @throws xoctException

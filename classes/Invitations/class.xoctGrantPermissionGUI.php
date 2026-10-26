@@ -122,7 +122,7 @@ class xoctGrantPermissionGUI extends xoctGUI
             if ($user_id == $this->user->getId()) {
                 continue;
             }
-            if ($owner && $user_id == $owner->getIliasUserId()) {
+            if ($owner instanceof \srag\Plugins\Opencast\Model\User\xoctUser && $user_id == $owner->getIliasUserId()) {
                 continue;
             }
             $user = new stdClass();

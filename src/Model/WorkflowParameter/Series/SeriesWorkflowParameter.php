@@ -87,8 +87,6 @@ class SeriesWorkflowParameter extends ActiveRecord
 
     /**
      * @param int $id
-     *
-     * @return static
      */
     public function setId($id): self
     {
@@ -107,8 +105,6 @@ class SeriesWorkflowParameter extends ActiveRecord
 
     /**
      * @param int $obj_id
-     *
-     * @return static
      */
     public function setObjId($obj_id): self
     {
@@ -127,8 +123,6 @@ class SeriesWorkflowParameter extends ActiveRecord
 
     /**
      * @param string $param_id
-     *
-     * @return static
      */
     public function setParamId($param_id): self
     {
@@ -144,8 +138,6 @@ class SeriesWorkflowParameter extends ActiveRecord
 
     /**
      * @param int $value_member
-     *
-     * @return static
      */
     public function setValueMember($value_member): self
     {
@@ -161,8 +153,6 @@ class SeriesWorkflowParameter extends ActiveRecord
 
     /**
      * @param int $value_admin
-     *
-     * @return static
      */
     public function setDefaultValueAdmin($value_admin): self
     {

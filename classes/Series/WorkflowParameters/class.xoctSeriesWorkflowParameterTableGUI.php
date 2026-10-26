@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 use srag\Plugins\Opencast\Container\Init;
-
-use srag\CustomInputGUIs\OpenCast\TableGUI\TableGUI;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameter;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameterRepository;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Series\SeriesWorkflowParameter;
@@ -47,7 +45,7 @@ class xoctSeriesWorkflowParameterTableGUI extends ilTable2GUI
         $this->addCommandButton(xoctSeriesGUI::CMD_UPDATE_WORKFLOW_PARAMS, $this->lng->txt('save'));
     }
 
-    protected function getColumnValue(string $column, /*array*/ $row, int $format = 0): string
+    protected function getColumnValue(string $column, /*array*/ array $row, int $format = 0): string
     {
         return $row[$column] ?? '';
     }

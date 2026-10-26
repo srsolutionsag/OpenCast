@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace srag\Plugins\Opencast\UI\SubtitleConfig;
 
 use ILIAS\UI\Component\Input\Container\Form\Standard;
-use ILIAS\UI\Implementation\Component\Input\Field\Input;
 use ilPlugin;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use ILIAS\UI\Factory;
@@ -32,17 +31,9 @@ class SubtitleConfigFormBuilder
         '.ass' => '*.ass',
         '.ssa' => '*.ssa',
     ];
-    /**
-     * @var ilPlugin
-     */
-    private $plugin;
 
-    public function __construct(
-        ilPlugin $plugin,
-        private Factory $ui_factory,
-        private Renderer $ui_renderer
-    ) {
-        $this->plugin = $plugin;
+    public function __construct(private ilPlugin $plugin, private Factory $ui_factory, private Renderer $ui_renderer)
+    {
     }
 
     /**

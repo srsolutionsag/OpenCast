@@ -103,7 +103,6 @@ abstract class APIObject implements Request
         $r = new \ReflectionClass($this);
         $array = [];
         foreach ($r->getProperties() as $p) {
-            $p->setAccessible(true);
             $value = $p->getValue($this);
             if (is_object($value)) {
                 continue;

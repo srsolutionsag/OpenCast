@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace srag\Plugins\Opencast\Model\Cache;
 
 use srag\Plugins\Opencast\Model\Cache\Adaptor\Adaptor;
-use srag\Plugins\Opencast\Model\Cache\Adaptor\AvailableAdaptors;
 use srag\Plugins\Opencast\Model\Cache\Adaptor\Factory;
 use srag\Plugins\Opencast\Model\Cache\Container\ActiveContainer;
 use srag\Plugins\Opencast\Model\Cache\Container\Request;

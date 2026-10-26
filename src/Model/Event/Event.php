@@ -62,9 +62,6 @@ class Event
      * @var EventAdditionsAR
      */
     protected $xoctEventAdditions;
-    /**
-     * @var string
-     */
     private string $status;
 
     /**

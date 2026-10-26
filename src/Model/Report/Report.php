@@ -149,7 +149,6 @@ class Report extends ActiveRecord
 
     /**
      * @param int $id
-     * @return static
      */
     public function setId($id): self
     {
@@ -167,7 +166,6 @@ class Report extends ActiveRecord
 
     /**
      * @param int $user_id
-     * @return static
      */
     public function setUserId($user_id): self
     {
@@ -185,7 +183,6 @@ class Report extends ActiveRecord
 
     /**
      * @param int $created_at
-     * @return static
      */
     public function setCreatedAt($created_at): self
     {
@@ -203,7 +200,6 @@ class Report extends ActiveRecord
 
     /**
      * @param int $type
-     * @return static
      */
     public function setType($type): self
     {
@@ -221,7 +217,6 @@ class Report extends ActiveRecord
 
     /**
      * @param int $ref_id
-     * @return static
      */
     public function setRefId($ref_id): self
     {
@@ -239,7 +234,6 @@ class Report extends ActiveRecord
 
     /**
      * @param string $event_id
-     * @return static
      */
     public function setEventId($event_id): self
     {
@@ -257,7 +251,6 @@ class Report extends ActiveRecord
 
     /**
      * @param string $subject
-     * @return static
      */
     public function setSubject($subject): self
     {
@@ -275,7 +268,6 @@ class Report extends ActiveRecord
 
     /**
      * @param string $message
-     * @return static
      */
     public function setMessage($message): self
     {

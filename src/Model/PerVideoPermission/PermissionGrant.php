@@ -6,7 +6,6 @@ namespace srag\Plugins\Opencast\Model\PerVideoPermission;
 
 use ActiveRecord;
 use ilObjOpenCastAccess;
-use ilObjUser;
 use srag\Plugins\Opencast\Model\Event\Event;
 use srag\Plugins\Opencast\Model\User\xoctUser;
 

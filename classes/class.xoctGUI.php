@@ -95,7 +95,6 @@ abstract class xoctGUI
 
     /**
      * Tries to regenerate a new JWT requested by the iframe player async fetch call and return it.
-     * @return void
      */
     public function refreshJwtAsync(): void
     {
@@ -105,7 +104,7 @@ abstract class xoctGUI
             $event_id = $this->http->request()->getQueryParams()[xoctEventGUI::IDENTIFIER] ?? null;
             $event = $this->event_repository->find($event_id);
             if (
-                !$event ||
+                !$event instanceof \srag\Plugins\Opencast\Model\Event\Event ||
                 !$obj_id ||
                 !ilObjOpenCastAccess::hasReadAccessOnEventForRefreshJwt($event, $obj_id)
             ) {

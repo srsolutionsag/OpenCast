@@ -190,8 +190,7 @@ class MDParser
     private function parseFormData(array $data, Metadata $metadata, MDCatalogue $catalogue): Metadata
     {
         foreach (
-            array_filter($data, fn($key): bool => str_starts_with($key, 'md_'), ARRAY_FILTER_USE_KEY)
-            as $id => $value
+            array_filter($data, fn($key): bool => str_starts_with($key, 'md_'), ARRAY_FILTER_USE_KEY) as $id => $value
         ) {
             $id = substr($id, 3);
             $definition = $catalogue->getFieldById($id);

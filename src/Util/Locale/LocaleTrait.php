@@ -19,8 +19,6 @@ trait LocaleTrait
      * @param string  $string   string to translate
      * @param string  $module
      * @param ?string $fallback the fallback string in case the translataion does not exist.
-     *
-     * @return string
      */
     public function getLocaleString(string $string, ?string $module = '', ?string $fallback = null): string
     {

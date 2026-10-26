@@ -223,9 +223,9 @@ class Series implements DataRetrieval
             ->secondary()
             ->legacy(
                 $title,
-                $this->ui_factory->legacy(
+                $this->ui_factory->legacy()->content(
                     $this->ui->renderer()->render(
-                        $this->ui_factory->legacy(
+                        $this->ui_factory->legacy()->content(
                             $this->ui->renderer()->render(
                                 $entity_list[0],
                             )

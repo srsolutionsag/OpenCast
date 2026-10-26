@@ -7,7 +7,6 @@ use srag\Plugins\Opencast\Model\Publication\Config\PublicationSubUsage;
 use srag\Plugins\Opencast\Model\Publication\Config\PublicationUsageRepository;
 use srag\Plugins\Opencast\Model\Publication\Config\PublicationSubUsageRepository;
 use srag\Plugins\Opencast\Model\Publication\Config\PublicationUsageGroup;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
 
 /**
@@ -206,7 +205,7 @@ class xoctPublicationUsageGUI extends xoctGUI
     protected function update(): void
     {
         $publication_usage = new PublicationUsage();
-        if (!$this->identifier && $this->repository->getUsage($this->identifier)) {
+        if (!$this->identifier && $this->repository->getUsage($this->identifier) instanceof \srag\Plugins\Opencast\Model\Publication\Config\PublicationUsage) {
             $publication_usage = $this->repository->getUsage($this->identifier);
         }
         $xoctPublicationUsageFormGUI = new xoctPublicationUsageFormGUI(

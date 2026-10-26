@@ -33,9 +33,6 @@ class PublicationUsageRepository
         return array_diff(PublicationUsage::$usage_ids, $this->getArray(null, 'usage_id'));
     }
 
-    /**
-     * @return array
-     */
     public function getSubAllowedUsageIds(): array
     {
         return array_intersect(
@@ -44,11 +41,7 @@ class PublicationUsageRepository
         );
     }
 
-    /**
-     * @param null $key
-     * @param null $values
-     */
-    public function getArray(?string $key = null, $values = null): array
+    public function getArray(?string $key = null, string|array|null $values = null): array
     {
         return PublicationUsage::getArray($key, $values);
     }
@@ -72,7 +65,7 @@ class PublicationUsageRepository
         string $channel,
         int $md_type,
         string $display_name = '',
-        string $group_id = null,
+        ?string $group_id = null,
         string $search_key = '',
         string $flavor = '',
         string $tag = '',
@@ -101,8 +94,6 @@ class PublicationUsageRepository
 
     /**
      * Returns the display name of the group but by looking for a record also in localization.
-     * @param string $usage
-     * @return string
      */
     public function getDisplayName(string $usage): string
     {

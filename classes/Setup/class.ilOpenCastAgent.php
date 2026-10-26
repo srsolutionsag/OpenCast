@@ -3,12 +3,9 @@
 declare(strict_types=1);
 use ILIAS\Setup\Metrics\Storage;
 use ILIAS\Setup\ObjectiveConstructor;
-
-use ILIAS\Setup;
 use ILIAS\Setup\Config;
 use ILIAS\Setup\Objective;
 use ILIAS\Setup\ObjectiveCollection;
-use ILIAS\Refinery\Factory;
 
 /**
  * Class ilOpenCastAgent
@@ -18,11 +15,8 @@ use ILIAS\Refinery\Factory;
  */
 class ilOpenCastAgent extends ilPluginDefaultAgent
 {
-    public function __construct(
-        private readonly Factory $refinery,
-        private readonly \ILIAS\Data\Factory $data_factory,
-        private readonly \ilLanguage $lng
-    ) {
+    public function __construct()
+    {
         parent::__construct('OpenCast');
     }
 
@@ -32,7 +26,7 @@ class ilOpenCastAgent extends ilPluginDefaultAgent
         return new \ilDatabaseUpdateStepsMetricsCollectedObjective($storage, new ilOpenCastDBUpdateSteps());
     }
 
-    public function getInstallObjective(Config $config = null): Objective
+    public function getInstallObjective(?Config $config = null): Objective
     {
         $general_update = parent::getInstallObjective($config);
 
@@ -45,7 +39,7 @@ class ilOpenCastAgent extends ilPluginDefaultAgent
 
     }
 
-    public function getUpdateObjective(Config $config = null): Objective
+    public function getUpdateObjective(?Config $config = null): Objective
     {
         $general_update = parent::getUpdateObjective($config);
 

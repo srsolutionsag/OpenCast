@@ -80,7 +80,6 @@ class PublicationUsage extends ActiveRecord
         ];
 
     /**
-     * @return string
      * @deprecated
      */
     public static function returnDbTableName(): string
@@ -88,9 +87,6 @@ class PublicationUsage extends ActiveRecord
         return self::TABLE_NAME;
     }
 
-    /**
-     * @return string
-     */
     public function getConnectorContainerName(): string
     {
         return self::TABLE_NAME;
@@ -254,9 +250,6 @@ class PublicationUsage extends ActiveRecord
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
     public function getDisplayName(): string
     {
         return $this->display_name ?? '';
@@ -270,9 +263,6 @@ class PublicationUsage extends ActiveRecord
         $this->display_name = $display_name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description ?? '';
@@ -286,9 +276,6 @@ class PublicationUsage extends ActiveRecord
         $this->description = $description;
     }
 
-    /**
-     * @return ?int
-     */
     public function getGroupId(): ?int
     {
         return (is_null($this->group_id) ? null : intval($this->group_id));
@@ -302,9 +289,6 @@ class PublicationUsage extends ActiveRecord
         $this->group_id = ($group_id == '' || is_null($group_id) ? null : intval($group_id));
     }
 
-    /**
-     * @return string
-     */
     public function getChannel(): string
     {
         return $this->channel ?? '';
@@ -387,91 +371,58 @@ class PublicationUsage extends ActiveRecord
         $this->md_type = $md_type;
     }
 
-    /**
-     * @return string
-     */
     public function getMediaType(): string
     {
         return $this->mediatype ?? '';
     }
 
-    /**
-     * @return array
-     */
     public function getArrayMediaTypes(): array
     {
         $mediatype = $this->getMediaType();
         $mediatypes = $mediatype !== '' && $mediatype !== '0' ? explode(',', $mediatype) : [];
-        return array_map('trim', $mediatypes);
+        return array_map(trim(...), $mediatypes);
     }
 
-    /**
-     * @param string $mediatype
-     */
     public function setMediaType(string $mediatype): void
     {
         $this->mediatype = $mediatype;
     }
 
-    /**
-     * @return bool
-     */
     public function overwriteDownloadPerm(): bool
     {
         return (bool) $this->overwrite_download_perm;
     }
 
-    /**
-     * @param bool $overwrite_download_perm
-     */
     public function setOverwriteDownloadPerm(bool $overwrite_download_perm): void
     {
         $this->overwrite_download_perm = $overwrite_download_perm;
     }
 
-    /**
-     * @return bool
-     */
     public function isExternalDownloadSource(): bool
     {
         return (bool) $this->ext_dl_source;
     }
 
-    /**
-     * @param bool $ext_dl_source
-     */
     public function setExternalDownloadSource(bool $ext_dl_source): void
     {
         $this->ext_dl_source = $ext_dl_source;
     }
 
-    /**
-     * @return bool
-     */
     public function isSub(): bool
     {
         return (bool) $this->is_sub;
     }
 
-    /**
-     * @param bool $is_sub
-     */
     public function setAsSub(bool $is_sub): void
     {
         $this->is_sub = $is_sub;
     }
 
-    /**
-     * @return int
-     */
     public function getSubId(): int
     {
         return (int) $this->sub_id;
     }
 
-    /**
-     * @param int $sub_id
-     */
     public function setSubId(int $sub_id): void
     {
         $this->sub_id = $sub_id;

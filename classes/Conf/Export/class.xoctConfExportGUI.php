@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 use ILIAS\FileUpload\FileUpload;
-
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use ILIAS\Filesystem\Stream\Streams;
 
@@ -59,16 +58,10 @@ class xoctConfExportGUI extends xoctGUI
             $this->main_tpl->setOnScreenMessage('failure', $this->plugin->txt("admin_import_file_missign"), true);
             $this->cancel();
         }
-
-        try {
-            $upload_results = $this->upload->getResults();
-            $upload = end($upload_results);
-            PluginConfig::importFromXML($upload->getPath());
-            $this->main_tpl->setOnScreenMessage('success', $this->plugin->txt('admin_import_success'), true);
-        } catch (\Throwable $th) {
-            throw $th;
-            $this->main_tpl->setOnScreenMessage('failure', $this->plugin->txt("admin_import_failed"), true);
-        }
+        $upload_results = $this->upload->getResults();
+        $upload = end($upload_results);
+        PluginConfig::importFromXML($upload->getPath());
+        $this->main_tpl->setOnScreenMessage('success', $this->plugin->txt('admin_import_success'), true);
         $this->cancel();
     }
 

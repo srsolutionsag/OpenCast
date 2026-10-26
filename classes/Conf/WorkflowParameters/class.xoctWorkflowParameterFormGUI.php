@@ -1,8 +1,6 @@
 <?php
 
 declare(strict_types=1);
-
-use srag\CustomInputGUIs\OpenCast\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameter;
 use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameterRepository;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
@@ -36,7 +34,7 @@ class xoctWorkflowParameterFormGUI extends ilPropertyFormGUI
      */
     protected \ActiveRecord $xoctWorkflowParameter;
 
-    public function __construct(private \xoctWorkflowParameterGUI $parent, private WorkflowParameterRepository $workflowParameterRepository, string $param_id = null)
+    public function __construct(private \xoctWorkflowParameterGUI $parent, private WorkflowParameterRepository $workflowParameterRepository, ?string $param_id = null)
     {
         $this->xoctWorkflowParameter = WorkflowParameter::findOrGetInstance($param_id);
         parent::__construct();

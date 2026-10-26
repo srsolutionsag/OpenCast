@@ -194,8 +194,6 @@ class EventActionResolver extends BaseActionResolver implements EventActionTarge
             default:
                 return null;
         }
-
-        return null;
     }
 
     private function isEventAccessible(Event $event, ?EventSettingsValueResolver $settings = null): bool
@@ -219,8 +217,8 @@ class EventActionResolver extends BaseActionResolver implements EventActionTarge
                 }
                 $start = $scheduling->getStart()->getTimestamp();
                 $accessible_before_start = (int) (($settings?->resolve(
-                        EventSettings::START_X_MINUTES_BEFORE_LIVE
-                    ) ?? 0)) * 60;
+                    EventSettings::START_X_MINUTES_BEFORE_LIVE
+                ) ?? 0)) * 60;
                 $accessible_from = $start - $accessible_before_start;
                 $accessible_to = $scheduling->getEnd()->getTimestamp();
                 $now = time();

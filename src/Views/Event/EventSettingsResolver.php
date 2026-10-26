@@ -34,7 +34,7 @@ class EventSettingsResolver implements EventSettingsValueResolver
         $this->minutes_before_live = ((int) (PluginConfig::getConfig(
             PluginConfig::F_START_X_MINUTES_BEFORE_LIVE
         ) ?? 30));
-        $this->use_annotations = (bool) $object_settings->getUseAnnotations();
+        $this->use_annotations = $object_settings->getUseAnnotations();
     }
 
     public function resolve(EventSettings $setting): mixed

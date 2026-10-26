@@ -41,9 +41,6 @@ class xoctPermissionGroupParticipantGUI extends xoctGUI
         );
     }
 
-    /**
-     * @param string $cmd
-     */
     protected function performCommand(string $cmd): void
     {
         if (in_array($cmd, self::$admin_commands)) {

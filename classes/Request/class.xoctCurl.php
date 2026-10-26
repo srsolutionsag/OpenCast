@@ -235,33 +235,21 @@ class xoctCurl
         $this->url = $url;
     }
 
-    /**
-     * @return boolean
-     */
     public function isVerifyHost(): bool
     {
         return self::$verify_host;
     }
 
-    /**
-     * @param boolean $verify_host
-     */
     public function setVerifyHost(bool $verify_host): void
     {
         self::$verify_host = $verify_host;
     }
 
-    /**
-     * @return boolean
-     */
     public function isVerifyPeer(): bool
     {
         return self::$verify_peer;
     }
 
-    /**
-     * @param boolean $verify_peer
-     */
     public function setVerifyPeer(bool $verify_peer): void
     {
         self::$verify_peer = $verify_peer;
@@ -609,7 +597,7 @@ class xoctCurl
                     continue 2; // or return false, throw new InvalidArgumentException
             }
             $data = file_get_contents($v);
-            $v = call_user_func("end", explode(DIRECTORY_SEPARATOR, $v));
+            $v = call_user_func(end(...), explode(DIRECTORY_SEPARATOR, $v));
 
             $k = str_replace($disallow, "_", $k);
             $v = str_replace($disallow, "_", $v);
@@ -627,7 +615,7 @@ class xoctCurl
         } while (preg_grep("/$boundary/", $body));
 
         // add boundary for each parameters
-        array_walk($body, function (&$part) use ($boundary): void {
+        array_walk($body, function (string &$part) use ($boundary): void {
             $part = "--$boundary\r\n$part";
         });
 

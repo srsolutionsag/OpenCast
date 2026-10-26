@@ -74,8 +74,6 @@ class xoctPublicationGroupFormGUI extends ilPropertyFormGUI
 
     /**
      * returns whether checkinput was successful or not.
-     *
-     * @return bool
      */
     public function fillObject(): bool
     {
@@ -90,9 +88,6 @@ class xoctPublicationGroupFormGUI extends ilPropertyFormGUI
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function saveObject(): bool
     {
         if (!$this->fillObject()) {

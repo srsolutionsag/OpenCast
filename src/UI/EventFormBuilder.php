@@ -95,9 +95,6 @@ class EventFormBuilder
     ];
     private OpencastDIC $opencast_dic;
 
-    /**
-     * @param mixed $refinery_factory
-     */
     public function __construct(
         protected UIFactory $ui_factory,
         private RefineryFactory $refinery_factory,

@@ -1,13 +1,8 @@
 <?php
 
 declare(strict_types=1);
-
-use srag\CustomInputGUIs\OpenCast\PropertyFormGUI\PropertyFormGUI;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
-use srag\Plugins\Opencast\LegacyHelpers\TranslatorTrait;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
-use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameterRepository;
-use srag\Plugins\Opencast\Model\WorkflowParameter\Config\WorkflowParameter;
 
 /**
  * Class xoctWorkflowParametersFormGUI

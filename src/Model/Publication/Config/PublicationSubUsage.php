@@ -19,7 +19,6 @@ class PublicationSubUsage extends ActiveRecord
     public const DISPLAY_NAME_LANG_MODULE = 'pus_display_name';
 
     /**
-     * @return string
      * @deprecated
      */
     public static function returnDbTableName(): string
@@ -27,9 +26,6 @@ class PublicationSubUsage extends ActiveRecord
         return self::TABLE_NAME;
     }
 
-    /**
-     * @return string
-     */
     public function getConnectorContainerName(): string
     {
         return self::TABLE_NAME;
@@ -135,7 +131,7 @@ class PublicationSubUsage extends ActiveRecord
      * @con_fieldtype  integer
      * @con_length     1
      */
-    protected $md_type = null;
+    protected $md_type;
     /**
      * @var bool
      *
@@ -169,9 +165,6 @@ class PublicationSubUsage extends ActiveRecord
      */
     protected $ext_dl_source = false;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return intval($this->id);
@@ -185,9 +178,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
     public function getParentUsageId(): string
     {
         return $this->parent_usage_id;
@@ -201,9 +191,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->parent_usage_id = $parent_usage_id;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title ?? '';
@@ -217,9 +204,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
     public function getDisplayName(): string
     {
         return $this->display_name ?? '';
@@ -233,9 +217,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->display_name = $display_name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description ?? '';
@@ -249,9 +230,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->description = $description;
     }
 
-    /**
-     * @return int|null
-     */
     public function getGroupId(): ?int
     {
         return (is_null($this->group_id) ? null : intval($this->group_id));
@@ -265,9 +243,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->group_id = ($group_id == '' || is_null($group_id) ? null : intval($group_id));
     }
 
-    /**
-     * @return string
-     */
     public function getChannel(): string
     {
         return $this->channel ?? '';
@@ -281,9 +256,6 @@ class PublicationSubUsage extends ActiveRecord
         $this->channel = $channel;
     }
 
-    /**
-     * @return boolean
-     */
     public function isStatus(): bool
     {
         return $this->status;
@@ -297,73 +269,46 @@ class PublicationSubUsage extends ActiveRecord
         $this->status = $status;
     }
 
-    /**
-     * @return bool
-     */
     public function isAllowMultiple(): bool
     {
         return (bool) $this->allow_multiple;
     }
 
-    /**
-     * @param bool $allow_multiple
-     */
     public function setAllowMultiple(bool $allow_multiple): void
     {
         $this->allow_multiple = $allow_multiple;
     }
 
-    /**
-     * @return string
-     */
     public function getFlavor(): string
     {
         return $this->flavor ?? '';
     }
 
-    /**
-     * @param string $flavor
-     */
     public function setFlavor(string $flavor): void
     {
         $this->flavor = $flavor;
     }
 
-    /**
-     * @return string
-     */
     public function getSearchKey(): string
     {
         return $this->search_key ?? '';
     }
 
-    /**
-     * @param string $search_key
-     */
     public function setSearchKey(string $search_key): void
     {
         $this->search_key = $search_key;
     }
 
-    /**
-     * @return string
-     */
     public function getTag(): string
     {
         return $this->tag ?? '';
     }
 
-    /**
-     * @param string $tag
-     */
     public function setTag(string $tag): void
     {
         $this->tag = $tag;
     }
 
-    /**
-     * @return int
-     */
     public function getMdType(): int
     {
         return (int) $this->md_type;
@@ -377,59 +322,38 @@ class PublicationSubUsage extends ActiveRecord
         $this->md_type = $md_type;
     }
 
-    /**
-     * @return string
-     */
     public function getMediaType(): string
     {
         return $this->mediatype ?? '';
     }
 
-    /**
-     * @return array
-     */
     public function getArrayMediaTypes(): array
     {
         $mediatype = $this->getMediaType();
         $mediatypes = $mediatype !== '' && $mediatype !== '0' ? explode(',', $mediatype) : [];
-        return array_map('trim', $mediatypes);
+        return array_map(trim(...), $mediatypes);
     }
 
-    /**
-     * @param string $mediatype
-     */
     public function setMediaType(string $mediatype): void
     {
         $this->mediatype = $mediatype;
     }
 
-    /**
-     * @return bool
-     */
     public function overwriteDownloadPerm(): bool
     {
         return (bool) $this->overwrite_download_perm;
     }
 
-    /**
-     * @param bool $overwrite_download_perm
-     */
     public function setOverwriteDownloadPerm(bool $overwrite_download_perm): void
     {
         $this->overwrite_download_perm = $overwrite_download_perm;
     }
 
-    /**
-     * @return bool
-     */
     public function isExternalDownloadSource(): bool
     {
         return (bool) $this->ext_dl_source;
     }
 
-    /**
-     * @param bool $ext_dl_source
-     */
     public function setExternalDownloadSource(bool $ext_dl_source): void
     {
         $this->ext_dl_source = $ext_dl_source;

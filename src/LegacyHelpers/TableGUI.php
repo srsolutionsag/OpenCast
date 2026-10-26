@@ -30,30 +30,23 @@ trait TableGUI
     /**
      * @inheritDoc
      *
-     * @return array
      *
      * @deprecated
      */
     final public function getSelectableColumns(): array
     {
         return array_map(function (array $column): array {
-            if (!isset($column["txt"])) {
-                $column["txt"] = $this->txt($column["id"]);
-            }
+            $column["txt"] ??= $this->txt($column["id"]);
 
             return $column;
         }, $this->getSelectableColumns2());
     }
 
     /**
-     * @param string      $key
-     * @param string|null $default
-     *
-     * @return string
      *
      * @deprecated
      */
-    public function txt(string $key, /*?*/ string $default = null): string
+    public function txt(string $key, /*?*/ ?string $default = null): string
     {
         return $this->getLocaleString($key, '', $default);
     }
@@ -89,23 +82,19 @@ trait TableGUI
      */
     protected function getColumnValue(
         string $column,
-        $row,
+        array $row,
         int $format = TableGUIConstants::DEFAULT_FORMAT
     ): string {
         return $row[$column] ?? '';
     }
 
     /**
-     * @return array
-     *
      * @deprecated
      */
     abstract protected function getSelectableColumns2(): array;
 
     /**
-     * @param string $field_id
      *
-     * @return bool
      *
      * @deprecated
      */
@@ -113,7 +102,7 @@ trait TableGUI
     {
         // Not set (null) on first visit, false on reset filter, string if is set
         return (isset($_SESSION["form_" . $this->getId()][$field_id]) && $_SESSION["form_" . $this->getId(
-            )][$field_id] !== false);
+        )][$field_id] !== false);
     }
 
     /**

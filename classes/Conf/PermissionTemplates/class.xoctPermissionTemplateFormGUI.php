@@ -44,16 +44,13 @@ class xoctPermissionTemplateFormGUI extends ilPropertyFormGUI
     private ilOpenCastPlugin $plugin;
     protected bool $is_new;
 
-    /**
-     * @param xoctPermissionTemplateGUI $parent_gui
-     */
     public function __construct(protected xoctPermissionTemplateGUI $parent_gui, protected PermissionTemplate $object)
     {
         $opencastContainer = Init::init();
         $this->plugin = $opencastContainer[ilOpenCastPlugin::class];
         parent::__construct();
         $opencastContainer->ilias()->ctrl()->saveParameter($this->parent_gui, xoctPermissionTemplateGUI::IDENTIFIER);
-        $this->is_new = ($this->object->getId() == 0);
+        $this->is_new = ($this->object->getId() === 0);
         $this->initForm();
     }
 

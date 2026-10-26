@@ -16,15 +16,10 @@ interface WorkflowRepository
     public function anyWorkflowExists(): bool;
 
     /**
-     * @param bool $as_array
      * @return WorkflowAR[]
      */
     public function getAllWorkflows(bool $as_array): array;
 
-    /**
-     * @param null $key
-     * @param null $values
-     */
     public function getAllWorkflowsAsArray($key = null, $values = null): array;
 
     public function store(
@@ -55,7 +50,6 @@ interface WorkflowRepository
     public function getById(int $id);
 
     /**
-     * @return array
      * @throws xoctException
      */
     public function getWorkflowsFromOpencastApi(
@@ -65,9 +59,6 @@ interface WorkflowRepository
         bool $with_tags = false
     ): array;
 
-    /**
-     * @return WorkflowAR
-     */
     public function createOrUpdate(
         string $workflow_id,
         string $title,
@@ -78,45 +69,27 @@ interface WorkflowRepository
     ): WorkflowAR;
 
     /**
-     * @return array
      * @throws xoctException
      */
     public function parseConfigPanels(): array;
 
     /**
      * Generates the list of workflow selections in array form of key:value pairr
-     * @return array
      */
     public function getWorkflowSelectionArray(): array;
 
     /**
-     * @return string
      * @throws xoctException
      */
     public function buildWorkflowSelectOptions(): string;
 
-    /**
-     * @return array
-     */
     public function getFilteredWorkflowsArray(array $workflows = [], ?string $tags_str = null): array;
 
-    /**
-     * @return bool
-     */
     public function resetList(): bool;
 
-    /**
-     * @return bool
-     */
     public function updateList(?string $tags_str = null): bool;
 
-    /**
-     * @return array
-     */
     public function getConfigPanelAsArrayById(int $id): array;
 
-    /**
-     * @return array
-     */
     public function getConfigPanelJsonAsArrayById(int $id): array;
 }

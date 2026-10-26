@@ -113,9 +113,7 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
 
     public function _checkAccess(string $cmd, string $permission, int $ref_id, int $obj_id, ?int $user_id = null): bool
     {
-        if ($user_id === null) {
-            $user_id = $this->user->getId();
-        }
+        $user_id ??= $this->user->getId();
         if ($obj_id === 0) {
             $obj_id = ilObject2::_lookupObjId($ref_id);
         }
@@ -157,7 +155,7 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
         return ObjectSettings::findOrGetInstance($a_id)->isOnline();
     }
 
-    public static function hasWriteAccess(int $ref_id = null): bool
+    public static function hasWriteAccess(?int $ref_id = null): bool
     {
         global $DIC;
         $access = $DIC->access();
@@ -171,9 +169,9 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
      */
     public static function checkAction(
         string $cmd,
-        Event $event = null,
-        xoctUser $user = null,
-        ObjectSettings $objectSettings = null,
+        ?Event $event = null,
+        ?xoctUser $user = null,
+        ?ObjectSettings $objectSettings = null,
         ?int $ref_id = null
     ): bool {
         global $DIC;
@@ -197,7 +195,7 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
                 return
                     self::hasPermission(self::PERMISSION_EDIT_VIDEOS, $ref_id)
                     && $event->getProcessingState() !== Event::STATE_ENCODING
-                    && ilObjOpenCast::_getParentCourseOrGroup($ref_id)
+                    && ilObjOpenCast::_getParentCourseOrGroup($ref_id) instanceof \ilContainer
                     && $objectSettings->getPermissionPerClip();
             case self::ACTION_SHARE_EVENT:
                 if (self::hasPermission(
@@ -463,7 +461,7 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
         $DIC->rbac()->admin()->grantPermission($member_role_id, $ops_ids, $ref_id);
     }
 
-    public static function getParentId($get_ref_id = false, int $ref_id = null): ?int
+    public static function getParentId($get_ref_id = false, ?int $ref_id = null): ?int
     {
         global $DIC;
         $parent_id = null;
@@ -480,7 +478,7 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
 
     public static function getAllParticipants(): array
     {
-        return array_map('intval', array_merge(self::getMembers(), self::getTutors(), self::getAdmins()));
+        return array_map(intval(...), array_merge(self::getMembers(), self::getTutors(), self::getAdmins()));
     }
 
     /**
@@ -552,6 +550,10 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
     public static function applyDefaultPerms(int $ref_id, array $additionals = []): void
     {
         $parent_obj = ilObjOpenCast::_getParentCourseOrGroup($ref_id);
+        if ($parent_obj === null) {
+            // not inside a course or group: there are no local default roles to configure
+            return;
+        }
 
         // Admin defaults.
         if (method_exists($parent_obj, 'getDefaultAdminRole')) {
@@ -613,15 +615,13 @@ class ilObjOpenCastAccess extends ilObjectPluginAccess
             }
         }
         // In case we are forced to prevent some perms.
-        if (!empty($perms_to_prevent)) {
-            foreach ($perms_to_prevent as $prevented_perm) {
-                $prefix = in_array($prevented_perm, self::$custom_rights) ? "rep_robj_xoct_perm_" : "";
-                $perm_name = $prefix . $prevented_perm;
-                $prevented_ops_id = $DIC->rbac()->review()->_getOperationIdByName($perm_name);
-                $key_to_remove = array_search($prevented_ops_id, $ops_ids, true);
-                if ($key_to_remove !== false) {
-                    unset($ops_ids[$key_to_remove]);
-                }
+        foreach ($perms_to_prevent as $prevented_perm) {
+            $prefix = in_array($prevented_perm, self::$custom_rights) ? "rep_robj_xoct_perm_" : "";
+            $perm_name = $prefix . $prevented_perm;
+            $prevented_ops_id = $DIC->rbac()->review()->_getOperationIdByName($perm_name);
+            $key_to_remove = array_search($prevented_ops_id, $ops_ids, true);
+            if ($key_to_remove !== false) {
+                unset($ops_ids[$key_to_remove]);
             }
         }
         $DIC->rbac()->admin()->grantPermission($role_id, $ops_ids, $ref_id);

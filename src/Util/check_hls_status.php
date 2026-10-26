@@ -33,7 +33,7 @@ function parsePlaylist(string $body, string $livestream_type): array
 {
     // process the string
     $pieces = explode("\n", $body); // make an array out of curl return value
-    $pieces = array_map('trim', $pieces); // remove unnecessary space
+    $pieces = array_map(trim(...), $pieces); // remove unnecessary space
 
     $chunklists = array_filter($pieces, function (string $piece) use ($livestream_type): bool { // pluck out ts urls
         $is_valid_chunk = false;

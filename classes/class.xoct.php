@@ -26,9 +26,6 @@ class xoct
     public const ILIAS_7 = 70;
     public const MIN_ILIAS_VERSION = self::ILIAS_54;
 
-    /**
-     * @return int
-     */
     public static function getILIASVersion(): int
     {
         if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '6.999')) {
@@ -37,19 +34,19 @@ class xoct
         if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.4.999')) {
             return self::ILIAS_6;
         }
-        if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.3.999')) {
+        if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.3.999')) {
             return self::ILIAS_54;
         }
-        if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.2.999')) {
+        if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.2.999')) {
             return self::ILIAS_53;
         }
-        if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.1.999')) {
+        if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.1.999')) {
             return self::ILIAS_52;
         }
-        if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.0.999')) {
+        if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '5.0.999')) {
             return self::ILIAS_51;
         }
-        if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '4.9.999')) {
+        if (self::isVersionGreaterString(ILIAS_VERSION_NUMERIC, '4.9.999')) {
             return self::ILIAS_50;
         }
 
@@ -64,9 +61,6 @@ class xoct
         return version_compare($v1, $v2, '>');
     }
 
-    /**
-     * @return bool
-     */
     public static function isIlias54(): bool
     {
         return self::getILIASVersion() >= self::ILIAS_54;

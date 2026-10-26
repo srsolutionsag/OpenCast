@@ -77,7 +77,7 @@ class SelfGeneratedURLPlayerDataBuilder extends StandardPlayerDataBuilder
             $duration_in_seconds = $duration > 0 ? (int) ($duration / 1000) : 0;
             $hls_url = $this->api->attachJwtIntoStaticFileUrlForEvent($hls_url, $event_id, ['read'], $duration_in_seconds);
             $dash_url = $this->api->attachJwtIntoStaticFileUrlForEvent($dash_url, $event_id, ['read'], $duration_in_seconds);
-        } else if (PluginConfig::getConfig(PluginConfig::F_SIGN_PLAYER_LINKS)) { // Sign if enabled.
+        } elseif (PluginConfig::getConfig(PluginConfig::F_SIGN_PLAYER_LINKS)) { // Sign if enabled.
             $hls_url = xoctSecureLink::signPlayer($hls_url, $duration);
             $dash_url = xoctSecureLink::signPlayer($dash_url, $duration);
         }

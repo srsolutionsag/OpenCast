@@ -113,7 +113,7 @@ class ACLUtils
     public function getOwnerAclOfEvent(Event $event): ACL
     {
         return new ACL(
-            array_filter($event->getAcl()->getEntries(), fn(ACLEntry $entry): bool => $this->isOwnerRole($entry))
+            array_filter($event->getAcl()->getEntries(), $this->isOwnerRole(...))
         );
     }
 

@@ -142,7 +142,7 @@ class SeriesAPIRepository implements SeriesRepository, Request
                     'withacl' => false,
                     'limit' => 5000
                 ]);
-                $data = array_filter($data, static fn ($series): bool => $series instanceof \stdClass);
+                $data = array_filter($data, static fn($series): bool => $series instanceof \stdClass);
 
             } catch (\Throwable) {
                 $data = [];

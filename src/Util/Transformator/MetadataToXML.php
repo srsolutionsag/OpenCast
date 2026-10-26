@@ -54,7 +54,7 @@ class MetadataToXML
             // If startDate field doesn't exist, use current date
             $start_date = date('Y-m-d');
         }
-        
+
         try {
             $start_time = $this->metadata->getField('startTime')->getValueFormatted();
         } catch (xoctException $e) {

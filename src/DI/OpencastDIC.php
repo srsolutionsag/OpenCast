@@ -60,9 +60,7 @@ class OpencastDIC
      */
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
+        self::$instance ??= new self();
         return self::$instance;
     }
 
@@ -83,61 +81,61 @@ class OpencastDIC
     private function init(): void
     {
         $this->container['event_parser'] = $this->container->factory(
-            fn ($c): EventParser => new EventParser(
+            fn($c): EventParser => new EventParser(
                 $c['md_parser'],
                 $c['acl_parser'],
                 $c['scheduling_parser']
             )
         );
         $this->container['acl_utils'] = $this->container->factory(
-            fn ($c): ACLUtils => new ACLUtils()
+            fn($c): ACLUtils => new ACLUtils()
         );
 
         $this->container['ingest_service'] = $this->container->factory(
-            fn ($c): OpencastIngestService => new OpencastIngestService($c['upload_storage_service'])
+            fn($c): OpencastIngestService => new OpencastIngestService($c['upload_storage_service'])
         );
         $this->container['publication_usage_repository'] = $this->container->factory(
-            fn ($c): PublicationUsageRepository => new PublicationUsageRepository()
+            fn($c): PublicationUsageRepository => new PublicationUsageRepository()
         );
         $this->container['upload_storage_service'] = $this->container->factory(
-            fn ($c): UploadStorageService => new UploadStorageService($this->dic->filesystem()->temp(), $this->dic->upload())
+            fn($c): UploadStorageService => new UploadStorageService($this->dic->filesystem()->temp(), $this->dic->upload())
         );
-        $this->container['upload_handler'] = $this->container->factory(fn ($c): \xoctFileUploadHandlerGUI => new xoctFileUploadHandlerGUI($c['upload_storage_service']));
+        $this->container['upload_handler'] = $this->container->factory(fn($c): \xoctFileUploadHandlerGUI => new xoctFileUploadHandlerGUI($c['upload_storage_service']));
         $this->container['paella_config_storage_service'] = $this->container->factory(
-            fn ($c): PaellaConfigStorageService => new PaellaConfigStorageService($this->dic->filesystem()->web(), $this->dic->upload())
+            fn($c): PaellaConfigStorageService => new PaellaConfigStorageService($this->dic->filesystem()->web(), $this->dic->upload())
         );
         $this->container['paella_config_upload_handler'] = $this->container->factory(
-            fn ($c): \xoctFileUploadHandlerGUI => new xoctFileUploadHandlerGUI($c['paella_config_storage_service'])
+            fn($c): \xoctFileUploadHandlerGUI => new xoctFileUploadHandlerGUI($c['paella_config_storage_service'])
         );
         $this->container['agent_repository'] = $this->container->factory(
-            fn ($c): AgentApiRepository => new AgentApiRepository($c['agent_parser'])
+            fn($c): AgentApiRepository => new AgentApiRepository($c['agent_parser'])
         );
         $this->container['agent_parser'] = $this->container->factory(
-            fn ($c): AgentParser => new AgentParser()
+            fn($c): AgentParser => new AgentParser()
         );
         $this->container['md_parser'] = $this->container->factory(
-            fn ($c): MDParser => new MDParser(
+            fn($c): MDParser => new MDParser(
                 $c['md_catalogue_factory'],
                 $c['md_factory']
             )
         );
         $this->container['md_catalogue_factory'] = $this->container->factory(
-            fn ($c): MDCatalogueFactory => new MDCatalogueFactory()
+            fn($c): MDCatalogueFactory => new MDCatalogueFactory()
         );
         $this->container['md_factory'] = $this->container->factory(
-            fn ($c): MetadataFactory => new MetadataFactory($c['md_catalogue_factory'])
+            fn($c): MetadataFactory => new MetadataFactory($c['md_catalogue_factory'])
         );
         $this->container['md_prefiller'] = $this->container->factory(
-            fn ($c): MDPrefiller => new MDPrefiller($this->dic)
+            fn($c): MDPrefiller => new MDPrefiller($this->dic)
         );
         $this->container['md_conf_repository_event'] = $this->container->factory(
-            fn ($c): MDFieldConfigEventRepository => new MDFieldConfigEventRepository($c['md_catalogue_factory'])
+            fn($c): MDFieldConfigEventRepository => new MDFieldConfigEventRepository($c['md_catalogue_factory'])
         );
         $this->container['md_conf_repository_series'] = $this->container->factory(
-            fn ($c): MDFieldConfigSeriesRepository => new MDFieldConfigSeriesRepository($c['md_catalogue_factory'])
+            fn($c): MDFieldConfigSeriesRepository => new MDFieldConfigSeriesRepository($c['md_catalogue_factory'])
         );
         $this->container['md_form_item_builder_event'] = $this->container->factory(
-            fn ($c): MDFormItemBuilder => new MDFormItemBuilder(
+            fn($c): MDFormItemBuilder => new MDFormItemBuilder(
                 $c['md_catalogue_factory']->event(),
                 $c['md_conf_repository_event'],
                 $c['md_prefiller'],
@@ -149,7 +147,7 @@ class OpencastDIC
             )
         );
         $this->container['md_form_item_builder_series'] = $this->container->factory(
-            fn ($c): MDFormItemBuilder => new MDFormItemBuilder(
+            fn($c): MDFormItemBuilder => new MDFormItemBuilder(
                 $c['md_catalogue_factory']->series(),
                 $c['md_conf_repository_series'],
                 $c['md_prefiller'],
@@ -161,26 +159,26 @@ class OpencastDIC
             )
         );
         $this->container['workflow_repository'] = $this->container->factory(
-            fn ($c): WorkflowDBRepository => new WorkflowDBRepository()
+            fn($c): WorkflowDBRepository => new WorkflowDBRepository()
         );
         $this->container['workflow_parameter_conf_repository'] = $this->container->factory(
-            fn ($c): WorkflowParameterRepository => new WorkflowParameterRepository($c['workflow_parameter_series_repository'])
+            fn($c): WorkflowParameterRepository => new WorkflowParameterRepository($c['workflow_parameter_series_repository'])
         );
         $this->container['workflow_parameter_series_repository'] = $this->container->factory(
-            fn ($c): SeriesWorkflowParameterRepository => new SeriesWorkflowParameterRepository(
+            fn($c): SeriesWorkflowParameterRepository => new SeriesWorkflowParameterRepository(
                 $c['workflow_parameter_parser'],
                 $this->dic->ui()->factory(),
                 $this->dic->refinery()
             )
         );
         $this->container['workflow_parameter_parser'] = $this->container->factory(
-            fn ($c): WorkflowParameterParser => new WorkflowParameterParser()
+            fn($c): WorkflowParameterParser => new WorkflowParameterParser()
         );
         $this->container['scheduling_parser'] = $this->container->factory(
-            fn ($c): SchedulingParser => new SchedulingParser()
+            fn($c): SchedulingParser => new SchedulingParser()
         );
         $this->container['scheduling_form_item_builder'] = $this->container->factory(
-            fn ($c): SchedulingFormItemBuilder => new SchedulingFormItemBuilder(
+            fn($c): SchedulingFormItemBuilder => new SchedulingFormItemBuilder(
                 $this->dic->ui()->factory(),
                 $this->dic->refinery(),
                 $c['scheduling_parser'],
@@ -231,10 +229,10 @@ class OpencastDIC
             }
         );
         $this->container['object_settings_parser'] = $this->container->factory(
-            fn ($c): ObjectSettingsParser => new ObjectSettingsParser()
+            fn($c): ObjectSettingsParser => new ObjectSettingsParser()
         );
         $this->container['object_settings_form_item_builder'] = $this->container->factory(
-            fn ($c): ObjectSettingsFormItemBuilder => new ObjectSettingsFormItemBuilder(
+            fn($c): ObjectSettingsFormItemBuilder => new ObjectSettingsFormItemBuilder(
                 $this->dic->ui()->factory(),
                 $this->dic->refinery(),
                 $c['publication_usage_repository'],
@@ -242,35 +240,34 @@ class OpencastDIC
                 $c['plugin']
             )
         );
-        $this->container['plugin'] = $this->container->factory(fn ($c): \ilOpenCastPlugin => ilOpenCastPlugin::getInstance());
+        $this->container['plugin'] = $this->container->factory(fn($c): \ilOpenCastPlugin => ilOpenCastPlugin::getInstance());
 
         $this->container['series_parser'] = $this->container->factory(
-            fn ($c): SeriesParser => new SeriesParser($c['acl_parser'])
+            fn($c): SeriesParser => new SeriesParser($c['acl_parser'])
         );
         $this->container['acl_parser'] = $this->container->factory(
-            fn ($c): ACLParser => new ACLParser()
+            fn($c): ACLParser => new ACLParser()
         );
         $this->container['paella_config_service_factory'] = $this->container->factory(
-            fn ($c): PaellaConfigServiceFactory => new PaellaConfigServiceFactory($c['paella_config_storage_service'])
+            fn($c): PaellaConfigServiceFactory => new PaellaConfigServiceFactory($c['paella_config_storage_service'])
         );
         $this->container['paella_config_form_builder'] = $this->container->factory(
-            fn ($c): PaellaConfigFormBuilder => new PaellaConfigFormBuilder(
+            fn($c): PaellaConfigFormBuilder => new PaellaConfigFormBuilder(
                 $c['plugin'],
                 $c['paella_config_upload_handler'],
-                $c['paella_config_storage_service'],
                 $this->dic->ui()->factory(),
                 $this->dic->ui()->renderer()
             )
         );
         $this->container['subtitle_config_form_builder'] = $this->container->factory(
-            fn ($c): SubtitleConfigFormBuilder => new SubtitleConfigFormBuilder(
+            fn($c): SubtitleConfigFormBuilder => new SubtitleConfigFormBuilder(
                 $c['plugin'],
                 $this->dic->ui()->factory(),
                 $this->dic->ui()->renderer()
             )
         );
         $this->container['thumbnail_config_form_builder'] = $this->container->factory(
-            fn ($c): ThumbnailConfigFormBuilder => new ThumbnailConfigFormBuilder(
+            fn($c): ThumbnailConfigFormBuilder => new ThumbnailConfigFormBuilder(
                 $this->dic->ui()->factory(),
                 $this->dic->ui()->renderer()
             )

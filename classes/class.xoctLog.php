@@ -86,10 +86,7 @@ class xoctLog extends ilLog
         return ILIAS_LOG_DIR;
     }
 
-    /**
-     * @return string
-     */
-    public function getLogFile()
+    public function getLogFile(): string
     {
         if (ILIAS_LOG_DIR === "php:/" && ILIAS_LOG_FILE === "stdout") {
             // Fix Docker-ILIAS log

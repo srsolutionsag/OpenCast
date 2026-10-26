@@ -6,7 +6,6 @@ namespace srag\Plugins\Opencast\UI;
 
 use ilPropertyFormGUI;
 use Psr\Http\Message\ServerRequestInterface;
-use ILIAS\HTTP\SuperGlobalDropInReplacementTest;
 use ILIAS\HTTP\Wrapper\SuperGlobalDropInReplacement;
 
 /**
@@ -44,19 +43,12 @@ class LegacyFormWrapper extends ilPropertyFormGUI
         /**
          * @var SuperGlobalDropInReplacement $_POST
          */
-$data = [];
+        $data = [];
         foreach ($_POST as $key => $value) {
             $data[$key] = $value;
         }
 
 
-
-        return $data;
-
-        $data = [];
-        foreach ($this->getItems() as $item) {
-            $data[$item->getPostVar()] = $item->getValue();
-        }
 
         return $data;
     }

@@ -1,12 +1,8 @@
 <?php
 
 declare(strict_types=1);
-
-use srag\CustomInputGUIs\OpenCast\PropertyFormGUI\PropertyFormGUI;
-use srag\CustomInputGUIs\OpenCast\TableGUI\TableGUI;
 use srag\Plugins\Opencast\Model\Report\Report;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
-use srag\Plugins\Opencast\LegacyHelpers\TableGUIConstants;
 use srag\Plugins\Opencast\Container\Init;
 
 /**

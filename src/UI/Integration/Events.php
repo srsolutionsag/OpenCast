@@ -193,7 +193,7 @@ class Events implements RecordToEntity
 
             $description_components[] = $description_wrapper = $this
                 ->ui_factory
-                ->legacy(
+                ->legacy()->content(
                     "<span data-full='$description'  id='evdesc_{$record->getIdentifier()}'>$shortened_description</span>"
                 )
                 ->withCustomSignal(
@@ -214,7 +214,7 @@ class Events implements RecordToEntity
             }
 
             $entity = $entity->withPersonalStatus(
-                $this->ui_factory->legacy(
+                $this->ui_factory->legacy()->content(
                     $this->ui_renderer->render($description_components)
                 )
             );
@@ -249,7 +249,7 @@ class Events implements RecordToEntity
         }
 
         $entity = $entity->withMainDetails(
-            $this->ui_factory->legacy(
+            $this->ui_factory->legacy()->content(
                 $this->ui_renderer->render(
                     $this->ui_factory->listing()->descriptive(
                         $main_properties_simple
@@ -366,7 +366,7 @@ class Events implements RecordToEntity
                 $parameters
             )) instanceof Action
         ) {
-            $tooltip_content = $this->ui_factory->legacy(
+            $tooltip_content = $this->ui_factory->legacy()->content(
                 $this->translate('event_possible_best_action') . ': '
                 . $this->ui_renderer->render(
                     $this->ui_factory->button()->shy(

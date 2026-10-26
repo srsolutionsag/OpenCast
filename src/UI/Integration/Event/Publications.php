@@ -62,7 +62,7 @@ class Publications
      */
     protected function getOnCloseAction(): \Closure
     {
-        return static fn($id) => 'document.getElementById("' . $id . '").addEventListener("click", function() { 
+        return static fn($id): string => 'document.getElementById("' . $id . '").addEventListener("click", function() { 
                                     // find parent dialog and close it after click
                                     let parent = this.closest("dialog");
                                     if(parent) {
@@ -204,11 +204,11 @@ class Publications
             ->alignment()
             ->horizontal()
             ->dynamicallyDistributed(
-                $this->ui_factory->legacy('&nbsp;'),
-                $this->ui_factory->legacy(
+                $this->ui_factory->legacy()->content('&nbsp;'),
+                $this->ui_factory->legacy()->content(
                     $this->ui_renderer->render($elements)
                 ),
-                $this->ui_factory->legacy('&nbsp;'),
+                $this->ui_factory->legacy()->content('&nbsp;'),
             );
 
         return $alignment;

@@ -14,7 +14,6 @@ use srag\Plugins\Opencast\Model\Cache\Config as CacheConfig;
 use srag\Plugins\Opencast\Model\Event\EventAPIRepository;
 use srag\Plugins\Opencast\DI\OpencastDIC;
 use srag\Plugins\Opencast\Model\Series\SeriesAPIRepository;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Util\Locale\Translator;
 use srag\Plugins\Opencast\UI\Integration\Integration;
 use srag\Plugins\Opencast\Model\User\xoctUser;
@@ -61,7 +60,7 @@ final class Init
             fn(): ?\ILIAS\DI\Container => $ilias_container
         );
 
-        $opencast_container->glue(HTTPServices::class, fn(): \ILIAS\HTTP\Services => $ilias_container->http());
+        $opencast_container->glue(\ILIAS\HTTP\Services::class, fn(): \ILIAS\HTTP\Services => $ilias_container->http());
 
         // Plugin Instance
         $opencast_container->glue(

@@ -8,7 +8,6 @@ use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\UI\PaellaConfig\PaellaConfigFormBuilder;
 use srag\Plugins\Opencast\UI\SubtitleConfig\SubtitleConfigFormBuilder;
 use srag\Plugins\Opencast\LegacyHelpers\TranslatorTrait;
-use ILIAS\DI\HTTPServices;
 use srag\Plugins\Opencast\Util\Locale\LocaleTrait;
 use ILIAS\UI\Component\Modal\Interruptive as InterruptiveModal;
 use srag\Plugins\Opencast\UI\ThumbnailConfig\ThumbnailConfigFormBuilder;
@@ -100,7 +99,6 @@ class xoctConfGUI extends xoctGUI
 
     /**
      * Subtab Player has an own method, since it is rendered with the UI service and not with xoctConfFormGUI
-     * @return void
      */
     protected function player(): void
     {
@@ -234,8 +232,6 @@ class xoctConfGUI extends xoctGUI
      * Subtab Subtitle has an own action method, since it is rendered with the UI service and not with xoctConfFormGUI.
      *
      * @param bool $load_languages flag that determines whether to load languages from listproviders. Default false.
-     *
-     * @return void
      */
     protected function subtitle(bool $load_languages = false): void
     {
@@ -336,8 +332,6 @@ class xoctConfGUI extends xoctGUI
 
     /**
      * Render the thumbnail subtab menu.
-     *
-     * @return void
      */
     protected function thumbnail(): void
     {

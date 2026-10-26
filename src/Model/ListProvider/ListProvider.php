@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace srag\Plugins\Opencast\Model\ListProvider;
 
 use xoctException;
-use srag\Plugins\Opencast\API\OpencastAPI;
 use srag\Plugins\Opencast\API\API;
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
 use srag\Plugins\Opencast\Container\Init;
@@ -82,7 +81,7 @@ class ListProvider
     public function hasList($source): bool
     {
         $found = array_filter($this->getProviders(), fn($provider): bool => str_contains((string) $provider, strtoupper($source)));
-        return count($found) == 1;
+        return count($found) === 1;
     }
 
     /**

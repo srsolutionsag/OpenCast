@@ -183,7 +183,7 @@ class ilOpenCastUpdateRBACPermsListObjective extends ilSetupObjective /* Setup\O
                     }
                 }
 
-                $admin_ops_ids = array_map('intval', array_unique($admin_ops_ids));
+                $admin_ops_ids = array_map(intval(...), array_unique($admin_ops_ids));
                 $DIC->rbac()->admin()->grantPermission($admin_role_id, $admin_ops_ids, $ref_id);
             }
 
@@ -225,7 +225,7 @@ class ilOpenCastUpdateRBACPermsListObjective extends ilSetupObjective /* Setup\O
                     }
                 }
 
-                $tutor_ops_ids = array_map('intval', array_unique($tutor_ops_ids));
+                $tutor_ops_ids = array_map(intval(...), array_unique($tutor_ops_ids));
                 $DIC->rbac()->admin()->grantPermission($tutor_role_id, $tutor_ops_ids, $ref_id);
             }
 
@@ -267,7 +267,7 @@ class ilOpenCastUpdateRBACPermsListObjective extends ilSetupObjective /* Setup\O
                     }
                 }
 
-                $member_ops_ids = array_map('intval', array_unique($member_ops_ids));
+                $member_ops_ids = array_map(intval(...), array_unique($member_ops_ids));
                 $DIC->rbac()->admin()->grantPermission($member_role_id, $member_ops_ids, $ref_id);
             }
 
@@ -354,11 +354,11 @@ class ilOpenCastUpdateRBACPermsListObjective extends ilSetupObjective /* Setup\O
         $DIC['tree'] = fn($c): \ilTree => new ilTree(1);
         $DIC['ilLog'] = fn($c): \ilLogger => ilLoggerFactory::getInstance()->getLogger('setup');
         $DIC['objDefinition'] = fn($c): \ilObjectDefinition => new ilObjectDefinition();
-        $DIC['component.repository'] = fn($c) => $component_repository;
-        $DIC['component.factory'] = fn($c) => $component_factory;
+        $DIC['component.repository'] = fn($c): mixed => $component_repository;
+        $DIC['component.factory'] = fn($c): mixed => $component_factory;
         $DIC['ilSetting'] = fn($c): \ilSetting => new ilSetting();
         $DIC['lng'] = fn($c): \ilLanguage => new ilLanguage('en');
-        $DIC['ilClientIniFile'] = fn($c) => $client_ini;
+        $DIC['ilClientIniFile'] = fn($c): mixed => $client_ini;
         $DIC['ilLoggerFactory'] = fn($c): \ilLoggerFactory => ilLoggerFactory::getInstance();
         if (!defined('SYSTEM_ROLE_ID')) {
             define('SYSTEM_ROLE_ID', '2');

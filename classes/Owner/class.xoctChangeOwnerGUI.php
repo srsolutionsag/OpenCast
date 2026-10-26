@@ -120,7 +120,7 @@ class xoctChangeOwnerGUI extends xoctGUI
         $available_users = [];
         foreach ($available_user_ids as $user_id) {
             $user_id = (int) $user_id;
-            if ($owner && $user_id === $owner->getIliasUserId()) {
+            if ($owner instanceof \srag\Plugins\Opencast\Model\User\xoctUser && $user_id === $owner->getIliasUserId()) {
                 continue;
             }
             $user = new stdClass();

@@ -285,7 +285,7 @@ class xoctEventGUI extends xoctGUI
         // We changed that for now but this whole "eventModals" things must be refactored as soon as possible.
 
         if (
-            $modal
+            $modal instanceof \ILIAS\UI\Component\Modal\Modal
             && $display_series->hasScheduledEvents()
             && ilObjOpenCastAccess::checkAction(ilObjOpenCastAccess::ACTION_REPORT_DATE_CHANGE)
         ) {
@@ -731,7 +731,7 @@ class xoctEventGUI extends xoctGUI
                 'Unable to provide a JWT for Editor service!'
             );
         }
-        $redirect_template_html = $this->getJwtRedirectHtml( $jwt, $cutting_link);
+        $redirect_template_html = $this->getJwtRedirectHtml($jwt, $cutting_link);
         $this->main_tpl->setContent($redirect_template_html);
     }
 

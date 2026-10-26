@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace srag\Plugins\Opencast\Util\Player;
 
 use srag\Plugins\Opencast\Model\Config\PluginConfig;
-use srag\Plugins\Opencast\Util\FileTransfer\PaellaConfigStorageService;
 use xoctLog;
 
 class PaellaConfigService
 {
-    public function __construct(private readonly PaellaConfigStorageService $storageService)
+    public function __construct()
     {
     }
 
@@ -45,7 +44,6 @@ class PaellaConfigService
     }
 
     /**
-     * @param bool $live
      * @return array{url: string, info: string, warn: bool}
      */
     public function getPaellaPlayerThemeUrl(bool $live): array

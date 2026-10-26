@@ -6,6 +6,7 @@ use srag\Plugins\Opencast\Container\Container;
 use ILIAS\DI\UIServices;
 use ILIAS\UI\Component\Link\Standard;
 use ILIAS\UI\Component\Component;
+use ILIAS\UI\Component\Modal\RoundTrip;
 use ILIAS\UI\Factory;
 use ILIAS\UI\Renderer;
 use srag\Plugins\Opencast\DI\OpencastDIC;
@@ -197,8 +198,8 @@ class xoctEventRenderer
             if (PluginConfig::getConfig(PluginConfig::F_USE_MODALS)) {
                 $modal = $this->getPlayerModal();
                 $link_tpl->setVariable('LINK_URL', '#');
-                $link_tpl->setVariable('MODAL', $modal->getHTML());
-                $link_tpl->setVariable('MODAL_LINK', $this->getModalLink());
+                $link_tpl->setVariable('MODAL', $this->renderer->render($modal));
+                $link_tpl->setVariable('MODAL_LINK', $this->getModalLink($modal));
             } else {
                 $link_tpl->setVariable('LINK_URL', $this->getInternalPlayerLink());
             }
@@ -224,21 +225,22 @@ class xoctEventRenderer
         );
     }
 
-    public function getPlayerModal(): ilModalGUI
+    public function getPlayerModal(): RoundTrip
     {
-        $modal = ilModalGUI::getInstance();
-        $modal->setId('modal_' . $this->event->getIdentifier());
-        $modal->setHeading($this->event->getTitle());
-        $modal->setBody(
-            '<iframe class="xoct_iframe" allowfullscreen="true" src="' . $this->getInternalPlayerLink(
-            ) . '" style="border:none;"></iframe><br>'
+        return $this->factory->modal()->roundtrip(
+            $this->event->getTitle(),
+            $this->factory->legacy()->content(
+                '<iframe class="xoct_iframe" allowfullscreen="true" src="' . $this->getInternalPlayerLink(
+                ) . '" style="border:none;"></iframe><br>'
+            )
         );
-        return $modal;
     }
 
-    public function getModalLink(): string
+    public function getModalLink(RoundTrip $modal): string
     {
-        return 'data-toggle="modal" data-target="#modal_' . $this->event->getIdentifier() . '"';
+        $signal = $modal->getShowSignal()->getId();
+        return 'onclick="$(document).trigger(\'' . $signal . '\', {\'id\': \'' . $signal
+            . '\', \'event\': \'click\', \'triggerer\': $(this), \'options\': {}}); return false;"';
     }
 
     public function insertDownloadLink(
@@ -539,17 +541,15 @@ class xoctEventRenderer
         ilTemplate $tpl,
         string $block_title = 'owner',
         string $variable = 'OWNER',
-        string $username = null
+        ?string $username = null
     ): void {
         $this->insert($tpl, $variable, $this->getOwnerHTML($username), $block_title);
     }
 
-    public function getOwnerHTML(string $owner_username = null): string
+    public function getOwnerHTML(?string $owner_username = null): string
     {
         $owner_tpl = $this->plugin->getTemplate('default/tpl.event_owner.html');
-        if ($owner_username === null) {
-            $owner_username = $this->legacy_container->acl_utils()->getOwnerUsernameOfEvent($this->event);
-        }
+        $owner_username ??= $this->legacy_container->acl_utils()->getOwnerUsernameOfEvent($this->event);
         $owner_tpl->setVariable('OWNER', $owner_username);
 
         if ($this->objectSettings instanceof ObjectSettings && $this->objectSettings->getPermissionPerClip()) {

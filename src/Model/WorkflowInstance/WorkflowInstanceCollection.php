@@ -49,7 +49,7 @@ class WorkflowInstanceCollection extends APIObject
      * @throws xoctException
      * @deprecated since OpencastAPI v1.3 because this endpoint is removed from Opencast Verison 12.x, we should no longer support it here.
      */
-    public function read(stdClass $data = null): void
+    public function read(?stdClass $data = null): void
     {
         if ($data === null) {
             $data = new stdClass();

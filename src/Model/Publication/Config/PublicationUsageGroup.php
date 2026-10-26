@@ -18,17 +18,11 @@ class PublicationUsageGroup extends ActiveRecord
     public const DISPLAY_NAME_LANG_MODULE = 'pug_display_name';
     public const SORT_BY = 'name';
 
-    /**
-     * @return string
-     */
     public static function returnDbTableName(): string
     {
         return self::TABLE_NAME;
     }
 
-    /**
-     * @return string
-     */
     public function getConnectorContainerName(): string
     {
         return self::TABLE_NAME;
@@ -72,9 +66,6 @@ class PublicationUsageGroup extends ActiveRecord
      */
     protected $description;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return (int) $this->id;
@@ -88,9 +79,6 @@ class PublicationUsageGroup extends ActiveRecord
         $this->id = $id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name ?? '';
@@ -104,9 +92,6 @@ class PublicationUsageGroup extends ActiveRecord
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getDisplayName(): string
     {
         return $this->display_name ?? '';
@@ -120,9 +105,6 @@ class PublicationUsageGroup extends ActiveRecord
         $this->display_name = $display_name;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description ?? '';

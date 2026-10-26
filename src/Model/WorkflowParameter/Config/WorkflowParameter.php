@@ -122,8 +122,6 @@ class WorkflowParameter extends ActiveRecord
 
     /**
      * @param integer $default_value_member
-     *
-     * @return WorkflowParameter
      */
     public function setDefaultValueMember($default_value_member): self
     {
@@ -138,8 +136,6 @@ class WorkflowParameter extends ActiveRecord
 
     /**
      * @param int $default_value_admin
-     *
-     * @return WorkflowParameter
      */
     public function setDefaultValueAdmin($default_value_admin): self
     {

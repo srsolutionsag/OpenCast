@@ -11,7 +11,6 @@ use srag\Plugins\Opencast\UI\Integration\Series\SeriesActionTarget;
 use srag\Plugins\Opencast\UI\Integration\Series\SeriesActionParameters;
 use srag\Plugins\Opencast\UI\Integration\Series\SeriesActionParameter;
 use srag\Plugins\Opencast\Util\Locale\Translator;
-use srag\Plugins\Opencast\Model\Series\Series;
 use srag\Plugins\Opencast\State\ScopedSettingsStore;
 
 /**
